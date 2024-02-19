@@ -8,10 +8,14 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 
@@ -20,13 +24,26 @@ fun OverviewScreen (
     navController: NavController,
     viewModel: OverviewViewModel = viewModel()
 ) {
+    var state = viewModel.state.value
+    Column {
+        Text(text = "P3 Project Test Screen", style = MaterialTheme.typography.headlineLarge )
+        Text(text = "This is a test screen for my P3 Project.",
+            style = MaterialTheme.typography.bodyMedium )
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column (modifier = Modifier.fillMaxSize().align(Alignment.Center))
-        {
-            Row { Text(text = viewModel.state.value.text) }
-            Row { Button(onClick = { viewModel.test() }) {} }
-            Row { Text(text = viewModel.state.value.text2) }
+        Text(text = "Notifications Sent: " + state.notifications_sent,
+             style = MaterialTheme.typography.bodySmall
+        )
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            Column(modifier = Modifier.align(Alignment.Center))
+            {
+                Row (
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ) { Text(text = "Send Notification") }
+                Row (
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                ){ Button(onClick = { viewModel.test() }) {} }
+            }
         }
     }
 }

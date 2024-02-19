@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
 class OverviewViewModel: ViewModel() {
-    private val _state = mutableStateOf(OverviewState(text2 = "Meow"))
+    private val _state = mutableStateOf(OverviewState())
     val state: State<OverviewState> = _state
 
     fun test() {
-        _state.value = OverviewState(text = "Ding!")
+        _state.value = OverviewState(_state.value.notifications_sent + 1)
     }
 }
