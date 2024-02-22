@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.Typography
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.p3project.presentation.Screen
 
 @Composable
 fun OverviewScreen (
@@ -41,6 +43,12 @@ fun OverviewScreen (
         Text(text = "Notifications Sent: " + state.notifications_sent,
              style = MaterialTheme.typography.bodySmall
         )
+        Row() {
+            Text(text = "Move to other page:") 
+            Button(onClick = {navController.navigate(Screen.CalendarScreen.route)}) {
+
+            }
+        }
 
         Box(modifier = Modifier.fillMaxSize()) {
             Column(modifier = Modifier.align(Alignment.Center))
@@ -63,7 +71,6 @@ fun OverviewScreen (
                         text = ""
                     }) {}
                 }
-
 
             }
         }
