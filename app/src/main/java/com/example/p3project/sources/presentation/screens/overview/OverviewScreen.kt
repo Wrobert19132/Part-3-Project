@@ -1,5 +1,8 @@
-package com.example.p3project.presentation.screens.overview
+package com.example.p3project.sources.presentation.screens.overview
 
+import android.Manifest
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,13 +20,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.p3project.presentation.screens.Screen
+import com.example.p3project.sources.presentation.screens.Screen
 
 @Composable
 fun OverviewScreen (
     navController: NavController,
     viewModel: OverviewViewModel = viewModel()
 ) {
+    val notificationPermissionResultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+        onResult = { isGranted ->
+            viewModel.onPermissionResult(
+                permission = Manifest.permission.POST_NOTIFICATIONS,
+                isGranted = isGranted
+            )
+        }
+    )
+
+
+
     var state = viewModel.state.value
     Column {
         var text by remember {mutableStateOf("")}
@@ -60,6 +75,7 @@ fun OverviewScreen (
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ){ Button(
                     onClick = {
+                        notificationPermissionResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                         viewModel.sendNotification(text)
                         text = ""
                     }) {}
