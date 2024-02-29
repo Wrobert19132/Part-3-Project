@@ -1,4 +1,4 @@
-package com.example.p3project.presentation
+package com.example.p3project.sources.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,10 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.p3project.presentation.screens.Screen
-import com.example.p3project.presentation.screens.calendar.CalendarScreen
-import com.example.p3project.presentation.screens.overview.OverviewScreen
-import com.example.p3project.presentation.theme.P3ProjectTheme
+import com.example.p3project.sources.presentation.screens.Screen
+import com.example.p3project.sources.presentation.screens.calendar.CalendarScreen
+import com.example.p3project.sources.presentation.screens.overview.OverviewScreen
+import com.example.p3project.sources.presentation.theme.P3ProjectTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

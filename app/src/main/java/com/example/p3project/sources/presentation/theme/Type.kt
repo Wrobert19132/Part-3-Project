@@ -1,4 +1,4 @@
-package com.example.p3project.presentation.theme
+package com.example.p3project.sources.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
