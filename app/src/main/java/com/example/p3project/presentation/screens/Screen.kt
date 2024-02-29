@@ -1,4 +1,4 @@
-package com.example.p3project.presentation
+package com.example.p3project.presentation.screens
 
 sealed class Screen(val route: String) {
     data object OverviewScreen: Screen("overview")
