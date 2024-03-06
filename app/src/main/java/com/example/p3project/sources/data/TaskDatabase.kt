@@ -1,6 +1,7 @@
-package com.example.p3project.sources.repository
+package com.example.p3project.sources.data
 
 import androidx.room.Database
+import com.example.p3project.sources.data.Task
 
 
 @Database(
