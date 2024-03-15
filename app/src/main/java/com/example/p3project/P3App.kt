@@ -8,12 +8,13 @@ import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.p3project.common.Constants
+import dagger.hilt.android.HiltAndroidApp
 
+@HiltAndroidApp
 class P3App: Application() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-
     }
 
     private fun createNotificationChannel() {
