@@ -1,6 +1,7 @@
 package com.example.p3project.sources.data
 
 import androidx.room.Database
+import androidx.room.RoomDatabase
 import com.example.p3project.sources.data.Task
 
 
@@ -8,5 +9,9 @@ import com.example.p3project.sources.data.Task
     entities = [Task::class],
     version = 1
 )
-abstract class TaskDatabase {
+abstract class TaskDatabase: RoomDatabase() {
+    abstract fun tasksDao(): TasksDao
+    companion object {
+        const val DATABASE_NAME = "tasksDB.db"
+    }
 }

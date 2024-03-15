@@ -6,7 +6,7 @@ import com.example.p3project.sources.data.TasksDao
 class TaskRepositoryImpl (
     private val tasksDao: TasksDao
 ): TaskRepository {
-    override suspend fun getTasks(task: Task): List<Task> {
+    override suspend fun getTasks(): List<Task> {
         return tasksDao.getAllTasks()
     }
 

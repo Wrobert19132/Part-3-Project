@@ -5,7 +5,7 @@ import com.example.p3project.sources.data.Task;
 // An interface, so different implementations of the TaskRepository can be setup with dagger
 // and hilt
 interface TaskRepository {
-    suspend fun getTasks(task: Task): List<Task>
+    suspend fun getTasks(): List<Task>
     suspend fun addTask(task: Task)
 
 }

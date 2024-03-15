@@ -1,5 +1,7 @@
 package com.example.p3project.sources.presentation.screens.overview
 
-data class OverviewState(
-    val notifications_sent: Int = 0,
+import com.example.p3project.sources.data.Task
+
+data class OverviewState (
+    var tasks: List<Task>
 )
