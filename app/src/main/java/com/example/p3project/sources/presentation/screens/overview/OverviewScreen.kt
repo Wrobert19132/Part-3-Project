@@ -31,5 +31,7 @@ fun OverviewScreen (
     navController: NavController,
     viewModel: OverviewViewmodel = hiltViewModel()
 ) {
+    TaskCard(task = viewModel.state.value.tasks[0]) {
 
+    }
 }
