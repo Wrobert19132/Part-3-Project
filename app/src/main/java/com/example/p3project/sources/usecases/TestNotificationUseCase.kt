@@ -1,4 +1,4 @@
-package com.example.p3project.sources.services
+package com.example.p3project.sources.usecases
 
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -8,7 +8,7 @@ import androidx.core.app.NotificationCompat
 import com.example.p3project.common.Constants
 import com.example.p3project.sources.presentation.MainActivity
 
-class TestNotificationService (
+class TestNotificationUseCase (
     private val context: Context) {
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
