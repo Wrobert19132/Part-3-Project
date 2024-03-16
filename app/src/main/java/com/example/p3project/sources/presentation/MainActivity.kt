@@ -17,6 +17,7 @@ import com.example.p3project.sources.presentation.screens.overview.OverviewScree
 import com.example.p3project.sources.presentation.theme.P3ProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
