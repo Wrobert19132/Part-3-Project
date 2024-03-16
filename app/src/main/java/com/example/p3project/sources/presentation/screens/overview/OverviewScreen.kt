@@ -30,6 +30,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -51,7 +52,7 @@ fun OverviewScreen (
     navController: NavController,
     viewModel: OverviewViewmodel = hiltViewModel()
 ) {
-    val state = viewModel.state.value
+    val state = viewModel.state.collectAsState().value
 
     Scaffold (
         topBar = {
@@ -86,12 +87,16 @@ fun OverviewScreen (
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {}) {
+                onClick = {viewModel.onEvent(
+                    OverviewEvent.AddTask(task = Task("Test task",
+                        (Math.random()*1000).toInt(), "Nananannananananannanananana, REPENT")))}) {
 
             }}
 
     ) { paddingValues ->
-        Column(modifier = Modifier.fillMaxSize().padding(paddingValues),
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues),
             content = {
                 LazyColumn() {
                     items(state.tasks) { task ->

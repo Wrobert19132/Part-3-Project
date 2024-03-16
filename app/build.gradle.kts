@@ -71,6 +71,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation:1.2.0")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     implementation("androidx.room:room-runtime:2.6.1")
+    implementation("com.kotlinx:kotlinx:1.1.0")
     kapt("androidx.room:room-compiler:2.6.1")
     kapt("com.google.dagger:hilt-android-compiler:2.51")
 
