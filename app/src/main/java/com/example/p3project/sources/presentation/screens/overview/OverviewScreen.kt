@@ -90,7 +90,7 @@ fun OverviewScreen (
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {}
+                onClick = {navController.navigate(Screen.AddtaskScreen.route)}
             ) {
                 Icon(Icons.Filled.Add, "Add task")
             }
