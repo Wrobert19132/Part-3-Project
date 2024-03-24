@@ -1,5 +1,6 @@
 package com.example.p3project.sources.presentation.screens.addtask
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -56,6 +58,7 @@ import com.example.p3project.sources.presentation.screens.Screen
 import com.example.p3project.sources.presentation.screens.overview.OverviewEvent
 import com.example.p3project.sources.presentation.screens.overview.OverviewViewmodel
 import com.example.p3project.sources.presentation.screens.overview.components.TaskCard
+import com.example.p3project.sources.presentation.shared_components.AppSnackbar
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,9 +71,13 @@ fun AddTaskScreen (
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val context = LocalContext.current
     val state = viewModel.state.collectAsState().value
 
     Scaffold (
+        snackbarHost = {
+            AppSnackbar(hostState = snackbarHostState)
+        },
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -148,7 +155,10 @@ fun AddTaskScreen (
                     TextButton(onClick = { /*TODO*/ }) {
                         Text(text = "Cancel")
                     }
-                    TextButton(onClick = { /*TODO*/ }) {
+                    TextButton(onClick = {
+                        scope.launch { snackbarHostState.showSnackbar("Task Added!!")}
+                        navController.popBackStack()
+                    }) {
                         Text(text = "Add")
                     }
                 }

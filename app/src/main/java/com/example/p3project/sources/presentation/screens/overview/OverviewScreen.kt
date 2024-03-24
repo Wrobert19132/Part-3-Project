@@ -50,6 +50,7 @@ import com.example.p3project.sources.data.Task
 import com.example.p3project.sources.presentation.screens.Screen
 import com.example.p3project.sources.presentation.screens.overview.components.TaskCard
 import com.example.p3project.sources.presentation.shared_components.AppNavigation
+import com.example.p3project.sources.presentation.shared_components.AppSnackbar
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
@@ -67,12 +68,7 @@ fun OverviewScreen (
 
     Scaffold (
         snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState) {data ->
-                Snackbar(snackbarData = data,
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.primary
-                )
-            }
+            AppSnackbar(hostState = snackbarHostState)
         },
         topBar = {
             TopAppBar(
