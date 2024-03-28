@@ -34,6 +34,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -65,7 +66,9 @@ fun OverviewScreen (
     val snackbarHostState = remember {SnackbarHostState() }
     
     val state = viewModel.state.collectAsState().value
-
+    LaunchedEffect(true) {
+        viewModel.onEvent(OverviewEvent.ReloadTasks)
+    }
     Scaffold (
         snackbarHost = {
             AppSnackbar(hostState = snackbarHostState)

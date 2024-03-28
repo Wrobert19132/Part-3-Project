@@ -4,5 +4,6 @@ import com.example.p3project.sources.data.Task
 
 sealed class OverviewEvent  {
     data class AddTask(val task: Task): OverviewEvent()
+    data object ReloadTasks: OverviewEvent()
 
 }

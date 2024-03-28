@@ -31,23 +31,21 @@ class OverviewViewmodel @Inject constructor(
 
     val getTasksUseCase: GetTasksUseCase = GetTasksUseCase(taskRepository)
     val addTaskUseCase: AddTaskUseCase = AddTaskUseCase(taskRepository)
-    init {
-        getNotes()
-    }
 
     fun onEvent(event: OverviewEvent) {
         if (event is OverviewEvent.AddTask) {
             viewModelScope.launch(Dispatchers.IO) {
                 addTaskUseCase(event.task)
-                getNotes()
+                getTasks()
+            }
+        } else if (event is OverviewEvent.ReloadTasks) {
+            viewModelScope.launch(Dispatchers.IO) {
+                getTasks()
             }
         }
     }
 
-    private fun getNotes() {
-        viewModelScope.launch (Dispatchers.IO){
-            state.value = state.value.copy(tasks = getTasksUseCase())
-        }
-
+    private suspend fun getTasks() {
+        state.value = state.value.copy(tasks = getTasksUseCase())
     }
 }
