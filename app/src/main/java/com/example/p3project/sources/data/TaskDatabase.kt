@@ -6,7 +6,7 @@ import com.example.p3project.sources.data.Task
 
 
 @Database(
-    entities = [Task::class],
+    entities = [Task::class, TaskCompletion::class],
     version = 1
 )
 abstract class TaskDatabase: RoomDatabase() {
