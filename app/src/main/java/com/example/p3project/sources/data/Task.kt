@@ -5,9 +5,12 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Task (
-    val name: String,
-    @PrimaryKey val id: Int,
-    val description: String
+    var name: String,
+    var description: String,
+    var hour: Int,
+    var minute: Int,
+    var dayInterval: Int
 ) {
-
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 }
