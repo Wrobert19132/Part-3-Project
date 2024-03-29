@@ -13,4 +13,11 @@ data class Task (
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0
+
+    companion object Limits {
+        var maxNameLength: Int = 32;
+        var maxDescriptionLength: Int = 128;
+        var maxDayInterval: Int = 365;
+
+    }
 }
