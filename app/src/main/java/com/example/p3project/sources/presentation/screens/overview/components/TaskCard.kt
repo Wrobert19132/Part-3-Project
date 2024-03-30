@@ -4,6 +4,7 @@ package com.example.p3project.sources.presentation.screens.overview.components
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -42,25 +43,40 @@ fun TaskCard (task: Task, onClick: () -> Unit) {
             Box (modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
+                    text = task.name,
                     modifier = Modifier.fillMaxWidth(),
-                    text = task.name, overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis,
                     style = MaterialTheme.typography.titleMedium,
                 )
+
+                // Text(
+                //    text = String.format("%02d:%02d",
+                //        task.hour, task.minute),
+                //    modifier = Modifier.fillMaxWidth(),
+                //    overflow = TextOverflow.Ellipsis,
+                //    style = MaterialTheme.typography.titleMedium,
+                //    textAlign = TextAlign.Right
+                //    )
+
+                // Debug
                 Text(
+                    text = task.id.toString(),
                     modifier = Modifier.fillMaxWidth(),
-                    text = task.id.toString(), overflow = TextOverflow.Ellipsis,
+                    overflow = TextOverflow.Ellipsis,
                     color = Color.Magenta,
                     style = MaterialTheme.typography.titleMedium,
-                    textAlign = TextAlign.Right
+                    textAlign = TextAlign.Center
                 )
             }
 
             Text(text = task.description,
                  style = MaterialTheme.typography.bodyMedium)
-
+            Spacer(modifier = Modifier.height(10.dp))
             FilledTonalButton(
                 onClick = { /*TODO*/ },
-                modifier = Modifier.fillMaxWidth().align(Alignment.End),
+                modifier = Modifier
+                    .width(120.dp)
+                    .align(Alignment.End),
 
             ) {
                 Text(text = "Complete")
