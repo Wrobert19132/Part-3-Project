@@ -37,6 +37,7 @@ import androidx.compose.material3.TimePickerLayoutType
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -58,6 +59,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.p3project.sources.data.Task
+import com.example.p3project.sources.presentation.screens.addtask.components.AppDatePicker
 import com.example.p3project.sources.presentation.screens.addtask.components.AppTimePicker
 import com.example.p3project.sources.presentation.screens.overview.OverviewEvent
 import com.example.p3project.sources.presentation.shared_components.AppSnackbar
@@ -66,6 +68,7 @@ import kotlinx.coroutines.launch
 import java.sql.Time
 import java.time.Instant
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,6 +92,10 @@ fun AddTaskScreen (
     val timePicker = rememberTimePickerState(12, 30, false);
     var timePickerVisible = remember { mutableStateOf(false) }
 
+    val datePicker = rememberDatePickerState();
+    var datePickerVisible = remember { mutableStateOf(false) }
+
+
 
     Scaffold (
         snackbarHost = {
@@ -107,7 +114,7 @@ fun AddTaskScreen (
         },
     ) {paddingValues ->
         AppTimePicker(visible = timePickerVisible, state = timePicker)
-
+        AppDatePicker(visible = datePickerVisible, state = datePicker)
         if (state.error != null) {
             AlertDialog(
                 onDismissRequest = {viewModel.onEvent(AddTaskEvent.DismissError)},

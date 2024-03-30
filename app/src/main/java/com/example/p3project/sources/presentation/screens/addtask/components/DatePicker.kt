@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
+import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -21,7 +23,7 @@ import androidx.compose.ui.window.Dialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTimePicker(visible: MutableState<Boolean>, state: TimePickerState) {
+fun AppDatePicker(visible: MutableState<Boolean>, state: DatePickerState) {
     if (visible.value) {
         Dialog(onDismissRequest = {
             visible.value = false
@@ -31,9 +33,8 @@ fun AppTimePicker(visible: MutableState<Boolean>, state: TimePickerState) {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.padding(10.dp)
                 ) {
-                    TimePicker(
+                    DatePicker(
                         state = state,
-                        layoutType = TimePickerLayoutType.Vertical,
                     )
 
                     Row(
