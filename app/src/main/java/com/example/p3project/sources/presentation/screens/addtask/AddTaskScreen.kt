@@ -58,10 +58,15 @@ import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.p3project.sources.data.Task
+import com.example.p3project.sources.presentation.screens.addtask.components.AppTimePicker
 import com.example.p3project.sources.presentation.screens.overview.OverviewEvent
 import com.example.p3project.sources.presentation.shared_components.AppSnackbar
 import com.kotlinx.extend.isNumber
 import kotlinx.coroutines.launch
+import java.sql.Time
+import java.time.Instant
+import java.time.LocalDate
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -82,7 +87,7 @@ fun AddTaskScreen (
     var dayInterval by remember { mutableIntStateOf(1) }
 
     val timePicker = rememberTimePickerState(12, 30, false);
-    var timePickerVisible by remember { mutableStateOf(false) }
+    var timePickerVisible = remember { mutableStateOf(false) }
 
 
     Scaffold (
@@ -101,33 +106,8 @@ fun AddTaskScreen (
             )
         },
     ) {paddingValues ->
-        if (timePickerVisible) {
-            Dialog(onDismissRequest = {
-                timePickerVisible = false
-            }) {
-                Card() {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(10.dp)
-                    ) {
-                        TimePicker(
-                            state = timePicker,
-                            layoutType = TimePickerLayoutType.Vertical,
-                        )
+        AppTimePicker(visible = timePickerVisible, state = timePicker)
 
-                        Row(
-                            verticalAlignment = Alignment.Bottom,
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Absolute.Right
-                        ) {
-                            OutlinedButton(onClick = { timePickerVisible = false }) {
-                                Text(text = "Set")
-                            }
-                        }
-                    }
-                }
-            }
-        }
         if (state.error != null) {
             AlertDialog(
                 onDismissRequest = {viewModel.onEvent(AddTaskEvent.DismissError)},
@@ -212,7 +192,7 @@ fun AddTaskScreen (
             OutlinedTextField(
                 enabled = false,
                 onValueChange = {},
-                modifier = Modifier.clickable { timePickerVisible = true },
+                modifier = Modifier.clickable { timePickerVisible.value = true },
                 value = String.format("Send notifications at: %02d:%02d",
                                       timePicker.hour, timePicker.minute),
                 colors = defaultCols.copy(
@@ -238,7 +218,9 @@ fun AddTaskScreen (
                             AddTaskEvent.AddTask(
                                 Task(
                                     taskName, taskDescription,
-                                    timePicker.hour, timePicker.minute, dayInterval
+                                    LocalTime.of(timePicker.hour, timePicker.minute),
+                                    LocalDate.of(1,1, 1),
+                                    dayInterval
                                 )
                             )
                         )
