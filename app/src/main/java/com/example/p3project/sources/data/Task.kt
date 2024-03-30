@@ -3,9 +3,14 @@ package com.example.p3project.sources.data
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import java.lang.Math.floorDiv
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalUnit
 import java.util.Date
+import kotlin.time.DurationUnit
 
 @Entity
 data class Task (
@@ -28,6 +33,11 @@ data class Task (
 
     fun nextTaskDay(date: LocalDate): LocalDate {
         return LocalDate.ofEpochDay(date.toEpochDay() + daysUntilNextTaskDay(date))
+    }
+
+    fun minutesUntilTask(dateTime: LocalDateTime): Long {
+        return (daysUntilNextTaskDay(dateTime.toLocalDate()) * 1440) +
+                dateTime.toLocalTime().until(time, ChronoUnit.MINUTES)
     }
 
     companion object Limits {
