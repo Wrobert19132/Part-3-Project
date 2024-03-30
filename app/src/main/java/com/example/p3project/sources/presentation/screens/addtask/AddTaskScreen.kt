@@ -18,6 +18,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.LocalContentColor
@@ -70,6 +71,7 @@ import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.OffsetDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -89,10 +91,12 @@ fun AddTaskScreen (
     var taskDescription by remember { mutableStateOf("") }
     var dayInterval by remember { mutableIntStateOf(1) }
 
-    val timePicker = rememberTimePickerState(12, 30, false);
+    val now: OffsetDateTime = OffsetDateTime.now()
+
+    val timePicker = rememberTimePickerState(now.hour, now.minute, false);
     var timePickerVisible = remember { mutableStateOf(false) }
 
-    val datePicker = rememberDatePickerState();
+    val datePicker = rememberDatePickerState(initialSelectedDateMillis = now.toEpochSecond());
     var datePickerVisible = remember { mutableStateOf(false) }
 
 
@@ -209,6 +213,7 @@ fun AddTaskScreen (
                     disabledPlaceholderColor = defaultCols.unfocusedPlaceholderColor
                     ),
                 )
+
 
 
 
