@@ -96,7 +96,7 @@ fun AddTaskScreen (
     val timePicker = rememberTimePickerState(now.hour, now.minute, false);
     var timePickerVisible = remember { mutableStateOf(false) }
 
-    val datePicker = rememberDatePickerState(initialSelectedDateMillis = now.toEpochSecond());
+    val datePicker = rememberDatePickerState(initialSelectedDateMillis = now.toEpochSecond() * 1000);
     var datePickerVisible = remember { mutableStateOf(false) }
 
 
@@ -214,7 +214,18 @@ fun AddTaskScreen (
                     ),
                 )
 
-
+                OutlinedTextField(
+                    enabled = false,
+                    onValueChange = {},
+                    modifier = Modifier.clickable { datePickerVisible.value = true },
+                    value = "Starting " + datePicker.toString(),
+                    colors = defaultCols.copy(
+                        disabledContainerColor = defaultCols.unfocusedContainerColor,
+                        disabledTextColor = defaultCols.unfocusedTextColor,
+                        disabledIndicatorColor = defaultCols.unfocusedIndicatorColor,
+                        disabledPlaceholderColor = defaultCols.unfocusedPlaceholderColor
+                    ),
+                )
 
 
 
