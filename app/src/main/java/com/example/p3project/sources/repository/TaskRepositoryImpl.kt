@@ -1,7 +1,7 @@
 package com.example.p3project.sources.repository
 
-import com.example.p3project.sources.data.Task
-import com.example.p3project.sources.data.TasksDao
+import com.example.p3project.sources.data.database.Task
+import com.example.p3project.sources.data.database.TasksDao
 
 class TaskRepositoryImpl (
     private val tasksDao: TasksDao

@@ -1,10 +1,10 @@
-package com.example.p3project.sources.data
+package com.example.p3project.sources.data.database
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.p3project.sources.data.Task
+import com.example.p3project.sources.data.database.Task
 
 @Dao
 interface TasksDao {

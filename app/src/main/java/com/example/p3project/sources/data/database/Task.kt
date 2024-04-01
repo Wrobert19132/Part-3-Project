@@ -1,4 +1,4 @@
-package com.example.p3project.sources.data
+package com.example.p3project.sources.data.database
 
 import androidx.room.Entity
 import androidx.room.Ignore

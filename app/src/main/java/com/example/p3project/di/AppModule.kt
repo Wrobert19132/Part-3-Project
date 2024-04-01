@@ -2,7 +2,7 @@ package com.example.p3project.di
 
 import android.app.Application
 import androidx.room.Room
-import com.example.p3project.sources.data.TaskDatabase
+import com.example.p3project.sources.data.database.TaskDatabase
 import com.example.p3project.sources.repository.TaskRepository
 import com.example.p3project.sources.repository.TaskRepositoryImpl
 import dagger.Module

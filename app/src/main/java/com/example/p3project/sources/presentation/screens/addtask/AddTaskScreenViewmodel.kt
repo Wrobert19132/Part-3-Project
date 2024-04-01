@@ -2,9 +2,7 @@ package com.example.p3project.sources.presentation.screens.addtask
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.p3project.sources.data.Task
-import com.example.p3project.sources.presentation.screens.overview.OverviewEvent
-import com.example.p3project.sources.presentation.screens.overview.OverviewState
+import com.example.p3project.sources.data.database.Task
 import com.example.p3project.sources.repository.TaskRepository
 import com.example.p3project.sources.usecases.AddTaskUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

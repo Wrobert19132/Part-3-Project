@@ -1,6 +1,6 @@
 package com.example.p3project.sources.usecases;
 
-import com.example.p3project.sources.data.Task
+import com.example.p3project.sources.data.database.Task
 import com.example.p3project.sources.repository.TaskRepository;
 
 class AddTaskUseCase (private val taskRepository:TaskRepository)
