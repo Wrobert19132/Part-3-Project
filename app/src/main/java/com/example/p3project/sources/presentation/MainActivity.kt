@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import com.example.p3project.sources.presentation.screens.Screen
 import com.example.p3project.sources.presentation.screens.addtask.AddTaskScreen
 import com.example.p3project.sources.presentation.screens.calendar.CalendarScreen
-import com.example.p3project.sources.presentation.screens.test.TestScreen
 import com.example.p3project.sources.presentation.screens.overview.OverviewScreen
 import com.example.p3project.sources.presentation.theme.P3ProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,13 +49,6 @@ class MainActivity : ComponentActivity() {
                         ) {
                             AddTaskScreen(navController)
                         }
-
-                        composable(
-                            route = Screen.TestScreen.route
-                        ) {
-                            TestScreen(navController)
-                        }
-
                     }
                 }
             }
