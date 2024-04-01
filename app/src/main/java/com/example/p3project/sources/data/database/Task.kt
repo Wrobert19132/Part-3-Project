@@ -40,6 +40,10 @@ data class Task (
                 dateTime.toLocalTime().until(time, ChronoUnit.MINUTES)
     }
 
+    fun secondsUntilTask(dateTime: LocalDateTime): Long {
+        return minutesUntilTask(dateTime) * 60
+    }
+
     companion object Limits {
         var maxNameLength: Int = 32;
         var maxDescriptionLength: Int = 128;
