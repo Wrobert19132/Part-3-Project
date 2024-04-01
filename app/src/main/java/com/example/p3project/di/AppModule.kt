@@ -17,7 +17,7 @@ import javax.inject.Singleton
 class AppModule {
     @Provides
     @Singleton
-    fun provideNoteDatabase(app: Application): TaskDatabase {
+    fun provideTaskDatabase(app: Application): TaskDatabase {
         return Room.databaseBuilder(
             app,
             TaskDatabase::class.java,
@@ -27,7 +27,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideNoteRepository(db: TaskDatabase): TaskRepository {
+    fun provideTaskRepository(db: TaskDatabase): TaskRepository {
         return TaskRepositoryImpl(db.tasksDao())
     }
 
