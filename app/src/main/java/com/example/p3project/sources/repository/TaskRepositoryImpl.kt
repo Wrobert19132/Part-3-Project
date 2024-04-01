@@ -10,7 +10,7 @@ class TaskRepositoryImpl (
         return tasksDao.getAllTasks()
     }
 
-    override suspend fun getTask(id: Int): Task? {
+    override fun getTask(id: Int): Task? {
         return tasksDao.getTask(id)
     }
 
