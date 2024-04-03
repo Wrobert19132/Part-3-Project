@@ -29,11 +29,20 @@ class AddTaskScreenViewmodel @Inject constructor(
         state.value = state.value.copy(error=null)
     }
 
+    private fun createError(error: String) {
+        state.value = state.value.copy(error=error)
+    }
+
     fun onEvent(event: AddTaskEvent) {
         if (event is AddTaskEvent.AddTask) {
             viewModelScope.launch(Dispatchers.IO) {
                 addTask(event.task)
             }
+
+        } else if (event is AddTaskEvent.SendError) {
+            createError(event.message)
+
+
         } else if (event is AddTaskEvent.DismissError) {
             dismissError()
         }

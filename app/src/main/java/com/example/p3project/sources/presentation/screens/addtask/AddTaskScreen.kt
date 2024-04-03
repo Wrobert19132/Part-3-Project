@@ -97,17 +97,9 @@ fun AddTaskScreen (
     ) {paddingValues ->
         AppTimePicker(visible = timePickerVisible, state = timePicker)
         AppDatePicker(visible = datePickerVisible, state = datePicker)
-        if (state.error != null) {
-            AlertDialog(
-                onDismissRequest = {viewModel.onEvent(AddTaskEvent.DismissError)},
-                confirmButton = {
-                    TextButton(
-                        onClick = { (viewModel.onEvent(AddTaskEvent.DismissError)) }
-                    ) { Text(text = "Okay") }
-                },
-                text = {Text(text = state.error!!)},
-                tonalElevation = 50.dp
             )
+        AppError(errorMessage = state.error) {
+            viewModel.onEvent(AddTaskEvent.DismissError)
         }
 
 
