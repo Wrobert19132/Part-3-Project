@@ -220,8 +220,7 @@ fun AddTaskScreen (
                                 Task(
                                     taskName, taskDescription,
                                     LocalTime.of(timePicker.hour, timePicker.minute),
-                                    LocalDate.of(1,1, 1),
-                                    dayInterval
+                                    pickedDate, dayInterval
                                 )
                             )
                         )
