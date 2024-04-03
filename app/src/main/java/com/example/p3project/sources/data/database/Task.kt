@@ -28,11 +28,16 @@ data class Task (
     }
 
     fun daysUntilNextTaskDay(date: LocalDate): Int {
-        return ((date.toEpochDay() - startDate.toEpochDay())  % dayInterval).toInt()
+        return (nextTaskDay(date).toEpochDay() - date.toEpochDay()).toInt()
+    }
+
+    fun periodsPassed(date: LocalDate): Int {
+        return (date.toEpochDay() - startDate.toEpochDay()).floorDiv(dayInterval).toInt()
     }
 
     fun nextTaskDay(date: LocalDate): LocalDate {
-        return LocalDate.ofEpochDay(date.toEpochDay() + daysUntilNextTaskDay(date))
+        return LocalDate.ofEpochDay(
+            startDate.toEpochDay() + ((periodsPassed(date) + 1) * dayInterval))
     }
 
     fun minutesUntilTask(dateTime: LocalDateTime): Long {
