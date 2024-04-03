@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -106,14 +108,43 @@ fun TaskCard (task: Task, onClick: () -> Unit) {
 
 
                     // Debug
-                    Text(
-                        text = task.id.toString(),
-                        modifier = Modifier.fillMaxWidth(),
-                        overflow = TextOverflow.Ellipsis,
-                        color = Color.Magenta,
-                        style = MaterialTheme.typography.titleMedium,
-                        textAlign = TextAlign.Center
-                    )
+                    Column (
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        Text(
+                            text = "ID: ${task.id}",
+                            modifier = Modifier.fillMaxWidth(),
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Magenta,
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = "DayInterval ${task.dayInterval}",
+                            modifier = Modifier.fillMaxWidth(),
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Magenta,
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = "NextTaskDay ${task.nextTaskDay(now.toLocalDate())}",
+                            modifier = Modifier.fillMaxWidth(),
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Magenta,
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+                        Text(
+                            text = "StartDate ${task.startDate}",
+                            modifier = Modifier.fillMaxWidth(),
+                            overflow = TextOverflow.Ellipsis,
+                            color = Color.Magenta,
+                            style = MaterialTheme.typography.titleMedium,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
                 }
 
                 Text(
