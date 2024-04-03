@@ -108,7 +108,26 @@ fun AddTaskScreen (
     ) {paddingValues ->
         AppTimePicker(visible = timePickerVisible, state = timePicker)
         AppDatePicker(visible = datePickerVisible, state = datePicker)
+
+
+        PermissionChecker(onNotificationFail = {
+            viewModel.onEvent(
+                AddTaskEvent.SendError(
+                    "You won't receive notifications, resulting in " +
+                            "significantly decreased application functionality. ",
+                )
             )
+        }, onSchedulerFail = {
+                viewModel.onEvent(
+                    AddTaskEvent.SendError(
+                        "Without access to the task scheduler, notifications for your " +
+                                "tasks cannot be sent, significantly degrading application " +
+                                "functionality.",
+
+                    )
+                )
+            })
+
         AppError(errorMessage = state.error) {
             viewModel.onEvent(AddTaskEvent.DismissError)
         }
@@ -124,42 +143,42 @@ fun AddTaskScreen (
                     .padding(horizontal = 10.dp, vertical = 5.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                OutlinedTextField(
-
-                    label={
-                        Text(text = "Task Name")
-                    },
-                    value = taskName,
-                    isError = (taskName.length >= Task.maxNameLength),
-                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                    onValueChange = {
-                        taskName = if (it.length > Task.maxNameLength) {
-                            taskName
-                        } else {
-                            it
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        label = {
+                            Text(text = "Task Name")
+                        },
+                        leadingIcon = { Icon(Icons.Default.Create, "Set Task Name") },
+                        value = taskName,
+                        isError = (taskName.length >= Task.maxNameLength),
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                        onValueChange = {
+                            taskName = if (it.length > Task.maxNameLength) {
+                                taskName
+                            } else {
+                                it
+                            }
+                        },
+                        singleLine = true,
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp),
+                        label = {
+                            Text(text = "Task Description")
+                        },
+                        value = taskDescription,
+                        isError = (taskDescription.length >= Task.maxDescriptionLength),
+                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
+                        onValueChange = {
+                            taskDescription = if (it.length > Task.maxDescriptionLength) {
+                                taskDescription
+                            } else {
+                                it
+                            }
                         }
-                    },
-                    singleLine = true,
-
-                )
-                OutlinedTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(150.dp),
-                    label={
-                        Text(text = "Task Description")
-                    },
-                    value = taskDescription,
-                    isError = (taskDescription.length >= Task.maxDescriptionLength),
-                    keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                    onValueChange = {
-                        taskDescription = if (it.length > Task.maxDescriptionLength) {
-                            taskDescription
-                        } else {
-                            it
-                        }
-                    }
-                )
+                    )
                     OutlinedTextField(
                         modifier = Modifier
                             .width(210.dp),
