@@ -5,15 +5,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -28,14 +33,13 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -45,11 +49,18 @@ import androidx.navigation.NavController
 import com.example.p3project.sources.data.database.Task
 import com.example.p3project.sources.presentation.screens.addtask.components.AppDatePicker
 import com.example.p3project.sources.presentation.screens.addtask.components.AppTimePicker
+import com.example.p3project.sources.presentation.screens.addtask.components.PermissionChecker
+import com.example.p3project.sources.presentation.shared_components.AppError
 import com.example.p3project.sources.presentation.shared_components.AppSnackbar
+import com.example.p3project.sources.presentation.shared_components.KeyboardAdjust
 import com.kotlinx.extend.isNumber
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,7 +78,7 @@ fun AddTaskScreen (
 
     var taskName by remember { mutableStateOf("") }
     var taskDescription by remember { mutableStateOf("") }
-    var dayInterval by remember { mutableIntStateOf(1) }
+    var dayInterval by remember { mutableStateOf("") }
 
     val now: OffsetDateTime = OffsetDateTime.now()
 
@@ -149,76 +160,105 @@ fun AddTaskScreen (
                         }
                     }
                 )
-                OutlinedTextField(
-                    modifier = Modifier
-                        .width(220.dp),
-                    prefix = {
-                        Text(text = "Repeat every ")
-                    },
-                    suffix = {
-                        Text(text = " days")
-                    },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    value = dayInterval.toString(),
-                    isError = (dayInterval > Task.maxDayInterval || dayInterval <= 0),
-                    onValueChange = {
-                        dayInterval = if (it.isNumber()) { // Check for empty string
-                            val num = it.toInt()
-                            minOf(it.toInt(), 999)
-                        } else 1;
-                    }
-                )
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .width(210.dp),
+                        prefix = {
+                            Text(text = "Repeat every ")
+                        },
+                        suffix = {
+                            Text(text = " days")
+                        },
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        value = dayInterval,
+                        isError = (
+                                if (dayInterval.isNumber()) {
+                                    (dayInterval.toInt() > Task.maxDayInterval || dayInterval.toInt() <= 0)
+                                } else {
+                                    false
+                                }
+                                ),
+                        onValueChange = {
+                            dayInterval = if (it.isNumber()) { // Check for empty string
+                                minOf(it.toInt(), 999).toString()
+                            } else "";
+                        }
+                    )
 
-            val defaultCols = OutlinedTextFieldDefaults.colors()
-            OutlinedTextField(
-                enabled = false,
-                onValueChange = {},
-                modifier = Modifier.clickable { timePickerVisible.value = true },
-                value = String.format("Send notifications at: %02d:%02d",
-                                      timePicker.hour, timePicker.minute),
-                colors = defaultCols.copy(
-                    disabledContainerColor = defaultCols.unfocusedContainerColor,
-                    disabledTextColor = defaultCols.unfocusedTextColor,
-                    disabledIndicatorColor = defaultCols.unfocusedIndicatorColor,
-                    disabledPlaceholderColor = defaultCols.unfocusedPlaceholderColor
-                    ),
-                )
+                    val defaultCols = OutlinedTextFieldDefaults.colors()
+                    OutlinedTextField(
+                        enabled = false,
+                        onValueChange = {},
+                        modifier = Modifier.clickable { timePickerVisible.value = true },
+                        value = String.format(
+                            "Send notifications at: %02d:%02d",
+                            timePicker.hour, timePicker.minute
+                        ),
+                        colors = defaultCols.copy(
+                            disabledContainerColor = defaultCols.unfocusedContainerColor,
+                            disabledTextColor = defaultCols.unfocusedTextColor,
+                            disabledIndicatorColor = defaultCols.unfocusedIndicatorColor,
+                            disabledPlaceholderColor = defaultCols.unfocusedPlaceholderColor
+                        ),
+                    )
 
-                OutlinedTextField(
-                    enabled = false,
-                    onValueChange = {},
-                    modifier = Modifier.clickable { datePickerVisible.value = true },
-                    value = "Starting " + datePicker.toString(),
-                    colors = defaultCols.copy(
-                        disabledContainerColor = defaultCols.unfocusedContainerColor,
-                        disabledTextColor = defaultCols.unfocusedTextColor,
-                        disabledIndicatorColor = defaultCols.unfocusedIndicatorColor,
-                        disabledPlaceholderColor = defaultCols.unfocusedPlaceholderColor
-                    ),
-                )
+                    val pickedDate: LocalDate = LocalDateTime.ofEpochSecond(
+                        datePicker.selectedDateMillis?.div(1000)!!, 0, now.offset
+                    ).toLocalDate()
+                    val locale: Locale = LocalConfiguration.current.locales.get(0)
 
-
-
-                Row(verticalAlignment = Alignment.Bottom,
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Absolute.Right) {
-                    TextButton(onClick = { navController.popBackStack() }) {
-                        Text(text = "Cancel")
-                    }
-                    Button(onClick = {
-                        keyboardController?.hide()
-                        viewModel.onEvent(
-                            AddTaskEvent.AddTask(
-                                Task(
-                                    taskName, taskDescription,
-                                    LocalTime.of(timePicker.hour, timePicker.minute),
-                                    pickedDate, dayInterval
-                                )
+                    OutlinedTextField(
+                        enabled = false,
+                        onValueChange = {},
+                        modifier = Modifier.clickable { datePickerVisible.value = true },
+                        value = "Starting: " + pickedDate.format(
+                            DateTimeFormatter.ofLocalizedDate(
+                                FormatStyle.FULL
                             )
-                        )
-                        //navController.popBackStack()
-                    }) {
-                        Text(text = "Add")
+                        ),
+                        colors = defaultCols.copy(
+                            disabledContainerColor = defaultCols.unfocusedContainerColor,
+                            disabledTextColor = defaultCols.unfocusedTextColor,
+                            disabledIndicatorColor = defaultCols.unfocusedIndicatorColor,
+                            disabledPlaceholderColor = defaultCols.unfocusedPlaceholderColor
+                        ),
+                    )
+
+
+
+                    Row(
+                        verticalAlignment = Alignment.Bottom,
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Absolute.Right
+                    ) {
+                        TextButton(onClick = { navController.popBackStack() }) {
+                            Text(text = "Cancel")
+                        }
+                        Button(onClick = {
+                            keyboardController?.hide()
+
+                            if (dayInterval.isNumber()) {
+                                viewModel.onEvent(
+                                    AddTaskEvent.AddTask(
+                                        Task(
+                                            taskName, taskDescription,
+                                            LocalTime.of(timePicker.hour, timePicker.minute),
+                                            pickedDate, dayInterval.toInt()
+                                        )
+                                    )
+                                )
+                            } else {
+                                viewModel.onEvent(
+                                    AddTaskEvent.SendError(
+                                        "You have to set an interval you want to complete tasks at!"
+                                    )
+                                )
+
+                            }
+                            //navController.popBackStack()
+                        }) {
+                            Text(text = "Add")
+                        }
                     }
                 }
             }
