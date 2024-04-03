@@ -7,4 +7,5 @@ sealed class AddTaskEvent {
     data class SendError(val message: String): AddTaskEvent()
 
     data object DismissError: AddTaskEvent()
+
 }
