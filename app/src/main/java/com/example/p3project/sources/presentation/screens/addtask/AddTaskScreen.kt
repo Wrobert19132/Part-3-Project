@@ -72,7 +72,7 @@ fun AddTaskScreen (
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    val context = LocalContext.current
+
     val keyboardController = LocalSoftwareKeyboardController.current
     val state = viewModel.state.collectAsState().value
 
@@ -105,7 +105,7 @@ fun AddTaskScreen (
                 },
             )
         },
-    ) {paddingValues ->
+    ) { paddingValues ->
         AppTimePicker(visible = timePickerVisible, state = timePicker)
         AppDatePicker(visible = datePickerVisible, state = datePicker)
 
@@ -132,16 +132,18 @@ fun AddTaskScreen (
             viewModel.onEvent(AddTaskEvent.DismissError)
         }
 
-
-        Box(
-            Modifier
-                .padding(paddingValues)
-                .fillMaxHeight(),
-            ) {
-            Column (
+        KeyboardAdjust {
+            Box(
                 Modifier
-                    .padding(horizontal = 10.dp, vertical = 5.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
+                    .padding(paddingValues)
+                    .fillMaxSize()
+                    .imePadding()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Column(
+                    Modifier
+                        .padding(horizontal = 10.dp, vertical = 5.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
