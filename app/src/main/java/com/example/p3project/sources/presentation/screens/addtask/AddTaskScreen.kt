@@ -69,7 +69,6 @@ fun AddTaskScreen (
     viewModel: AddTaskScreenViewmodel = hiltViewModel()
 ) {
 
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
 
 
@@ -82,11 +81,11 @@ fun AddTaskScreen (
 
     val now: OffsetDateTime = OffsetDateTime.now()
 
-    val timePicker = rememberTimePickerState(now.hour, now.minute, false);
-    var timePickerVisible = remember { mutableStateOf(false) }
+    val timePicker = rememberTimePickerState(now.hour, now.minute, false)
+    val timePickerVisible = remember { mutableStateOf(false) }
 
-    val datePicker = rememberDatePickerState(initialSelectedDateMillis = now.toEpochSecond() * 1000);
-    var datePickerVisible = remember { mutableStateOf(false) }
+    val datePicker = rememberDatePickerState(initialSelectedDateMillis = now.toEpochSecond() * 1000)
+    val datePickerVisible = remember { mutableStateOf(false) }
 
 
 
@@ -202,7 +201,7 @@ fun AddTaskScreen (
                         onValueChange = {
                             dayInterval = if (it.isNumber()) { // Check for empty string
                                 minOf(it.toInt(), 999).toString()
-                            } else "";
+                            } else ""
                         }
                     )
 
@@ -226,7 +225,6 @@ fun AddTaskScreen (
                     val pickedDate: LocalDate = LocalDateTime.ofEpochSecond(
                         datePicker.selectedDateMillis?.div(1000)!!, 0, now.offset
                     ).toLocalDate()
-                    val locale: Locale = LocalConfiguration.current.locales.get(0)
 
                     OutlinedTextField(
                         enabled = false,
