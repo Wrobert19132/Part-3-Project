@@ -6,7 +6,7 @@ import com.example.p3project.sources.data.database.Task;
 // and hilt
 interface TaskRepository {
     suspend fun getTasks(): List<Task>
-    fun getTask(id: Int): Task?
+    suspend fun getTask(id: Int): Task?
     suspend fun addTask(task: Task)
 
 }
