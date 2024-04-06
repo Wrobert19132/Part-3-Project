@@ -8,6 +8,7 @@ import com.example.p3project.sources.repository.TaskRepository
 import com.example.p3project.sources.usecases.AddTaskUseCase
 import com.example.p3project.sources.usecases.ScheduleTaskUseCase
 import com.example.p3project.sources.usecases.SendNotificationUseCase
+import com.example.p3project.sources.usecases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,19 +17,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTaskScreenViewmodel @Inject constructor(
-    private val taskRepository: TaskRepository,
-    private val interruptScheduler: InterruptScheduler
+    private val useCases: UseCases
 ): ViewModel() {
 
-    private val addTaskUseCase: AddTaskUseCase = AddTaskUseCase(taskRepository)
-    private val scheduleTaskUseCase: ScheduleTaskUseCase = ScheduleTaskUseCase(interruptScheduler)
 
     public val state = MutableStateFlow(
         AddTaskState()
     )
 
     private suspend fun addTask(task: Task) {
-        addTaskUseCase(task)
+        useCases.addTaskUseCase(task)
+        useCases.scheduleTaskUseCase(task)
     }
 
     private fun dismissError() {
@@ -43,7 +42,6 @@ class AddTaskScreenViewmodel @Inject constructor(
         if (event is AddTaskEvent.AddTask) {
             viewModelScope.launch(Dispatchers.IO) {
                 addTask(event.task)
-                scheduleTaskUseCase.invoke(event.task)
             }
 
         } else if (event is AddTaskEvent.SendError) {

@@ -9,6 +9,12 @@ import com.example.p3project.sources.data.InterruptSchedulerImpl
 import com.example.p3project.sources.data.database.TaskDatabase
 import com.example.p3project.sources.repository.TaskRepository
 import com.example.p3project.sources.repository.TaskRepositoryImpl
+import com.example.p3project.sources.usecases.AddTaskUseCase
+import com.example.p3project.sources.usecases.GetTaskByIdUseCase
+import com.example.p3project.sources.usecases.GetTasksUseCase
+import com.example.p3project.sources.usecases.ScheduleTaskUseCase
+import com.example.p3project.sources.usecases.SendNotificationUseCase
+import com.example.p3project.sources.usecases.UseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -40,6 +46,18 @@ class AppModule {
     @Singleton
     fun provideTaskRepository(db: TaskDatabase): TaskRepository {
         return TaskRepositoryImpl(db.tasksDao())
+    }
+
+    @Provides
+    @Singleton
+    fun provideUseCases(repository: TaskRepository, scheduler: InterruptScheduler): UseCases {
+        return UseCases(
+                addTaskUseCase = AddTaskUseCase(repository),
+                getTaskByIdUseCase = GetTaskByIdUseCase(repository),
+                getTasksUseCase = GetTasksUseCase(repository),
+                scheduleTaskUseCase = ScheduleTaskUseCase(scheduler),
+                sendNotificationUseCase = SendNotificationUseCase()
+              )
     }
 
 }

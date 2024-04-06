@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.p3project.sources.repository.TaskRepository
 import com.example.p3project.sources.usecases.AddTaskUseCase
 import com.example.p3project.sources.usecases.GetTasksUseCase
+import com.example.p3project.sources.usecases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -13,23 +14,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OverviewViewmodel @Inject constructor(
-    private val taskRepository: TaskRepository
+    private val useCases: UseCases
 ): ViewModel() {
 
     public val state = MutableStateFlow(
         OverviewState(listOf())
     )
 
-    val getTasksUseCase: GetTasksUseCase = GetTasksUseCase(taskRepository)
-    val addTaskUseCase: AddTaskUseCase = AddTaskUseCase(taskRepository)
-
     fun onEvent(event: OverviewEvent) {
-        if (event is OverviewEvent.AddTask) {
-            viewModelScope.launch(Dispatchers.IO) {
-                addTaskUseCase(event.task)
-                getTasks()
-            }
-        } else if (event is OverviewEvent.ReloadTasks) {
+         if (event is OverviewEvent.ReloadTasks) {
             viewModelScope.launch(Dispatchers.IO) {
                 getTasks()
             }
@@ -37,6 +30,6 @@ class OverviewViewmodel @Inject constructor(
     }
 
     private suspend fun getTasks() {
-        state.value = state.value.copy(tasks = getTasksUseCase())
+        state.value = state.value.copy(tasks = useCases.getTasksUseCase())
     }
 }
