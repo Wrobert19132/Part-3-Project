@@ -39,7 +39,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
-fun TaskCard (task: Task, onClick: () -> Unit) {
+fun TaskCard (task: Task, onClick: () -> Unit, onComplete: () -> Unit) {
 
     val now = LocalDateTime.now()
     var minutesUntil by remember {
@@ -115,7 +115,7 @@ fun TaskCard (task: Task, onClick: () -> Unit) {
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 FilledTonalButton(
-                    onClick = { /*TODO*/ },
+                    onClick = {onClick()},
                     modifier = Modifier
                         .width(120.dp)
                         .align(Alignment.End),

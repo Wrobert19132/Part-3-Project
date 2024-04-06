@@ -77,10 +77,10 @@ fun OverviewScreen (
             LazyColumn() {
                 items(state.tasks) { task ->
                     TaskCard(
-                        task = task
-                    ) {
-
-                    }
+                        task = task,
+                        onClick = {},
+                        onComplete = {}
+                    )
                 }
             }
 
