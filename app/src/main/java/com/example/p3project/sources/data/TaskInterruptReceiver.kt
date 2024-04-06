@@ -14,11 +14,15 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class TaskInterruptReceiver: BroadcastReceiver() {
+
     @Inject lateinit var taskRepository: TaskRepository
+    @Inject lateinit var taskScheduler: InterruptScheduler
+
     private val notificationUseCase = SendNotificationUseCase()
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -29,6 +33,12 @@ class TaskInterruptReceiver: BroadcastReceiver() {
 
             if (task != null) {
                 notificationUseCase(context!!, task)
+
+                taskScheduler.scheduleTaskInterrupt(task,
+                                                    task.nextTaskDay(
+                                                        LocalDate.now().plusDays(1)
+                                                    )
+                )
             }
         }
     }
