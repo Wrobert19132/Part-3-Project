@@ -107,44 +107,6 @@ fun TaskCard (task: Task, onClick: () -> Unit) {
                     }
 
 
-                    // Debug
-                    Column (
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        Text(
-                            text = "ID: ${task.id}",
-                            modifier = Modifier.fillMaxWidth(),
-                            overflow = TextOverflow.Ellipsis,
-                            color = Color.Magenta,
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center
-                        )
-                        Text(
-                            text = "DayInterval ${task.dayInterval}",
-                            modifier = Modifier.fillMaxWidth(),
-                            overflow = TextOverflow.Ellipsis,
-                            color = Color.Magenta,
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center
-                        )
-                        Text(
-                            text = "NextTaskDay ${task.nextTaskDay(now.toLocalDate())}",
-                            modifier = Modifier.fillMaxWidth(),
-                            overflow = TextOverflow.Ellipsis,
-                            color = Color.Magenta,
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center
-                        )
-                        Text(
-                            text = "StartDate ${task.startDate}",
-                            modifier = Modifier.fillMaxWidth(),
-                            overflow = TextOverflow.Ellipsis,
-                            color = Color.Magenta,
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
                 }
 
                 Text(
