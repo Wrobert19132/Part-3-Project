@@ -15,7 +15,8 @@ class TaskRepositoryImpl (
     }
 
     override suspend fun addTask(task: Task) {
-        tasksDao.addTask(task)
+        val id: Long = tasksDao.addTask(task)
+        task.id = id.toInt()
     }
 
 }
