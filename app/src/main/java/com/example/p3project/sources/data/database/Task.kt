@@ -49,6 +49,11 @@ data class Task (
         }
     }
 
+    fun nextTaskDateTime(date: LocalDate): LocalDateTime {
+        return LocalDateTime.of(nextTaskDay(date), time)
+    }
+
+
     fun minutesUntilTask(dateTime: LocalDateTime): Long {
         return (daysUntilNextTaskDay(dateTime.toLocalDate()) * 1440) +
                 dateTime.toLocalTime().until(time, ChronoUnit.MINUTES)
