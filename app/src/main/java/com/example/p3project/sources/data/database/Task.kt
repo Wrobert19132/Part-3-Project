@@ -22,7 +22,7 @@ data class Task (
     var dayInterval: Int,
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = -1
+    var id: Int = 0
 
     fun isTaskDay(date: LocalDate): Boolean {
         val diff: Int = (date.toEpochDay() - startDate.toEpochDay()).toInt()
