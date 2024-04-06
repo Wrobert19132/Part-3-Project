@@ -6,6 +6,7 @@ import com.example.p3project.sources.data.InterruptScheduler
 import com.example.p3project.sources.data.database.Task
 import com.example.p3project.sources.repository.TaskRepository
 import com.example.p3project.sources.usecases.AddTaskUseCase
+import com.example.p3project.sources.usecases.ScheduleTaskUseCase
 import com.example.p3project.sources.usecases.SendNotificationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +19,9 @@ class AddTaskScreenViewmodel @Inject constructor(
     private val taskRepository: TaskRepository,
     private val interruptScheduler: InterruptScheduler
 ): ViewModel() {
-    val addTaskUseCase: AddTaskUseCase = AddTaskUseCase(taskRepository)
+
+    private val addTaskUseCase: AddTaskUseCase = AddTaskUseCase(taskRepository)
+    private val scheduleTaskUseCase: ScheduleTaskUseCase = ScheduleTaskUseCase(interruptScheduler)
 
     public val state = MutableStateFlow(
         AddTaskState()
@@ -40,7 +43,7 @@ class AddTaskScreenViewmodel @Inject constructor(
         if (event is AddTaskEvent.AddTask) {
             viewModelScope.launch(Dispatchers.IO) {
                 addTask(event.task)
-                interruptScheduler.scheduleTaskInterrupt(event.task)
+                scheduleTaskUseCase.invoke(event.task)
             }
 
         } else if (event is AddTaskEvent.SendError) {
