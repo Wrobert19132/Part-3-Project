@@ -66,7 +66,8 @@ import java.util.Locale
 @Composable
 fun AddTaskScreen (
     navController: NavController,
-    viewModel: AddTaskScreenViewmodel = hiltViewModel()
+    taskId: Int?,
+    viewModel: AddTaskScreenViewmodel = hiltViewModel(),
 ) {
 
     val snackbarHostState = remember { SnackbarHostState() }

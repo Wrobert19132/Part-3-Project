@@ -7,13 +7,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.p3project.sources.presentation.screens.Screen
 import com.example.p3project.sources.presentation.screens.addtask.AddTaskScreen
 import com.example.p3project.sources.presentation.screens.calendar.CalendarScreen
 import com.example.p3project.sources.presentation.screens.overview.OverviewScreen
+import com.example.p3project.sources.presentation.screens.taskview.TaskScreen
 import com.example.p3project.sources.presentation.theme.P3ProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,9 +48,10 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(
-                            route = Screen.AddtaskScreen.route
-                        ) {
-                            AddTaskScreen(navController)
+                            route = Screen.AddtaskScreen.route + "?{taskId}",
+                            arguments = listOf(navArgument("taskId") {nullable=true})
+                        ) {backStackEntry ->
+                            AddTaskScreen(navController, backStackEntry.arguments?.getInt("taskId"))
                         }
                     }
                 }
