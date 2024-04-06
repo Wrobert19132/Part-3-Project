@@ -10,6 +10,7 @@ import java.time.LocalTime
 import java.time.temporal.ChronoUnit
 import java.time.temporal.TemporalUnit
 import java.util.Date
+import kotlin.math.ceil
 import kotlin.time.DurationUnit
 
 @Entity
@@ -24,7 +25,8 @@ data class Task (
     var id: Int = -1
 
     fun isTaskDay(date: LocalDate): Boolean {
-        return daysUntilNextTaskDay(date) == 0
+        val diff: Int = (date.toEpochDay() - startDate.toEpochDay()).toInt()
+        return diff % dayInterval == 0
     }
 
     fun daysUntilNextTaskDay(date: LocalDate): Int {
@@ -32,12 +34,19 @@ data class Task (
     }
 
     fun periodsPassed(date: LocalDate): Int {
-        return (date.toEpochDay() - startDate.toEpochDay()).floorDiv(dayInterval).toInt()
+        val diff: Double = (date.toEpochDay() - startDate.toEpochDay()).toDouble()
+        var periodsPassed: Double = ceil((diff / dayInterval).toDouble())
+        return periodsPassed.toInt()
     }
 
     fun nextTaskDay(date: LocalDate): LocalDate {
-        return LocalDate.ofEpochDay(
-            startDate.toEpochDay() + ((periodsPassed(date) + 1) * dayInterval))
+        return if (isTaskDay(date)) {
+            date;
+        } else {
+            LocalDate.ofEpochDay(
+                startDate.toEpochDay() + (periodsPassed(date) * dayInterval)
+            )
+        }
     }
 
     fun minutesUntilTask(dateTime: LocalDateTime): Long {
