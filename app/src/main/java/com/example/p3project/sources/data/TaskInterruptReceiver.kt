@@ -9,6 +9,11 @@ import com.example.p3project.sources.repository.TaskRepository
 import com.example.p3project.sources.usecases.SendNotificationUseCase
 import com.example.p3project.sources.usecases.TestNotificationUseCase
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -16,10 +21,15 @@ class TaskInterruptReceiver: BroadcastReceiver() {
     @Inject lateinit var taskRepository: TaskRepository
     private val notificationUseCase = SendNotificationUseCase()
 
+    @OptIn(DelicateCoroutinesApi::class)
     override fun onReceive(context: Context?, intent: Intent?) {
-        val task: Task? =  taskRepository.getTask(5)
-        if (task != null) {
-            notificationUseCase(context!!, task)
+        CoroutineScope(Dispatchers.IO).launch {
+            val taskId: Int = intent?.getIntExtra("TASK_ID", -1)!!
+            val task: Task? = taskRepository.getTask(taskId)
+
+            if (task != null) {
+                notificationUseCase(context!!, task)
+            }
         }
     }
 }
