@@ -9,7 +9,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 class ScheduleTaskUseCase(private var  interruptScheduler: InterruptScheduler) {
-    fun invoke(task: Task) {
+    operator fun invoke(task: Task) {
         interruptScheduler.scheduleTaskInterrupt(task,
                                                  task.nextTaskDay(LocalDate.now()
                                                  )
