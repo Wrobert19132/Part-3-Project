@@ -274,7 +274,7 @@ fun AddTaskScreen (
                                 )
 
                             }
-                            //navController.popBackStack()
+                            navController.popBackStack()
                         }) {
                             Text(text = "Add")
                         }
