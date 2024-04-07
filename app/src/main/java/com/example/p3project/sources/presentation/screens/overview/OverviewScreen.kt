@@ -78,7 +78,11 @@ fun OverviewScreen (
                 items(state.tasks) { task ->
                     TaskCard(
                         task = task,
-                        onClick = {},
+                        onClick = {
+                            navController.navigate(
+                                Screen.ViewTaskScreen.route + "/${task.taskId}"
+                            )
+                        },
                         onComplete = {}
                     )
                 }

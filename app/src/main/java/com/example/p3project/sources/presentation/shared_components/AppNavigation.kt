@@ -38,8 +38,8 @@ fun AppNavigation(navController: NavController, current_selected: Screen){
         )
         NavigationBarItem(
             icon = { Icon(Icons.Filled.ThumbUp, "") },
-            selected = (current_selected == Screen.TestScreen),
-            onClick = { handleNavigation(navController, Screen.TestScreen) },
+            selected = (current_selected == Screen.ViewTaskScreen),
+            onClick = { handleNavigation(navController, Screen.ViewTaskScreen) },
         )
     }
 }
