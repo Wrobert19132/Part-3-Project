@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,16 +35,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.p3project.sources.data.database.Task
+import com.example.p3project.sources.presentation.shared_components.TaskTime
 import kotlinx.coroutines.delay
 import java.time.LocalDate
 import java.time.LocalDateTime
+import kotlin.math.abs
 
 @Composable
 fun TaskCard (task: Task, onClick: () -> Unit, onComplete: () -> Unit) {
 
     val now = LocalDateTime.now()
     var minutesUntil by remember {
-        mutableLongStateOf(task.minutesUntilTask(LocalDateTime.now()))
+        mutableIntStateOf(task.minutesUntilTask(LocalDateTime.now()))
     }
 
     LaunchedEffect(minutesUntil) {
@@ -52,8 +55,7 @@ fun TaskCard (task: Task, onClick: () -> Unit, onComplete: () -> Unit) {
             minutesUntil -= 1
         }
     }
-    if (minutesUntil >= 0) {
-
+    if (true) {
         ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth()
@@ -78,35 +80,12 @@ fun TaskCard (task: Task, onClick: () -> Unit, onComplete: () -> Unit) {
                         style = MaterialTheme.typography.titleMedium,
                     )
 
-                    if (task.isTaskDay(now.toLocalDate())) {
-                        if (minutesUntil < 60) {
-                            Text(
-                                text = "$minutesUntil minutes away",
-                                modifier = Modifier.fillMaxWidth(),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.tertiary,
-                                textAlign = TextAlign.Right,
-                            )
-                        } else {
-                            Text(
-                                text = String.format("%02d:%02d", task.time.hour, task.time.minute),
-                                modifier = Modifier.fillMaxWidth(),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.tertiary,
-                                textAlign = TextAlign.Right,
-                            )
-                        }
-                    } else {
-                        Text(
-                            text = task.daysUntilNextTaskDay(now.toLocalDate())
-                                .toString() + " days away",
-                            modifier = Modifier.fillMaxWidth(),
-                            style = MaterialTheme.typography.titleMedium,
-                            textAlign = TextAlign.Right
-                        )
-                    }
-
-
+                    TaskTime(task,
+                             long = false,
+                             modifier = Modifier.fillMaxWidth(),
+                             style = MaterialTheme.typography.titleMedium,
+                             textAlign = TextAlign.Right
+                    )
                 }
 
                 Text(
