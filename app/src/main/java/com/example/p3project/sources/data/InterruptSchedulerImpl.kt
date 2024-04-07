@@ -6,10 +6,7 @@ import android.content.Context
 import android.content.Intent
 import com.example.p3project.sources.data.database.Task
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
-import java.time.ZoneId
-import java.time.ZoneOffset
 
 class InterruptSchedulerImpl(private val context: Context) : InterruptScheduler {
     private var alarmManager = context.getSystemService(AlarmManager::class.java)
@@ -17,7 +14,7 @@ class InterruptSchedulerImpl(private val context: Context) : InterruptScheduler 
     @Throws(SecurityException::class)
     override fun scheduleTaskInterrupt(task: Task, date: LocalDate) {
         val intent = Intent(context, TaskInterruptReceiver::class.java).apply {
-            putExtra("TASK_ID", task.id)
+            putExtra("TASK_ID", task.taskId)
         }
         val now = OffsetDateTime.now()
 
@@ -26,7 +23,7 @@ class InterruptSchedulerImpl(private val context: Context) : InterruptScheduler 
 
             task.nextTaskDateTime(date).toEpochSecond(now.offset)*1000,
             PendingIntent.getBroadcast(context,
-                task.id,
+                task.taskId,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )
