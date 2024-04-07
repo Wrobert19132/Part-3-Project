@@ -49,9 +49,8 @@ fun OverviewScreen (
         },
         topBar = {
             TopAppBar(
-                colors = topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.primary
+                colors = topAppBarColors().copy(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer
                 ),
                 title = {
                     Text("Upcoming Tasks")
