@@ -8,7 +8,6 @@ import androidx.core.app.NotificationCompat
 import com.example.p3project.common.Constants
 import com.example.p3project.sources.data.database.Task
 import com.example.p3project.sources.presentation.MainActivity
-import com.example.p3project.sources.repository.TaskRepository
 
 class SendNotificationUseCase () {
     operator fun invoke(context: Context, task: Task) {
@@ -31,6 +30,6 @@ class SendNotificationUseCase () {
             .setContentIntent(activityPendingIntent)
             .build()
 
-        notificationManager.notify(task.id, notification)
+        notificationManager.notify(task.taskId, notification)
     }
 }
