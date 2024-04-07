@@ -17,7 +17,7 @@
         android:theme="@style/Theme.P3Project"
         tools:targetApi="31">
         <activity
-            android:name=".sources.presentation.MainActivity"
+            android:name=".presentation.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.P3Project">
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".sources.data.TaskInterruptReceiver"/>
+        <receiver android:name=".data.broadcastRecievers.TaskBroadcastReceiver"/>
 </application>
 
 </manifest>
