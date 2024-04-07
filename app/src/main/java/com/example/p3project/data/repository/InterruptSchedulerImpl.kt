@@ -23,7 +23,7 @@ class InterruptSchedulerImpl(private val context: Context) : InterruptScheduler 
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
 
-            task.nextTaskDateTime(date).toEpochSecond(now.offset)*1000,
+            task.nextNotificationDateTime(date).toEpochSecond(now.offset)*1000,
             PendingIntent.getBroadcast(context,
                 task.taskId,
                 intent,

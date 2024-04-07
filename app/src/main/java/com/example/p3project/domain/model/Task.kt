@@ -54,6 +54,13 @@ data class Task (
         return LocalDateTime.of(nextTaskDay(date), targetTime)
     }
 
+    fun nextNotificationDateTime(date: LocalDate): LocalDateTime {
+        return LocalDateTime.of(nextTaskDay(date),
+            targetTime.plusMinutes(-notificationOffset.toLong())
+        )
+    }
+
+
 
     fun minutesUntilTask(dateTime: LocalDateTime): Int {
         return (daysUntilNextTaskDay(dateTime.toLocalDate()) * 1440) +
