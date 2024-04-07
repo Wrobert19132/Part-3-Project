@@ -1,24 +1,23 @@
 package com.example.p3project.sources.data.database
 
 import androidx.room.Entity
-import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import java.lang.Math.floorDiv
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalUnit
-import java.util.Date
 import kotlin.math.ceil
-import kotlin.time.DurationUnit
 
 @Entity
 data class Task (
     var name: String,
     var description: String,
-    var time: LocalTime,
+
+    var targetTime: LocalTime,
     var startDate: LocalDate,
+
+    var notificationOffset: Int,
+
     var dayInterval: Int,
 ) {
     @PrimaryKey(autoGenerate = true)
@@ -50,16 +49,16 @@ data class Task (
     }
 
     fun nextTaskDateTime(date: LocalDate): LocalDateTime {
-        return LocalDateTime.of(nextTaskDay(date), time)
+        return LocalDateTime.of(nextTaskDay(date), targetTime)
     }
 
 
-    fun minutesUntilTask(dateTime: LocalDateTime): Long {
+    fun minutesUntilTask(dateTime: LocalDateTime): Int {
         return (daysUntilNextTaskDay(dateTime.toLocalDate()) * 1440) +
-                dateTime.toLocalTime().until(time, ChronoUnit.MINUTES)
+                dateTime.toLocalTime().until(targetTime, ChronoUnit.MINUTES).toInt()
     }
 
-    fun secondsUntilTask(dateTime: LocalDateTime): Long {
+    fun secondsUntilTask(dateTime: LocalDateTime): Int {
         return minutesUntilTask(dateTime) * 60
     }
 
@@ -67,6 +66,7 @@ data class Task (
         var maxNameLength: Int = 32;
         var maxDescriptionLength: Int = 128;
         var maxDayInterval: Int = 365;
+        var maxNotificationOffset = 1440;
 
     }
 }
