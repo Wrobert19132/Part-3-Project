@@ -52,6 +52,8 @@ import com.example.p3project.presentation.screens.addtask.components.PermissionC
 import com.example.p3project.presentation.screens.shared_components.AppError
 import com.example.p3project.presentation.screens.shared_components.AppSnackbar
 import com.example.p3project.presentation.screens.shared_components.KeyboardAdjust
+import com.kotlinx.extend.isEmptyOrInt
+import com.kotlinx.extend.isInt
 import com.kotlinx.extend.isNumber
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -200,14 +202,14 @@ fun AddTaskScreen (
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             value = dayInterval,
                             isError = (
-                                    if (dayInterval.isNumber()) {
+                                    if (dayInterval.isInt()) {
                                         (dayInterval.toInt() > Task.maxDayInterval || dayInterval.toInt() <= 0)
                                     } else {
                                         true
                                     }
                                     ),
                             onValueChange = {
-                                dayInterval = if (it.isNumber()) { // Check for empty string
+                                dayInterval = if (it.isInt()) { // Check for empty string
                                     minOf(it.toInt(), 999).toString()
                                 } else ""
                             }
@@ -251,14 +253,14 @@ fun AddTaskScreen (
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         value = notificationOffset,
                         isError = (
-                                if (notificationOffset.isNumber()) {
+                                if (notificationOffset.isInt()) {
                                     (notificationOffset.toInt() > Task.maxNotificationOffset || notificationOffset.toInt() <= 0)
                                 } else {
                                     true
                                 }
                             ),
                         onValueChange = {
-                            notificationOffset = if (it.isNumber()) { // Check for empty string
+                            notificationOffset = if (it.isInt()) { // Check for empty string
                                 minOf(it.toInt(), 1440).toString()
                             } else ""
                         }
@@ -277,13 +279,13 @@ fun AddTaskScreen (
                         Button(onClick = {
                             keyboardController?.hide()
 
-                            if (!dayInterval.isNumber()) {
+                            if (!dayInterval.isInt()) {
                                 viewModel.onEvent(
                                     AddTaskEvent.SendError(
                                         "You have to set an interval you want to complete tasks at!"
                                     )
                                 )
-                            } else if (!notificationOffset.isNumber()) {
+                            } else if (!notificationOffset.isInt()) {
                                 viewModel.onEvent(
                                     AddTaskEvent.SendError(
                                         "You have to set a valid notification offset value."
