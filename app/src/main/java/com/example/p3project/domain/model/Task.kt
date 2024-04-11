@@ -2,6 +2,7 @@ package com.example.p3project.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.p3project.domain.util.InvalidTaskException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -70,6 +71,24 @@ data class Task (
     fun secondsUntilTask(dateTime: LocalDateTime): Int {
         return minutesUntilTask(dateTime) * 60
     }
+
+    fun checkValid() {
+        if (name == "") {
+            throw InvalidTaskException("Task cannot be empty")
+        } else if (name.length > maxNameLength) {
+            throw InvalidTaskException("Task name too long")
+        } else if (description.length > maxDescriptionLength) {
+            throw InvalidTaskException("Task description too long")
+        } else if (dayInterval > maxDayInterval) {
+            throw InvalidTaskException("Task day interval too great")
+        } else if (notificationOffset > maxNotificationOffset) {
+            throw InvalidTaskException("Task notification offset too great")
+
+        }
+
+
+    }
+
 
     companion object Limits {
         var maxNameLength: Int = 32;
