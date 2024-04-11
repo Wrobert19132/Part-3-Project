@@ -9,7 +9,7 @@ import com.example.p3project.domain.model.TaskCompletion
 
 @Database(
     entities = [Task::class, TaskCompletion::class],
-    version = 1
+    version = 3
 )
 @TypeConverters(Converters::class)
 abstract class TaskDatabase: RoomDatabase() {

@@ -8,12 +8,10 @@ import androidx.room.Relation
 import java.time.LocalDate
 import java.time.LocalTime
 
-@Entity
+@Entity(primaryKeys = ["taskId", "period"])
 data class TaskCompletion (
     val taskId: Int,
+    val period: Int,
     val completionTime: LocalTime,
-    val period: Int
 ) {
-    @PrimaryKey(autoGenerate = true)
-    var completionId: Int = 0
 }

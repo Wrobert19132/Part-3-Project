@@ -11,5 +11,5 @@ data class TaskWithCompletions(
                 parentColumn = "taskId",
                 entityColumn = "taskId"
         )
-        val completions: List<TaskCompletion>
+        val completions: List<TaskCompletion>,
 )

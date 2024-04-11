@@ -2,6 +2,8 @@ package com.example.p3project.data.repository
 
 import com.example.p3project.domain.model.Task
 import com.example.p3project.data.database.TasksDao
+import com.example.p3project.domain.model.TaskCompletion
+import com.example.p3project.domain.model.TaskWithCompletions
 import com.example.p3project.domain.repository.TaskRepository
 
 class TaskRepositoryImpl (
@@ -18,6 +20,14 @@ class TaskRepositoryImpl (
     override suspend fun addTask(task: Task) {
         val id: Long = tasksDao.addTask(task)
         task.taskId = id.toInt()
+    }
+
+    override suspend fun addCompletion(taskCompletion: TaskCompletion) {
+        tasksDao.addCompletion(taskCompletion)
+    }
+
+    override suspend fun getCompletions(taskId: Int, maxPeriod: Int): TaskWithCompletions? {
+        return  tasksDao.taskWithCompletions(taskId, maxPeriod)
     }
 
 }
