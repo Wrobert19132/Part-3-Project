@@ -22,7 +22,7 @@ data class Task (
     var dayInterval: Int,
 ) {
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0
+    var taskId: Int = 0
 
 
 

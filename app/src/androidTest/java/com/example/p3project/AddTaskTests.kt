@@ -46,7 +46,7 @@ class AddTaskTests {
 
         addTaskUseCase.invoke(task)
 
-        assertEquals("Task ID is properly set", db.tasksDao().getTask(task.id), task)
+        assertEquals("Task ID is properly set", db.tasksDao().getTask(task.taskId), task)
     }
 
     @Test(expected = InvalidTaskException::class)
@@ -62,7 +62,7 @@ class AddTaskTests {
 
         addTaskUseCase.invoke(task)
 
-        assertEquals("Task is not added", db.tasksDao().getTask(task.id), null)
+        assertEquals("Task is not added", db.tasksDao().getTask(task.taskId), null)
     }
 
     @Test(expected = InvalidTaskException::class)
@@ -78,7 +78,7 @@ class AddTaskTests {
 
         addTaskUseCase.invoke(task)
 
-        assertEquals("Task is not added", db.tasksDao().getTask(task.id), null)
+        assertEquals("Task is not added", db.tasksDao().getTask(task.taskId), null)
     }
 
 
