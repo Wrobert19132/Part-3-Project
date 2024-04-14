@@ -53,6 +53,6 @@ class OverviewViewmodel @Inject constructor(
     }
 
     private suspend fun getTasks() {
-        state.value = state.value.copy(taskAndCompletions = useCases.getTaskCompletionsUseCase())
+        state.value = state.value.copy(taskAndCompletions = useCases.getTasksUseCase())
     }
 }

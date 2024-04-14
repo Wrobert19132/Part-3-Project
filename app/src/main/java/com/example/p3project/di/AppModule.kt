@@ -15,7 +15,6 @@ import com.example.p3project.domain.usecases.notifications.ScheduleTaskUseCase
 import com.example.p3project.domain.usecases.notifications.SendNotificationUseCase
 import com.example.p3project.domain.usecases.UseCases
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
-import com.example.p3project.domain.usecases.completions.AllTaskCompletionsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,8 +58,7 @@ class AppModule {
                 getTasksUseCase = GetTasksUseCase(repository),
                 scheduleTaskUseCase = ScheduleTaskUseCase(scheduler),
                 sendNotificationUseCase = SendNotificationUseCase(),
-                completeTasksUseCase = CompleteTaskUseCase(repository),
-                getTaskCompletionsUseCase = AllTaskCompletionsUseCase(repository)
+                completeTasksUseCase = CompleteTaskUseCase(repository)
               )
     }
 

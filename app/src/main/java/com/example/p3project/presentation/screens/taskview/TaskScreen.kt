@@ -42,8 +42,8 @@ fun TaskScreen (
 
     val scope = rememberCoroutineScope()
 
-    if (viewModel.task != null) {
-        val task: Task = viewModel.task!!
+    if (viewModel.taskInfo != null) {
+        val task: Task = viewModel.taskInfo!!.task
 
 
         Scaffold(

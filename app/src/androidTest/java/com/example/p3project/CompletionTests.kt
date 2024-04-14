@@ -10,7 +10,6 @@ import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
-import com.example.p3project.domain.usecases.completions.GetTaskCompletionsUseCase
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest

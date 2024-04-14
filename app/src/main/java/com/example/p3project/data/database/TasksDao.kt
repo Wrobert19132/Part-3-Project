@@ -21,18 +21,10 @@ interface TasksDao {
     suspend fun addCompletion(completion: Completion)
 
     @Query("SELECT * FROM task WHERE taskId=:id")
-    fun getTask(id: Int): Task?
+    fun getTask(id: Int): TaskWithRelations?
 
     @Query("SELECT * FROM task")
-    suspend fun getAllTasks(): List<Task>
-
-    @Transaction
-    @Query("SELECT * FROM Task")
-    suspend fun allTasksWithCompletions(): List<TaskWithRelations>
-
-    @Transaction
-    @Query("SELECT * FROM Task WHERE taskId=:taskId")
-    suspend fun taskWithCompletions(taskId: Int): TaskWithRelations?
+    suspend fun getAllTasks(): List<TaskWithRelations>
 
 
 }

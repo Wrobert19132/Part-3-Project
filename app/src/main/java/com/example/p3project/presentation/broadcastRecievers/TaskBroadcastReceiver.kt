@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.example.p3project.domain.model.Task
+import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.InterruptScheduler
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.UseCases
@@ -27,9 +28,10 @@ class TaskBroadcastReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         CoroutineScope(Dispatchers.IO).launch {
             val taskId: Int = intent?.getIntExtra("TASK_ID", -1)!!
-            val task: Task? = taskRepository.getTask(taskId)
+            val taskInfo: TaskWithRelations? = taskRepository.getTask(taskId)
 
-            if (task != null) {
+            if (taskInfo != null) {
+                val task = taskInfo.task
                 useCases.sendNotificationUseCase(context!!, task)
 
                 useCases.scheduleTaskUseCase(task,
