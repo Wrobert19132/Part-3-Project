@@ -6,7 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.model.TaskCompletion
+import com.example.p3project.domain.model.Completion
 import com.example.p3project.domain.model.TaskWithRelations
 
 @Dao
@@ -18,7 +18,7 @@ interface TasksDao {
     suspend fun updateTask(task: Task): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addCompletion(completion: TaskCompletion)
+    suspend fun addCompletion(completion: Completion)
 
     @Query("SELECT * FROM task WHERE taskId=:id")
     fun getTask(id: Int): Task?

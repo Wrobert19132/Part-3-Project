@@ -11,7 +11,7 @@ data class TaskWithRelations(
             parentColumn = "taskId",
             entityColumn = "taskId"
     )
-    val completions: List<TaskCompletion>,
+    val completions: List<Completion>,
 
     @Relation(
         parentColumn = "taskId",
@@ -29,7 +29,7 @@ data class TaskWithRelations(
 
         val orderedCompletions = completions.reversed()
 
-        for (completion: TaskCompletion in orderedCompletions) {
+        for (completion: Completion in orderedCompletions) {
             println("Completion Period: ${completion.period} lastPeriod: $lastPeriod")
 
 

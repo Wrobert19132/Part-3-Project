@@ -6,11 +6,11 @@ import androidx.room.TypeConverters
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.TaskCategoryCrossRef
-import com.example.p3project.domain.model.TaskCompletion
+import com.example.p3project.domain.model.Completion
 
 
 @Database(
-    entities = [Task::class, TaskCompletion::class, Category::class, TaskCategoryCrossRef::class],
+    entities = [Task::class, Completion::class, Category::class, TaskCategoryCrossRef::class],
     version = 3
 )
 @TypeConverters(Converters::class)

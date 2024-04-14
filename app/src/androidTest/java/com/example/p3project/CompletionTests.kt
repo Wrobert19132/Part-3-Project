@@ -21,7 +21,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @RunWith(AndroidJUnit4::class)
-class TaskCompletionTests {
+class CompletionTests {
     private lateinit var db: TaskDatabase
     private lateinit var repo: TaskRepository
     @Before
