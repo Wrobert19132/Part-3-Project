@@ -9,7 +9,7 @@ class AddTaskUseCase (private val taskRepository: TaskRepository)
     suspend operator fun invoke(task: Task) {
         task.checkValid()
 
-        if (task.taskId != 0) {
+        if (task.Id != 0) {
             throw InvalidTaskException("Task already has an ID, and shouldn't be re-added.")
         }
 

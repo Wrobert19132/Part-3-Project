@@ -3,7 +3,6 @@ package com.example.p3project.domain.usecases.completions
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.TaskCompletion
 import com.example.p3project.domain.repository.TaskRepository
-import java.time.LocalDate
 import java.time.LocalTime
 
 class CompleteTaskUseCase (private val taskRepository: TaskRepository) {
@@ -11,7 +10,7 @@ class CompleteTaskUseCase (private val taskRepository: TaskRepository) {
                                 period: Int,
                                 completionTime: LocalTime
     ) {
-        val completion = TaskCompletion(task.taskId, period, completionTime)
+        val completion = TaskCompletion(task.Id, period, completionTime)
         taskRepository.addCompletion(completion)
     }
 }

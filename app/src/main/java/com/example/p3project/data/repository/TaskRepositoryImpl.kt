@@ -19,7 +19,7 @@ class TaskRepositoryImpl (
 
     override suspend fun addTask(task: Task) {
         val id: Long = tasksDao.addTask(task)
-        task.taskId = id.toInt()
+        task.Id = id.toInt()
     }
 
     override suspend fun addCompletion(taskCompletion: TaskCompletion) {

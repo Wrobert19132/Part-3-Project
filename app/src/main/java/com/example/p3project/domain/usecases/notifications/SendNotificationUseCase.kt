@@ -30,6 +30,6 @@ class SendNotificationUseCase () {
             .setContentIntent(activityPendingIntent)
             .build()
 
-        notificationManager.notify(task.taskId, notification)
+        notificationManager.notify(task.Id, notification)
     }
 }
