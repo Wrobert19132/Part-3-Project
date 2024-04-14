@@ -27,7 +27,7 @@ private fun getText(task: Task, now: LocalDateTime, long: Boolean): String {
             if (minutesUntil >= -60) {
                 "Today, $hourMinutes ${if (long) "minutes" else "mins"} ago"
             } else {
-                "$hours ${if (long) "hours" else "hrs"}, $hourMinutes ${if (long) "minutes" else "mins"} ago"
+                "Today,  $hours ${if (long) "hours" else "hrs"}, $hourMinutes ${if (long) "minutes" else "mins"} ago"
             }
         } else {
             if (minutesUntil <= 60) {
@@ -42,7 +42,8 @@ private fun getText(task: Task, now: LocalDateTime, long: Boolean): String {
 }
 
 @Composable
-fun TaskTime(task: Task, modifier: Modifier,
+fun TaskTime(task: Task,
+             modifier: Modifier = Modifier,
              long: Boolean = true,
              style: TextStyle = LocalTextStyle.current,
              textAlign: TextAlign? = null
