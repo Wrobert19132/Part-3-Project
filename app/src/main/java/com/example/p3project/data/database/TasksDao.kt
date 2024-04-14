@@ -20,7 +20,7 @@ interface TasksDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCompletion(completion: TaskCompletion)
 
-    @Query("SELECT * FROM task WHERE id=:id")
+    @Query("SELECT * FROM task WHERE taskId=:id")
     fun getTask(id: Int): Task?
 
     @Query("SELECT * FROM task")
@@ -31,7 +31,7 @@ interface TasksDao {
     suspend fun allTasksWithCompletions(): List<TaskWithCompletions>
 
     @Transaction
-    @Query("SELECT * FROM Task WHERE id=:taskId")
+    @Query("SELECT * FROM Task WHERE taskId=:taskId")
     suspend fun taskWithCompletions(taskId: Int): TaskWithCompletions?
 
 

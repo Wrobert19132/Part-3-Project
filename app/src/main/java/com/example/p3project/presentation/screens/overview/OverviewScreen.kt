@@ -89,7 +89,7 @@ fun OverviewScreen (
                         taskAndCompletions,
                         onClick = {
                             navController.navigate(
-                                Screen.ViewTaskScreen.route + "/${task.id}"
+                                Screen.ViewTaskScreen.route + "/${task.taskId}"
                             )
                         },
                         onComplete = {

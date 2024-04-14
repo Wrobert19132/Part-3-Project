@@ -4,12 +4,12 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.model.TaskCategory
+import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.TaskCompletion
 
 
 @Database(
-    entities = [Task::class, TaskCompletion::class, TaskCategory::class],
+    entities = [Task::class, TaskCompletion::class, Category::class],
     version = 3
 )
 @TypeConverters(Converters::class)

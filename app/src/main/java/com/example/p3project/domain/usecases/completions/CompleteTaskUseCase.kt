@@ -10,7 +10,7 @@ class CompleteTaskUseCase (private val taskRepository: TaskRepository) {
                                 period: Int,
                                 completionTime: LocalTime
     ) {
-        val completion = TaskCompletion(task.id, period, completionTime)
+        val completion = TaskCompletion(task.taskId, period, completionTime)
         taskRepository.addCompletion(completion)
     }
 }

@@ -1,6 +1,7 @@
 package com.example.p3project.domain.model;
 
 import androidx.room.Embedded
+import androidx.room.Junction
 import androidx.room.Relation
 import java.time.LocalDate
 
@@ -13,13 +14,15 @@ data class TaskWithCompletions(
     val completions: List<TaskCompletion>,
 
     @Relation(
-        parentColumn = "Id",
-        entityColumn = "taskId"
+        parentColumn = "taskId",
+        entityColumn = "playlistId",
+        associateBy = Junction(TaskCategoryCrossRef::class)
     )
-    val categories: List<TaskCategory>,
+
+    val categories: List<Category>,
 
 
-) {
+    ) {
     fun streakCount(from: LocalDate): Int {
         var lastPeriod = task.periodsPassed(from)-1
 
