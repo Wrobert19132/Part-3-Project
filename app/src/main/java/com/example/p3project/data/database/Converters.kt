@@ -24,6 +24,5 @@ class Converters {
     fun timeFromDaySec(date: LocalTime?): Int? {
         return date?.toSecondOfDay()
     }
-
-
 }
+
