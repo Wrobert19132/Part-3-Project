@@ -46,7 +46,7 @@ class AddTaskTests {
 
         addTaskUseCase.invoke(task)
 
-        assertEquals("Task ID is properly set", db.tasksDao().getTask(task.taskId), task)
+        assertEquals("Task ID is properly set", db.tasksDao().getTask(task.taskId)!!.task, task)
     }
 
     @Test(expected = InvalidTaskException::class)

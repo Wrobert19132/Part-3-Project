@@ -11,6 +11,8 @@ import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskByIdUseCase
+import com.example.p3project.domain.usecases.tasks.GetTasksUseCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -37,7 +39,7 @@ class CompletionTests {
     private suspend fun setup_DummyTask(now: LocalDate, streakLen: Int, periodLen: Int): TaskWithRelations {
         val addTaskUseCase = AddTaskUseCase(repo)
         val completeTaskUseCase = CompleteTaskUseCase(repo)
-        val getTaskCompletionsUseCase = GetTaskCompletionsUseCase(repo)
+        val getTaskByIdUseCase = GetTaskByIdUseCase(repo)
 
 
         val task = Task("Test Task", "",
@@ -52,16 +54,16 @@ class CompletionTests {
             completeTaskUseCase(task, i, LocalTime.of(0, 30))
         }
 
-        return getTaskCompletionsUseCase(task)
+        return getTaskByIdUseCase(task.taskId)!!
 
     }
 
     @Test
     fun taskCompletion_onStreakDay() = runTest {
         val now = LocalDate.now()
-        val taskAndCompletions = setup_DummyTask(now, 5, 7)
+        val taskInfo = setup_DummyTask(now, 5, 7)
 
-        assertEquals(5, taskAndCompletions.streakCount(now))
+        assertEquals(5, taskInfo.streakCount(now))
     }
 
 
@@ -69,9 +71,10 @@ class CompletionTests {
     fun taskCompletion_duringWeek() = runTest {
         val now = LocalDate.now()
         val periodLen = 7
-        val taskAndCompletions = setup_DummyTask(now, 5, periodLen)
+        val taskInfo = setup_DummyTask(now, 5, periodLen)
 
-        assertEquals(5, taskAndCompletions.streakCount(now.minusDays(periodLen.floorDiv(2).toLong())))
+        assertEquals(5,
+            taskInfo.streakCount(now.minusDays(periodLen.floorDiv(2).toLong())))
     }
 
     @Test
@@ -79,9 +82,9 @@ class CompletionTests {
         val now = LocalDate.now()
         val periodLen = 7
 
-        val taskAndCompletions = setup_DummyTask(now, 5, periodLen = periodLen)
+        val taskInfo = setup_DummyTask(now, 5, periodLen = periodLen)
 
-        assertEquals(5, taskAndCompletions.streakCount(now.minusDays(periodLen.toLong())))
+        assertEquals(5, taskInfo.streakCount(now.minusDays(periodLen.toLong())))
     }
 
     @Test
@@ -89,17 +92,17 @@ class CompletionTests {
         val now = LocalDate.now()
         val periodLen = 7
 
-        val taskAndCompletions = setup_DummyTask(now, 5, periodLen = periodLen)
+        val taskInfo = setup_DummyTask(now, 5, periodLen = periodLen)
 
-        assertEquals(4, taskAndCompletions.streakCount(now.minusDays(periodLen.toLong()+1)))
+        assertEquals(4, taskInfo.streakCount(now.minusDays(periodLen.toLong()+1)))
     }
 
     @Test
     fun taskCompletion_missedStreak() = runTest {
         val now = LocalDate.now()
-        val taskAndCompletions = setup_DummyTask(now, 5, 7)
+        val taskInfo = setup_DummyTask(now, 5, 7)
 
-        assertEquals(0, taskAndCompletions.streakCount(now.plusDays(1)))
+        assertEquals(0, taskInfo.streakCount(now.plusDays(1)))
     }
 
 
