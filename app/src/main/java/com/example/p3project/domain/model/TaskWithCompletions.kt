@@ -8,17 +8,16 @@ import java.time.LocalDate
 data class TaskWithCompletions(
     @Embedded val task: Task,
     @Relation(
-            parentColumn = "Id",
+            parentColumn = "taskId",
             entityColumn = "taskId"
     )
     val completions: List<TaskCompletion>,
 
     @Relation(
         parentColumn = "taskId",
-        entityColumn = "playlistId",
+        entityColumn = "categoryId",
         associateBy = Junction(TaskCategoryCrossRef::class)
     )
-
     val categories: List<Category>,
 
 
