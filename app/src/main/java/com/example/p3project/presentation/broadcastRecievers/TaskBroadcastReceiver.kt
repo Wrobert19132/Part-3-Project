@@ -1,4 +1,4 @@
-package com.example.p3project.data.broadcastRecievers
+package com.example.p3project.presentation.broadcastRecievers
 
 import android.content.BroadcastReceiver
 import android.content.Context

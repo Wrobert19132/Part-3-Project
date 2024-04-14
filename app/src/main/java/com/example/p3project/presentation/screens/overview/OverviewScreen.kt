@@ -24,8 +24,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.p3project.domain.util.OverviewMode
 import com.example.p3project.presentation.screens.Screen
 import com.example.p3project.presentation.screens.overview.components.TaskCard
+import com.example.p3project.presentation.screens.overview.components.ViewMode
 import com.example.p3project.presentation.screens.shared_components.AppNavigation
 import com.example.p3project.presentation.screens.shared_components.AppSnackbar
 
@@ -40,6 +42,7 @@ fun OverviewScreen (
     val snackbarHostState = remember {SnackbarHostState() }
     
     val state = viewModel.state.collectAsState().value
+
     LaunchedEffect(true) {
         viewModel.onEvent(OverviewEvent.ReloadTasks)
     }
@@ -73,16 +76,25 @@ fun OverviewScreen (
             .fillMaxSize()
             .padding(paddingValues),
         ) {
+            ViewMode(state.viewMode,
+                {viewModel.onEvent(OverviewEvent.UpdateViewMode(OverviewMode.TodayView))},
+                {viewModel.onEvent(OverviewEvent.UpdateViewMode(OverviewMode.AllView))}
+            )
+
             LazyColumn() {
-                items(state.tasks) { task ->
+                items(state.taskAndCompletions) { taskAndCompletions ->
+                    val task = taskAndCompletions.task
+
                     TaskCard(
-                        task = task,
+                        taskAndCompletions,
                         onClick = {
                             navController.navigate(
-                                Screen.ViewTaskScreen.route + "/${task.taskId}"
+                                Screen.ViewTaskScreen.route + "/${task.id}"
                             )
                         },
-                        onComplete = {}
+                        onComplete = {
+                            viewModel.onEvent(OverviewEvent.CompleteTask(task))
+                        }
                     )
                 }
             }

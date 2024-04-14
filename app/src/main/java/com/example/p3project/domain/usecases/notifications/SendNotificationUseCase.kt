@@ -1,4 +1,4 @@
-package com.example.p3project.domain.usecases
+package com.example.p3project.domain.usecases.notifications
 
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -30,6 +30,6 @@ class SendNotificationUseCase () {
             .setContentIntent(activityPendingIntent)
             .build()
 
-        notificationManager.notify(task.Id, notification)
+        notificationManager.notify(task.id, notification)
     }
 }

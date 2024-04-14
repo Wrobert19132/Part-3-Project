@@ -25,12 +25,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.p3project.domain.model.Task
+import com.example.p3project.domain.model.TaskWithCompletions
+import com.example.p3project.presentation.screens.shared_components.StreakCircle
 import com.example.p3project.presentation.screens.shared_components.TaskTime
 import kotlinx.coroutines.delay
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
-fun TaskCard (task: Task, onClick: () -> Unit, onComplete: () -> Unit) {
+fun TaskCard (taskAndCompletions: TaskWithCompletions, onClick: () -> Unit, onComplete: () -> Unit) {
+    val task = taskAndCompletions.task
+
 
     val now = LocalDateTime.now()
     var minutesUntil by remember {
@@ -68,6 +73,10 @@ fun TaskCard (task: Task, onClick: () -> Unit, onComplete: () -> Unit) {
                         style = MaterialTheme.typography.titleMedium,
                     )
 
+                    StreakCircle(taskWithCompletions = taskAndCompletions,
+                                 from = now.toLocalDate()
+                    )
+
                     TaskTime(task,
                              long = false,
                              modifier = Modifier.fillMaxWidth(),
@@ -77,12 +86,12 @@ fun TaskCard (task: Task, onClick: () -> Unit, onComplete: () -> Unit) {
                 }
 
                 Text(
-                    text = task.description,
+                    text = task.description + taskAndCompletions.streakCount(LocalDate.now()),
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(modifier = Modifier.height(10.dp))
                 FilledTonalButton(
-                    onClick = {onClick()},
+                    onClick = {onComplete()},
                     modifier = Modifier
                         .width(120.dp)
                         .align(Alignment.End),

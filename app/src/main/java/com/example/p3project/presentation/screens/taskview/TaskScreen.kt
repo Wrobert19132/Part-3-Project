@@ -20,11 +20,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.p3project.domain.model.Task
+import com.example.p3project.presentation.screens.shared_components.TaskTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -68,9 +70,18 @@ fun TaskScreen (
                     .padding(horizontal = 10.dp)
             ) {
                 Text(task.name,
-                    Modifier.fillMaxWidth().padding(vertical = 80.dp),
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 40.dp),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.headlineLarge)
+
+                TaskTime(task = task,
+                         modifier = Modifier.fillMaxWidth(),
+                         textAlign = TextAlign.Center,
+                         style = MaterialTheme.typography.headlineSmall
+                )
+
 
                 ElevatedCard(
                     modifier = Modifier
