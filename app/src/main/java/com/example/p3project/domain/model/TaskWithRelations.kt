@@ -5,7 +5,7 @@ import androidx.room.Junction
 import androidx.room.Relation
 import java.time.LocalDate
 
-data class TaskWithCompletions(
+data class TaskWithRelations(
     @Embedded val task: Task,
     @Relation(
             parentColumn = "taskId",

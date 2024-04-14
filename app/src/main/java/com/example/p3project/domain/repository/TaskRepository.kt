@@ -2,8 +2,7 @@ package com.example.p3project.domain.repository;
 
 import com.example.p3project.domain.model.Task;
 import com.example.p3project.domain.model.TaskCompletion
-import com.example.p3project.domain.model.TaskWithCompletions
-import java.time.LocalDate
+import com.example.p3project.domain.model.TaskWithRelations
 
 // An interface, so different implementations of the TaskRepository can be setup with dagger
 // and hilt
@@ -13,8 +12,8 @@ interface TaskRepository {
     suspend fun addTask(task: Task)
 
     suspend fun addCompletion(taskCompletion: TaskCompletion)
-    suspend fun allCompletions(): List<TaskWithCompletions>
+    suspend fun allCompletions(): List<TaskWithRelations>
 
-    suspend fun taskCompletions(task: Task): TaskWithCompletions?
+    suspend fun taskCompletions(task: Task): TaskWithRelations?
 
 }

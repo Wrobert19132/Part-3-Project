@@ -7,7 +7,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.TaskCompletion
-import com.example.p3project.domain.model.TaskWithCompletions
+import com.example.p3project.domain.model.TaskWithRelations
 
 @Dao
 interface TasksDao {
@@ -28,11 +28,11 @@ interface TasksDao {
 
     @Transaction
     @Query("SELECT * FROM Task")
-    suspend fun allTasksWithCompletions(): List<TaskWithCompletions>
+    suspend fun allTasksWithCompletions(): List<TaskWithRelations>
 
     @Transaction
     @Query("SELECT * FROM Task WHERE taskId=:taskId")
-    suspend fun taskWithCompletions(taskId: Int): TaskWithCompletions?
+    suspend fun taskWithCompletions(taskId: Int): TaskWithRelations?
 
 
 }

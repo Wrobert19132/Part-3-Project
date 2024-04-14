@@ -7,7 +7,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.p3project.data.database.TaskDatabase
 import com.example.p3project.data.repository.TaskRepositoryImpl
 import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.model.TaskWithCompletions
+import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
 import com.example.p3project.domain.usecases.completions.GetTaskCompletionsUseCase
@@ -35,7 +35,7 @@ class TaskCompletionTests {
 
     }
 
-    private suspend fun setup_DummyTask(now: LocalDate, streakLen: Int, periodLen: Int): TaskWithCompletions {
+    private suspend fun setup_DummyTask(now: LocalDate, streakLen: Int, periodLen: Int): TaskWithRelations {
         val addTaskUseCase = AddTaskUseCase(repo)
         val completeTaskUseCase = CompleteTaskUseCase(repo)
         val getTaskCompletionsUseCase = GetTaskCompletionsUseCase(repo)

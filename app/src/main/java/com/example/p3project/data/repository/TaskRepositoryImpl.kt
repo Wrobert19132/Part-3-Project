@@ -3,7 +3,7 @@ package com.example.p3project.data.repository
 import com.example.p3project.domain.model.Task
 import com.example.p3project.data.database.TasksDao
 import com.example.p3project.domain.model.TaskCompletion
-import com.example.p3project.domain.model.TaskWithCompletions
+import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 
 class TaskRepositoryImpl (
@@ -26,11 +26,11 @@ class TaskRepositoryImpl (
         tasksDao.addCompletion(taskCompletion)
     }
 
-    override suspend fun allCompletions(): List<TaskWithCompletions>{
+    override suspend fun allCompletions(): List<TaskWithRelations>{
         return  tasksDao.allTasksWithCompletions()
     }
 
-    override suspend fun taskCompletions(task: Task): TaskWithCompletions?{
+    override suspend fun taskCompletions(task: Task): TaskWithRelations?{
         return tasksDao.taskWithCompletions(task.taskId)
     }
 

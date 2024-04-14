@@ -24,8 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.model.TaskWithCompletions
+import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.presentation.screens.shared_components.StreakCircle
 import com.example.p3project.presentation.screens.shared_components.TaskTime
 import kotlinx.coroutines.delay
@@ -33,7 +32,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
-fun TaskCard (taskAndCompletions: TaskWithCompletions, onClick: () -> Unit, onComplete: () -> Unit) {
+fun TaskCard (taskAndCompletions: TaskWithRelations, onClick: () -> Unit, onComplete: () -> Unit) {
     val task = taskAndCompletions.task
 
 
@@ -73,7 +72,7 @@ fun TaskCard (taskAndCompletions: TaskWithCompletions, onClick: () -> Unit, onCo
                         style = MaterialTheme.typography.titleMedium,
                     )
 
-                    StreakCircle(taskWithCompletions = taskAndCompletions,
+                    StreakCircle(taskWithRelations = taskAndCompletions,
                                  from = now.toLocalDate()
                     )
 
