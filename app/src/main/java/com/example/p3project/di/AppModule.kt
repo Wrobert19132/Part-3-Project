@@ -8,12 +8,14 @@ import com.example.p3project.data.repository.InterruptSchedulerImpl
 import com.example.p3project.data.database.TaskDatabase
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.data.repository.TaskRepositoryImpl
-import com.example.p3project.domain.usecases.AddTaskUseCase
-import com.example.p3project.domain.usecases.GetTaskByIdUseCase
-import com.example.p3project.domain.usecases.GetTasksUseCase
-import com.example.p3project.domain.usecases.ScheduleTaskUseCase
-import com.example.p3project.domain.usecases.SendNotificationUseCase
+import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskByIdUseCase
+import com.example.p3project.domain.usecases.tasks.GetTasksUseCase
+import com.example.p3project.domain.usecases.notifications.ScheduleTaskUseCase
+import com.example.p3project.domain.usecases.notifications.SendNotificationUseCase
 import com.example.p3project.domain.usecases.UseCases
+import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
+import com.example.p3project.domain.usecases.completions.AllTaskCompletionsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,7 +34,8 @@ class AppModule {
             app,
             TaskDatabase::class.java,
             TaskDatabase.DATABASE_NAME
-        ).build()
+        )
+            .build()
     }
 
     @Provides
@@ -55,7 +58,9 @@ class AppModule {
                 getTaskByIdUseCase = GetTaskByIdUseCase(repository),
                 getTasksUseCase = GetTasksUseCase(repository),
                 scheduleTaskUseCase = ScheduleTaskUseCase(scheduler),
-                sendNotificationUseCase = SendNotificationUseCase()
+                sendNotificationUseCase = SendNotificationUseCase(),
+                completeTasksUseCase = CompleteTaskUseCase(repository),
+                getTaskCompletionsUseCase = AllTaskCompletionsUseCase(repository)
               )
     }
 

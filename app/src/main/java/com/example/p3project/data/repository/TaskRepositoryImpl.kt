@@ -19,15 +19,19 @@ class TaskRepositoryImpl (
 
     override suspend fun addTask(task: Task) {
         val id: Long = tasksDao.addTask(task)
-        task.Id = id.toInt()
+        task.id = id.toInt()
     }
 
     override suspend fun addCompletion(taskCompletion: TaskCompletion) {
         tasksDao.addCompletion(taskCompletion)
     }
 
-    override suspend fun getCompletions(taskId: Int, maxPeriod: Int): TaskWithCompletions? {
-        return  tasksDao.taskWithCompletions(taskId, maxPeriod)
+    override suspend fun allCompletions(): List<TaskWithCompletions>{
+        return  tasksDao.allTasksWithCompletions()
+    }
+
+    override suspend fun taskCompletions(task: Task): TaskWithCompletions?{
+        return tasksDao.taskWithCompletions(task.id)
     }
 
 }

@@ -13,6 +13,8 @@ interface TaskRepository {
     suspend fun addTask(task: Task)
 
     suspend fun addCompletion(taskCompletion: TaskCompletion)
-    suspend fun getCompletions(taskId: Int, maxPeriod: Int): TaskWithCompletions?
+    suspend fun allCompletions(): List<TaskWithCompletions>
+
+    suspend fun taskCompletions(task: Task): TaskWithCompletions?
 
 }
