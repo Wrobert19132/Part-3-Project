@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.Completion
 import com.example.p3project.domain.model.TaskWithRelations
@@ -21,10 +20,10 @@ interface TasksDao {
     suspend fun addCompletion(completion: Completion)
 
     @Query("SELECT * FROM task WHERE taskId=:id")
-    fun getTask(id: Int): TaskWithRelations?
+    fun getTaskInfo(id: Int): TaskWithRelations?
 
     @Query("SELECT * FROM task")
-    suspend fun getAllTasks(): List<TaskWithRelations>
+    suspend fun getAllTaskInfo(): List<TaskWithRelations>
 
 
 }

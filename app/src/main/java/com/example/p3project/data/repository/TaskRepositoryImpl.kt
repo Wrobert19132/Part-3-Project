@@ -9,12 +9,12 @@ import com.example.p3project.domain.repository.TaskRepository
 class TaskRepositoryImpl (
     private val tasksDao: TasksDao
 ): TaskRepository {
-    override suspend fun getTasks(): List<TaskWithRelations> {
-        return tasksDao.getAllTasks()
+    override suspend fun allTaskInfo(): List<TaskWithRelations> {
+        return tasksDao.getAllTaskInfo()
     }
 
-    override suspend fun getTask(id: Int): TaskWithRelations? {
-        return tasksDao.getTask(id)
+    override suspend fun getTaskInfo(id: Int): TaskWithRelations? {
+        return tasksDao.getTaskInfo(id)
     }
 
     override suspend fun addTask(task: Task) {

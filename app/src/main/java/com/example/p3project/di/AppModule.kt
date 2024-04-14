@@ -9,8 +9,8 @@ import com.example.p3project.data.database.TaskDatabase
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.data.repository.TaskRepositoryImpl
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
-import com.example.p3project.domain.usecases.tasks.GetTaskByIdUseCase
-import com.example.p3project.domain.usecases.tasks.GetTasksUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskInfoByIdUseCase
+import com.example.p3project.domain.usecases.tasks.AllTaskInfoUseCase
 import com.example.p3project.domain.usecases.notifications.ScheduleTaskUseCase
 import com.example.p3project.domain.usecases.notifications.SendNotificationUseCase
 import com.example.p3project.domain.usecases.UseCases
@@ -54,8 +54,8 @@ class AppModule {
     fun provideUseCases(repository: TaskRepository, scheduler: InterruptScheduler): UseCases {
         return UseCases(
                 addTaskUseCase = AddTaskUseCase(repository),
-                getTaskByIdUseCase = GetTaskByIdUseCase(repository),
-                getTasksUseCase = GetTasksUseCase(repository),
+                getTaskByIdUseCase = GetTaskInfoByIdUseCase(repository),
+                getTasksUseCase = AllTaskInfoUseCase(repository),
                 scheduleTaskUseCase = ScheduleTaskUseCase(scheduler),
                 sendNotificationUseCase = SendNotificationUseCase(),
                 completeTasksUseCase = CompleteTaskUseCase(repository)

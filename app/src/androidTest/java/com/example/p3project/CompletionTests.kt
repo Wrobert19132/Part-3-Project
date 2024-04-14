@@ -11,8 +11,7 @@ import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
-import com.example.p3project.domain.usecases.tasks.GetTaskByIdUseCase
-import com.example.p3project.domain.usecases.tasks.GetTasksUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskInfoByIdUseCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -39,7 +38,7 @@ class CompletionTests {
     private suspend fun setup_DummyTask(now: LocalDate, streakLen: Int, periodLen: Int): TaskWithRelations {
         val addTaskUseCase = AddTaskUseCase(repo)
         val completeTaskUseCase = CompleteTaskUseCase(repo)
-        val getTaskByIdUseCase = GetTaskByIdUseCase(repo)
+        val getTaskByIdUseCase = GetTaskInfoByIdUseCase(repo)
 
 
         val task = Task("Test Task", "",

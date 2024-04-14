@@ -28,7 +28,7 @@ class TaskBroadcastReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         CoroutineScope(Dispatchers.IO).launch {
             val taskId: Int = intent?.getIntExtra("TASK_ID", -1)!!
-            val taskInfo: TaskWithRelations? = taskRepository.getTask(taskId)
+            val taskInfo: TaskWithRelations? = taskRepository.getTaskInfo(taskId)
 
             if (taskInfo != null) {
                 val task = taskInfo.task
