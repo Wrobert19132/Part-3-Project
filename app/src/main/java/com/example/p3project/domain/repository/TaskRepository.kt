@@ -12,5 +12,10 @@ interface TaskRepository {
     suspend fun addTask(task: Task)
 
     suspend fun addCompletion(completion: Completion)
+    suspend fun createCategory(category: Category)
+    suspend fun deleteCategory(category: Category)
+    suspend fun getAllCategories(): List<Category>
+
+    suspend fun assignCategory(taskId: Int, categoryId: Int)
 
 }

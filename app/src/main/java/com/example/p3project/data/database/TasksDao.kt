@@ -25,5 +25,20 @@ interface TasksDao {
     @Query("SELECT * FROM task")
     suspend fun getAllTaskInfo(): List<TaskWithRelations>
 
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun createCategory(category: Category)
+    @Delete()
+    suspend fun deleteCategory(category: Category)
+
+    @Query("SELECT * FROM category")
+    suspend fun getAllCategories(): List<Category>
+
+
+    @Query("INSERT INTO TaskCategoryCrossRef VALUES (:taskId, :categoryId)")
+    suspend fun assignCategory(taskId: Int, categoryId: Int)
+
+    @Query("DELETE FROM TaskCategoryCrossRef WHERE taskId=:taskId AND categoryId=:categoryId")
+    suspend fun unassignCategory(taskId: Int, categoryId: Int)
+
 
 }

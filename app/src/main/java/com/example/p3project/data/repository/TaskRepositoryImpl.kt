@@ -2,6 +2,7 @@ package com.example.p3project.data.repository
 
 import com.example.p3project.domain.model.Task
 import com.example.p3project.data.database.TasksDao
+import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.Completion
 import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
@@ -26,4 +27,19 @@ class TaskRepositoryImpl (
         tasksDao.addCompletion(completion)
     }
 
+    override suspend fun createCategory(category: Category) {
+        tasksDao.createCategory(category)
+    }
+
+    override suspend fun deleteCategory(category: Category) {
+        tasksDao.deleteCategory(category)
+    }
+
+    override suspend fun getAllCategories(): List<Category> {
+        return tasksDao.getAllCategories()
+    }
+
+    override suspend fun assignCategory(taskId: Int, categoryId: Int) {
+        tasksDao.assignCategory(taskId, categoryId)
+    }
 }
