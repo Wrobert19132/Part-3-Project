@@ -23,8 +23,22 @@ class TaskRepositoryImpl (
         task.taskId = id.toInt()
     }
 
+    override suspend fun deleteTask(task: Task) {
+        tasksDao.deleteTask(task)
+    }
+
+
+        override suspend fun updateTask(task: Task) {
+        tasksDao.updateTask(task)
+    }
+
+
     override suspend fun addCompletion(completion: Completion) {
         tasksDao.addCompletion(completion)
+    }
+
+    override suspend fun deleteCompletion(completion: Completion) {
+        tasksDao.deleteCompletion(completion)
     }
 
     override suspend fun createCategory(category: Category) {
@@ -42,4 +56,5 @@ class TaskRepositoryImpl (
     override suspend fun assignCategory(taskId: Int, categoryId: Int) {
         tasksDao.assignCategory(taskId, categoryId)
     }
+
 }

@@ -1,9 +1,11 @@
 package com.example.p3project.data.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.Completion
 import com.example.p3project.domain.model.TaskWithRelations
@@ -16,14 +18,24 @@ interface TasksDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateTask(task: Task): Long
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addCompletion(completion: Completion)
-
     @Query("SELECT * FROM task WHERE taskId=:id")
     fun getTaskInfo(id: Int): TaskWithRelations?
 
     @Query("SELECT * FROM task")
     suspend fun getAllTaskInfo(): List<TaskWithRelations>
+
+    @Delete
+    suspend fun deleteTask(task: Task)
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addCompletion(completion: Completion)
+    @Delete()
+    suspend fun deleteCompletion(completion: Completion)
+
+
+
+
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun createCategory(category: Category)
