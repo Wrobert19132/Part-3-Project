@@ -11,7 +11,7 @@ import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
-import com.example.p3project.domain.usecases.tasks.GetTaskInfoByIdUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskInfoUseCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -21,7 +21,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @RunWith(AndroidJUnit4::class)
-class CompletionTests {
+class StreakTests {
     private lateinit var db: TaskDatabase
     private lateinit var repo: TaskRepository
     @Before
@@ -38,7 +38,7 @@ class CompletionTests {
     private suspend fun setup_DummyTask(now: LocalDate, streakLen: Int, periodLen: Int): TaskWithRelations {
         val addTaskUseCase = AddTaskUseCase(repo)
         val completeTaskUseCase = CompleteTaskUseCase(repo)
-        val getTaskByIdUseCase = GetTaskInfoByIdUseCase(repo)
+        val getTaskByIdUseCase = GetTaskInfoUseCase(repo)
 
 
         val task = Task("Test Task", "",
@@ -58,7 +58,7 @@ class CompletionTests {
     }
 
     @Test
-    fun taskCompletion_onStreakDay() = runTest {
+    fun streakCount_onStreakDay() = runTest {
         val now = LocalDate.now()
         val taskInfo = setup_DummyTask(now, 5, 7)
 
@@ -67,7 +67,7 @@ class CompletionTests {
 
 
     @Test
-    fun taskCompletion_duringWeek() = runTest {
+    fun streakCount_duringWeek() = runTest {
         val now = LocalDate.now()
         val periodLen = 7
         val taskInfo = setup_DummyTask(now, 5, periodLen)
@@ -77,7 +77,7 @@ class CompletionTests {
     }
 
     @Test
-    fun taskCompletion_onCompleteDay() = runTest {
+    fun streakCount_onCompleteDay() = runTest {
         val now = LocalDate.now()
         val periodLen = 7
 
@@ -87,7 +87,7 @@ class CompletionTests {
     }
 
     @Test
-    fun taskCompletion_inPast_BeforeCompleteDay() = runTest {
+    fun streakCount_inPast_BeforeCompleteDay() = runTest {
         val now = LocalDate.now()
         val periodLen = 7
 
@@ -97,14 +97,10 @@ class CompletionTests {
     }
 
     @Test
-    fun taskCompletion_missedStreak() = runTest {
+    fun streakCount_missedStreak() = runTest {
         val now = LocalDate.now()
         val taskInfo = setup_DummyTask(now, 5, 7)
 
         assertEquals(0, taskInfo.streakCount(now.plusDays(1)))
     }
-
-
-
-
 }

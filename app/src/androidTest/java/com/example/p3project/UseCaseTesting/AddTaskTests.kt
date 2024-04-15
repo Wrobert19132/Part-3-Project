@@ -1,4 +1,4 @@
-package com.example.p3project
+package com.example.p3project.UseCaseTesting
 
 import android.content.Context
 import androidx.room.Room
