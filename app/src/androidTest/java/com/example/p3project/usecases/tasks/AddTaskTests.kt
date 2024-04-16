@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.p3project.DBTest
 import com.example.p3project.data.database.TaskDatabase
 import com.example.p3project.data.repository.TaskRepositoryImpl
 import com.example.p3project.domain.model.Task
@@ -20,17 +21,8 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 @RunWith(AndroidJUnit4::class)
-class AddTaskTests {
-    private lateinit var db: TaskDatabase
-    private lateinit var repo: TaskRepository
-    @Before
-    fun createDb() {
-        val context: Context = ApplicationProvider.getApplicationContext()
+class AddTaskTests: DBTest() {
 
-        db = Room.inMemoryDatabaseBuilder(
-            context, TaskDatabase::class.java).build()
-        repo = TaskRepositoryImpl(db.tasksDao())
-    }
 
     @Test()
     fun addTaskTest_generalCorrect() = runTest {
