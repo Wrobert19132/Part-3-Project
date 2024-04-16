@@ -5,12 +5,13 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-class Category (
-    val categoryName: String,
-    val categoryColor: Color,
+data class Category (
+    var categoryName: String,
+    var categoryColor: Int,
+
 ) {
     @PrimaryKey(autoGenerate = true)
-    val categoryId: Int = 0
+    var categoryId: Int = 0
 }
 
 
