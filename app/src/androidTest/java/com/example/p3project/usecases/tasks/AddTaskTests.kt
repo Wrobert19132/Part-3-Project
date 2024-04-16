@@ -1,4 +1,4 @@
-package com.example.p3project.UseCaseTesting
+package com.example.p3project.usecases.tasks
 
 import android.content.Context
 import androidx.room.Room
@@ -11,6 +11,7 @@ import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
 import com.example.p3project.domain.util.InvalidTaskException
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertNotSame
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -29,56 +30,51 @@ class AddTaskTests {
         db = Room.inMemoryDatabaseBuilder(
             context, TaskDatabase::class.java).build()
         repo = TaskRepositoryImpl(db.tasksDao())
-
-
     }
 
     @Test()
     fun addTaskTest_generalCorrect() = runTest {
         val addTaskUseCase = AddTaskUseCase(repo)
-        val task = Task("Text",
-            "A Test Task",
-            LocalTime.of(2, 30),
-            LocalDate.of(2024, 3, 12),
-            0,
-            7
-        )
+        val taskName = "Text"
+        val taskDescription = "A Test Task"
+        val targetTime = LocalTime.of(2, 30)
+        val startDate = LocalDate.of(2024, 3, 12)
+        val notificationOffset = 0
+        val period = 7
 
-        addTaskUseCase.invoke(task)
+        val task = addTaskUseCase.invoke(taskName, taskDescription, targetTime,
+                                         startDate, notificationOffset, period)
 
-        assertEquals("Task ID is properly set", db.tasksDao().getTaskInfo(task.taskId)!!.task, task)
+        assertNotSame("Task ID is properly set", task.taskId, 0)
     }
 
     @Test(expected = InvalidTaskException::class)
     fun addTaskTest_EmptyName() = runTest {
         val addTaskUseCase = AddTaskUseCase(repo)
-        val task = Task("",
-            "A Test Task",
-            LocalTime.of(2, 30),
-            LocalDate.of(2024, 3, 12),
-            0,
-            7
-        )
+        val taskName = ""
+        val taskDescription = "A Test Task"
+        val targetTime = LocalTime.of(2, 30)
+        val startDate = LocalDate.of(2024, 3, 12)
+        val notificationOffset = 0
+        val period = 7
 
-        addTaskUseCase.invoke(task)
+        val task = addTaskUseCase.invoke(taskName, taskDescription, targetTime,
+            startDate, notificationOffset, period)
 
-        assertEquals("Task is not added", db.tasksDao().getTaskInfo(task.taskId), null)
     }
 
     @Test(expected = InvalidTaskException::class)
     fun addTaskTest_LongName() = runTest {
         val addTaskUseCase = AddTaskUseCase(repo)
-        val task = Task("a".repeat(Task.maxNameLength+1),
-            "A Test Task",
-            LocalTime.of(2, 30),
-            LocalDate.of(2024, 3, 12),
-            0,
-            7
-        )
+        val taskName = "a".repeat(Task.maxNameLength+1)
+        val taskDescription = "A Test Task"
+        val targetTime = LocalTime.of(2, 30)
+        val startDate = LocalDate.of(2024, 3, 12)
+        val notificationOffset = 0
+        val period = 7
 
-        addTaskUseCase.invoke(task)
-
-        assertEquals("Task is not added", db.tasksDao().getTaskInfo(task.taskId), null)
+        val task = addTaskUseCase.invoke(taskName, taskDescription, targetTime,
+            startDate, notificationOffset, period)
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.p3project
+package com.example.p3project.model
 
 import android.content.Context
 import androidx.room.Room
@@ -36,7 +36,6 @@ class StreakTests {
     }
 
     private suspend fun setup_DummyTask(now: LocalDate, streakLen: Int, periodLen: Int): TaskWithRelations {
-        val addTaskUseCase = AddTaskUseCase(repo)
         val completeTaskUseCase = CompleteTaskUseCase(repo)
         val getTaskByIdUseCase = GetTaskInfoUseCase(repo)
 
@@ -47,7 +46,7 @@ class StreakTests {
             0,
             periodLen
         )
-        addTaskUseCase(task)
+        repo.addTask(task)
 
         for (i: Int in 0..< streakLen) {
             completeTaskUseCase(task, i, LocalTime.of(0, 30))
