@@ -23,6 +23,20 @@ class AddTaskScreenViewmodel @Inject constructor(
     private suspend fun addTask(task: Task) {
         useCases.addTaskUseCase(task)
         useCases.scheduleTaskUseCase(task)
+    private suspend fun addTask(name: String, description: String,
+                                targetTime: LocalTime, targetDate: LocalDate,
+                                notificationOffset: Int, dayInterval: Int) {
+        try {
+            val task = useCases.addTaskUseCase(name, description,
+                                               targetTime, targetDate,
+                                               notificationOffset, dayInterval
+                                        )
+            useCases.scheduleTaskUseCase(task)
+
+
+        } catch (e: InvalidTaskException) {
+            onEvent(AddTaskEvent.SendError(e.message!!))
+        }
     }
 
     private fun dismissError() {
@@ -36,13 +50,13 @@ class AddTaskScreenViewmodel @Inject constructor(
     fun onEvent(event: AddTaskEvent) {
         if (event is AddTaskEvent.AddTask) {
             viewModelScope.launch(Dispatchers.IO) {
-                addTask(event.task)
+                addTask(event.name, event.description,
+                        event.targetTime, event.targetDate,
+                        event.notificationOffset, event.dayInterval
+                )
             }
-
         } else if (event is AddTaskEvent.SendError) {
             createError(event.message)
-
-
         } else if (event is AddTaskEvent.DismissError) {
             dismissError()
         }

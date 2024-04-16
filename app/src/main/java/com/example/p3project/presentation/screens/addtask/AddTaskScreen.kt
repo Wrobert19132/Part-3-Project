@@ -295,17 +295,12 @@ fun AddTaskScreen (
                             } else {
                                 viewModel.onEvent(
                                     AddTaskEvent.AddTask(
-                                        Task(
-                                            taskName,
-                                            taskDescription,
-                                            targetTime = LocalTime.of(
-                                                notificationTimePicker.hour,
-                                                notificationTimePicker.minute
-                                            ),
-                                            startDate = pickedDate,
-                                            notificationOffset = notificationOffset.toInt(),
-                                            dayInterval = dayInterval.toInt()
-                                        )
+                                        taskName, taskDescription,
+                                        LocalTime.of(
+                                            notificationTimePicker.hour,
+                                            notificationTimePicker.minute
+                                        ), pickedDate,
+                                        notificationOffset.toInt(), dayInterval.toInt()
                                     )
                                 )
                             }

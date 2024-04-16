@@ -72,24 +72,6 @@ data class Task (
         return minutesUntilTask(dateTime) * 60
     }
 
-    fun checkValid() {
-        if (name == "") {
-            throw InvalidTaskException("Task cannot be empty")
-        } else if (name.length > maxNameLength) {
-            throw InvalidTaskException("Task name too long")
-        } else if (description.length > maxDescriptionLength) {
-            throw InvalidTaskException("Task description too long")
-        } else if (dayInterval > maxDayInterval) {
-            throw InvalidTaskException("Task day interval too great")
-        } else if (notificationOffset > maxNotificationOffset) {
-            throw InvalidTaskException("Task notification offset too great")
-
-        }
-
-
-    }
-
-
     companion object Limits {
         var maxNameLength: Int = 32;
         var maxDescriptionLength: Int = 128;
