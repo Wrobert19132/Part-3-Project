@@ -26,5 +26,6 @@ interface TaskRepository {
     suspend fun getAllCategories(): List<Category>
 
     suspend fun assignCategory(taskId: Int, categoryId: Int)
+    suspend fun unassignCategory(taskId: Int, categoryId: Int)
 
 }

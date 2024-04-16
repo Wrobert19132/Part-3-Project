@@ -42,7 +42,8 @@ class TaskRepositoryImpl (
     }
 
     override suspend fun createCategory(category: Category) {
-        tasksDao.createCategory(category)
+        val id: Long = tasksDao.createCategory(category)
+        category.categoryId = id.toInt()
     }
 
     override suspend fun deleteCategory(category: Category) {
@@ -55,6 +56,11 @@ class TaskRepositoryImpl (
 
     override suspend fun assignCategory(taskId: Int, categoryId: Int) {
         tasksDao.assignCategory(taskId, categoryId)
+    }
+
+    override suspend fun unassignCategory(taskId: Int, categoryId: Int) {
+        tasksDao.unassignCategory(taskId, categoryId)
+
     }
 
 }

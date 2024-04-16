@@ -41,7 +41,7 @@ interface TasksDao {
 
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun createCategory(category: Category)
+    suspend fun createCategory(category: Category): Long
     @Delete()
     suspend fun deleteCategory(category: Category)
 
