@@ -12,6 +12,10 @@ data class Category (
 ) {
     @PrimaryKey(autoGenerate = true)
     var categoryId: Int = 0
+
+    public fun getColor(): Color {
+        return Color(categoryColor)
+    }
 }
 
 
