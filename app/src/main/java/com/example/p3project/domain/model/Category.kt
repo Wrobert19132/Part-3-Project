@@ -16,6 +16,12 @@ data class Category (
     public fun getColor(): Color {
         return Color(categoryColor)
     }
+
+    companion object Limits {
+        var maxNameLength: Int = 8;
+
+    }
+
 }
 
 
