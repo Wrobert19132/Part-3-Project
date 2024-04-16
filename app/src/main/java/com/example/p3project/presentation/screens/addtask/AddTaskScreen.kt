@@ -31,6 +31,7 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -76,6 +77,13 @@ fun AddTaskScreen (
     val keyboardController = LocalSoftwareKeyboardController.current
     val state = viewModel.state.collectAsState().value
 
+    LaunchedEffect(state.taskAdded) {
+        if (state.taskAdded) {
+            navController.popBackStack()
+        }
+    }
+
+
     var taskName by remember { mutableStateOf("") }
     var taskDescription by remember { mutableStateOf("") }
     var dayInterval by remember { mutableStateOf("7") }
@@ -86,7 +94,6 @@ fun AddTaskScreen (
 
     val notificationTimePicker = rememberTimePickerState(now.hour, now.minute, false)
     val notificationTimePickerVisible = remember { mutableStateOf(false) }
-
 
     val datePicker = rememberDatePickerState(initialSelectedDateMillis = now.toEpochSecond() * 1000)
     val datePickerVisible = remember { mutableStateOf(false) }
@@ -304,7 +311,6 @@ fun AddTaskScreen (
                                     )
                                 )
                             }
-                            navController.popBackStack()
                         }) {
                             Text(text = "Add")
                         }

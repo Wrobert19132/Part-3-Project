@@ -4,10 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.usecases.UseCases
+import com.example.p3project.domain.util.InvalidTaskException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDate
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,9 +23,6 @@ class AddTaskScreenViewmodel @Inject constructor(
         AddTaskState()
     )
 
-    private suspend fun addTask(task: Task) {
-        useCases.addTaskUseCase(task)
-        useCases.scheduleTaskUseCase(task)
     private suspend fun addTask(name: String, description: String,
                                 targetTime: LocalTime, targetDate: LocalDate,
                                 notificationOffset: Int, dayInterval: Int) {
@@ -33,6 +33,7 @@ class AddTaskScreenViewmodel @Inject constructor(
                                         )
             useCases.scheduleTaskUseCase(task)
 
+            state.value = state.value.copy(taskAdded = true)
 
         } catch (e: InvalidTaskException) {
             onEvent(AddTaskEvent.SendError(e.message!!))
