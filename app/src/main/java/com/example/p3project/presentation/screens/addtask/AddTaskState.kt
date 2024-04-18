@@ -1,6 +1,21 @@
 package com.example.p3project.presentation.screens.addtask
 
+import com.example.p3project.domain.model.Category
+import java.time.LocalDate
+import java.time.LocalTime
+
 data class AddTaskState (
     var error: String? = null,
-    var taskAdded: Boolean = false
-)
+    var taskAdded: Boolean = false,
+
+    var allCategories: List<Category> = listOf(),
+
+    var appliedCategories: Set<Category> = setOf(),
+    var taskName: String = "",
+    var taskDescription: String = "",
+    var taskInterval: Int? = 7,
+    var startDate: LocalDate = LocalDate.now(),
+    var targetTime: LocalTime = LocalTime.now(),
+    var notificationOffset: Int? = 30,
+
+    )

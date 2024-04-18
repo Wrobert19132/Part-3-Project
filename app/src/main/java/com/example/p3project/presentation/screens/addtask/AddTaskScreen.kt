@@ -48,6 +48,7 @@ import androidx.navigation.NavController
 import com.example.p3project.domain.model.Task
 import com.example.p3project.presentation.screens.addtask.components.AppDatePicker
 import com.example.p3project.presentation.screens.addtask.components.AppTimePicker
+import com.example.p3project.presentation.screens.addtask.components.CategorySelector
 import com.example.p3project.presentation.screens.addtask.components.ClickableTextField
 import com.example.p3project.presentation.screens.addtask.components.PermissionChecker
 import com.example.p3project.presentation.screens.shared_components.AppError
@@ -83,21 +84,32 @@ fun AddTaskScreen (
         }
     }
 
+    LaunchedEffect(true) {
+        viewModel.onEvent(AddTaskEvent.LoadCategories)
+    }
 
-    var taskName by remember { mutableStateOf("") }
-    var taskDescription by remember { mutableStateOf("") }
-    var dayInterval by remember { mutableStateOf("7") }
-    var notificationOffset by remember { mutableStateOf("30") }
 
 
     val now: OffsetDateTime = OffsetDateTime.now()
 
     val notificationTimePicker = rememberTimePickerState(now.hour, now.minute, false)
     val notificationTimePickerVisible = remember { mutableStateOf(false) }
+    val pickedTime = LocalTime.of(notificationTimePicker.hour, notificationTimePicker.minute)
 
     val datePicker = rememberDatePickerState(initialSelectedDateMillis = now.toEpochSecond() * 1000)
     val datePickerVisible = remember { mutableStateOf(false) }
+    val pickedDate: LocalDate = LocalDateTime.ofEpochSecond(
+        datePicker.selectedDateMillis?.div(1000)!!, 0, now.offset
+    ).toLocalDate()
 
+
+    LaunchedEffect(notificationTimePicker) {
+        viewModel.onEvent(AddTaskEvent.SetTargetTime(pickedTime))
+    }
+
+    LaunchedEffect(datePicker) {
+        viewModel.onEvent(AddTaskEvent.SetTargetTime(pickedTime))
+    }
 
 
     Scaffold (
@@ -161,16 +173,10 @@ fun AddTaskScreen (
                             Text(text = "Task Name")
                         },
                         leadingIcon = { Icon(Icons.Default.Create, "Set Task Name") },
-                        value = taskName,
-                        isError = (taskName.length >= Task.maxNameLength),
+                        value = state.taskName,
+                        isError = (state.taskName.length >= Task.maxNameLength),
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                        onValueChange = {
-                            taskName = if (it.length > Task.maxNameLength) {
-                                taskName
-                            } else {
-                                it
-                            }
-                        },
+                        onValueChange = {viewModel.onEvent(AddTaskEvent.SetName(it))},
                         singleLine = true,
                     )
                     OutlinedTextField(
@@ -180,18 +186,19 @@ fun AddTaskScreen (
                         label = {
                             Text(text = "Task Description")
                         },
-                        value = taskDescription,
-                        isError = (taskDescription.length >= Task.maxDescriptionLength),
+                        value = state.taskDescription,
+                        isError = (state.taskDescription.length >= Task.maxDescriptionLength),
                         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
-                        onValueChange = {
-                            taskDescription = if (it.length > Task.maxDescriptionLength) {
-                                taskDescription
-                            } else {
-                                it
-                            }
-                        }
+                        onValueChange = {viewModel.onEvent(AddTaskEvent.SetDescription(it))},
                     )
 
+                    CategorySelector(categories = state.allCategories, 
+                                     onSelectCategory = {
+                                         category ->
+                                            viewModel.onEvent(AddTaskEvent.ToggleCategory(category))
+                                    },
+                                    selectedCategories = state.appliedCategories
+                    )
                     VerticalDivider()
 
                     Row(Modifier.fillMaxWidth(),
@@ -207,18 +214,8 @@ fun AddTaskScreen (
                                 Text(text = " days")
                             },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            value = dayInterval,
-                            isError = (
-                                    if (dayInterval.isInt()) {
-                                        (dayInterval.toInt() > Task.maxDayInterval || dayInterval.toInt() <= 0)
-                                    } else {
-                                        true
-                                    }
-                                    ),
-                            onValueChange = {
-                                dayInterval = if (it.isInt()) { // Check for empty string
-                                    minOf(it.toInt(), 999).toString()
-                                } else ""
+                            value = (state.taskInterval ?: "").toString(),
+                            onValueChange = {viewModel.onEvent(AddTaskEvent.SetInterval(it))
                             }
                         )
 
@@ -232,13 +229,9 @@ fun AddTaskScreen (
                             Modifier.width(110.dp),
                             onClick = { notificationTimePickerVisible.value = true }
                         )
-
-
                     }
 
-                    val pickedDate: LocalDate = LocalDateTime.ofEpochSecond(
-                        datePicker.selectedDateMillis?.div(1000)!!, 0, now.offset
-                    ).toLocalDate()
+
                     ClickableTextField(
                         value = "Starting on " + pickedDate.format(
                             DateTimeFormatter.ofLocalizedDate(
@@ -258,18 +251,9 @@ fun AddTaskScreen (
                             Text(text = " minutes before target")
                         },
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        value = notificationOffset,
-                        isError = (
-                                if (notificationOffset.isInt()) {
-                                    (notificationOffset.toInt() > Task.maxNotificationOffset || notificationOffset.toInt() <= 0)
-                                } else {
-                                    true
-                                }
-                            ),
+                        value = (state.notificationOffset ?: "").toString(),
                         onValueChange = {
-                            notificationOffset = if (it.isInt()) { // Check for empty string
-                                minOf(it.toInt(), 1440).toString()
-                            } else ""
+                            viewModel.onEvent(AddTaskEvent.SetNotificationOffset(it))
                         }
                     )
 
@@ -285,33 +269,9 @@ fun AddTaskScreen (
                         }
                         Button(onClick = {
                             keyboardController?.hide()
-
-                            if (!dayInterval.isInt()) {
-                                viewModel.onEvent(
-                                    AddTaskEvent.SendError(
-                                        "You have to set an interval you want to complete tasks at!"
-                                    )
-                                )
-                            } else if (!notificationOffset.isInt()) {
-                                viewModel.onEvent(
-                                    AddTaskEvent.SendError(
-                                        "You have to set a valid notification offset value."
-                                    )
-                                )
-
-                            } else {
-                                viewModel.onEvent(
-                                    AddTaskEvent.AddTask(
-                                        taskName, taskDescription,
-                                        LocalTime.of(
-                                            notificationTimePicker.hour,
-                                            notificationTimePicker.minute
-                                        ), pickedDate,
-                                        notificationOffset.toInt(), dayInterval.toInt()
-                                    )
-                                )
+                            viewModel.onEvent(AddTaskEvent.AddTask)
                             }
-                        }) {
+                        ) {
                             Text(text = "Add")
                         }
                     }
