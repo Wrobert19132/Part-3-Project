@@ -24,8 +24,15 @@ interface TasksDao {
     fun getTaskInfo(id: Int): TaskWithRelations?
 
     @Transaction
+    @Query("SELECT * FROM task " +
+            "INNER JOIN TaskCategoryCrossRef ON task.taskId=TaskCategoryCrossRef.taskId " +
+            "WHERE categoryId in (:categories)")
+    suspend fun getFilteredTaskInfo(categories: List<Int>): List<TaskWithRelations>
+
+    @Transaction
     @Query("SELECT * FROM task")
     suspend fun getAllTaskInfo(): List<TaskWithRelations>
+
 
     @Delete
     suspend fun deleteTask(task: Task)

@@ -11,14 +11,12 @@ class AllTaskInfoUseCase (private val taskRepository: TaskRepository)
     suspend operator fun invoke(viewMode: TaskViewMode = TaskViewMode.TodayView,
                                 filters: List<Category> = listOf()
     ) : List<TaskWithRelations> {
-        val tasks = taskRepository.allTaskInfo()
+        val tasks = taskRepository.allTaskInfo(filters)
         val now = LocalDate.now()
 
         return when (viewMode) {
             is TaskViewMode.TodayView ->
                 tasks.filter {taskInfo -> (taskInfo.task.isTaskDay(now)) }
-
-
             is TaskViewMode.AllView ->
                 tasks
             is TaskViewMode.IncompleteView ->

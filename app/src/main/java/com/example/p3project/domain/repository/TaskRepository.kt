@@ -15,7 +15,7 @@ interface TaskRepository {
     suspend fun updateTask(task: Task)
 
     suspend fun getTaskInfo(id: Int): TaskWithRelations?
-    suspend fun allTaskInfo(): List<TaskWithRelations>
+    suspend fun allTaskInfo(categoryFilters: List<Category>): List<TaskWithRelations>
 
 
     suspend fun addCompletion(completion: Completion)
