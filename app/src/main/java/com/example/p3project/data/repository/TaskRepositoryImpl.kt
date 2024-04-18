@@ -47,6 +47,7 @@ class TaskRepositoryImpl (
     }
 
     override suspend fun deleteCategory(category: Category) {
+        tasksDao.unassignAllCategory(category.categoryId)
         tasksDao.deleteCategory(category)
     }
 

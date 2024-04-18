@@ -43,7 +43,13 @@ interface TasksDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun createCategory(category: Category): Long
     @Delete()
+
     suspend fun deleteCategory(category: Category)
+
+    @Query("DELETE FROM TaskCategoryCrossRef WHERE categoryId=:categoryId")
+    suspend fun unassignAllCategory(categoryId: Int)
+
+
 
     @Query("SELECT * FROM category")
     suspend fun getAllCategories(): List<Category>
@@ -54,6 +60,8 @@ interface TasksDao {
 
     @Query("DELETE FROM TaskCategoryCrossRef WHERE taskId=:taskId AND categoryId=:categoryId")
     suspend fun unassignCategory(taskId: Int, categoryId: Int)
+
+
 
 
 }
