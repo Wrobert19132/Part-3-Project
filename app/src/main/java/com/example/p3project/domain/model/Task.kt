@@ -61,7 +61,9 @@ data class Task (
         )
     }
 
-
+    fun periodLengthMinutes(): Int {
+        return dayInterval * 1440
+    }
 
     fun minutesUntilTask(dateTime: LocalDateTime): Int {
         return (daysUntilNextTaskDay(dateTime.toLocalDate()) * 1440) +
