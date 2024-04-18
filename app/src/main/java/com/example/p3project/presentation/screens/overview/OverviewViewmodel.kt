@@ -2,6 +2,7 @@ package com.example.p3project.presentation.screens.overview
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.usecases.UseCases
 import com.example.p3project.domain.util.TaskViewMode
@@ -23,18 +24,28 @@ class OverviewViewmodel @Inject constructor(
     )
 
     fun onEvent(event: OverviewEvent) {
-         if (event is OverviewEvent.ReloadTasks) {
-            viewModelScope.launch(Dispatchers.IO) {
-                getTasks()
-            }
-        } else if (event is OverviewEvent.CompleteTask) {
-            viewModelScope.launch(Dispatchers.IO) {
-                completeTask(event.task)
-            }
-        } else if (event is OverviewEvent.UpdateViewMode) {
-            viewModelScope.launch(Dispatchers.IO) {
-                updateViewMode(event.viewMode)
-            }
+         when (event) {
+             is OverviewEvent.ReloadInfo -> {
+                 viewModelScope.launch(Dispatchers.IO) {
+                     getInfo()
+                 }
+             }
+
+             is OverviewEvent.CompleteTask -> {
+                 viewModelScope.launch(Dispatchers.IO) {
+                     completeTask(event.task)
+                 }
+             }
+
+             is OverviewEvent.UpdateViewMode -> {
+                 viewModelScope.launch(Dispatchers.IO) {
+                     updateViewMode(event.viewMode)
+                 }
+             }
+
+             is OverviewEvent.ToggleCategory -> viewModelScope.launch(Dispatchers.IO) {
+                 toggleCategoryFilter(event.category)
+             }
          }
     }
     private suspend fun completeTask(task: Task) {
@@ -44,15 +55,39 @@ class OverviewViewmodel @Inject constructor(
                                       LocalTime.now()
         )
 
-        getTasks()
+        getInfo()
     }
 
     private suspend fun updateViewMode(mode: TaskViewMode) {
         state.value = state.value.copy(viewMode = mode)
-        getTasks()
+        getInfo()
     }
 
-    private suspend fun getTasks() {
-        state.value = state.value.copy(taskAndCompletions = useCases.getTasksUseCase())
+    private suspend fun toggleCategoryFilter(category: Category) {
+        if (category.categoryId in state.value.categoryFilters) {
+            state.value = state.value.copy(
+                categoryFilters = state.value.categoryFilters.minus(category.categoryId)
+            )
+        } else {
+            state.value = state.value.copy(
+                categoryFilters = state.value.categoryFilters.plus(category.categoryId)
+            )
+        }
+        getInfo()
+    }
+
+    private suspend fun getInfo() {
+        val freshCategories = useCases.allCategoriesUseCase()
+        val freshCategoryIds = freshCategories.map { it.categoryId }
+
+        val removedCategoryIds: List<Int> = state.value.categories.filter {
+            category -> (category.categoryId !in freshCategoryIds)
+        }.map { it.categoryId }
+
+        state.value = state.value.copy(
+            tasksInfo = useCases.getTasksUseCase(),
+            categories = freshCategories,
+            categoryFilters = state.value.categoryFilters.filter { it !in removedCategoryIds }.toSet()
+        )
     }
 }

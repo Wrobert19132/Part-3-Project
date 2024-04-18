@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.p3project.presentation.screens.Screen
+import com.example.p3project.presentation.screens.overview.components.CategoryFilterSelector
 import com.example.p3project.presentation.screens.overview.components.TaskCard
 import com.example.p3project.presentation.screens.overview.components.ViewMode
 import com.example.p3project.presentation.screens.shared_components.AppNavigation
@@ -43,7 +44,7 @@ fun OverviewScreen (
     val state = viewModel.state.collectAsState().value
 
     LaunchedEffect(true) {
-        viewModel.onEvent(OverviewEvent.ReloadTasks)
+        viewModel.onEvent(OverviewEvent.ReloadInfo)
     }
     Scaffold (
         snackbarHost = {
@@ -78,9 +79,10 @@ fun OverviewScreen (
             ViewMode(state.viewMode,
                 pickView = {viewMode -> viewModel.onEvent(OverviewEvent.UpdateViewMode(viewMode))},
             )
+            CategoryFilterSelector(state.categories, {category ->  viewModel.onEvent(OverviewEvent.ToggleCategory(category))}, state.categoryFilters)
 
             LazyColumn() {
-                items(state.taskAndCompletions) { taskAndCompletions ->
+                items(state.tasksInfo) { taskAndCompletions ->
                     val task = taskAndCompletions.task
 
                     TaskCard(
