@@ -1,8 +1,10 @@
 package com.example.p3project.presentation.screens.shared_components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -27,19 +29,21 @@ private fun handleNavigation(navController: NavController, screen: Screen) {
 fun AppNavigation(navController: NavController, current_selected: Screen){
     NavigationBar {
         NavigationBarItem(
+            icon = { Icon(Icons.Filled.DateRange, "") },
+            selected = (current_selected == Screen.CalendarScreen),
+            onClick = { handleNavigation(navController, Screen.CalendarScreen) },
+        )
+
+        NavigationBarItem(
             icon = { Icon(Icons.Filled.Home, "") },
             selected = (current_selected == Screen.OverviewScreen),
             onClick = { handleNavigation(navController, Screen.OverviewScreen) },
         )
+
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Person, "") },
-            selected = (current_selected == Screen.CalendarScreen),
-            onClick = { handleNavigation(navController, Screen.CalendarScreen) },
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Filled.ThumbUp, "") },
-            selected = (current_selected == Screen.ViewTaskScreen),
-            onClick = { handleNavigation(navController, Screen.ViewTaskScreen) },
+            icon = { Icon(Icons.Filled.Settings, "") },
+            selected = (current_selected == Screen.SettingsScreen),
+            onClick = { handleNavigation(navController, Screen.SettingsScreen) },
         )
     }
 }
