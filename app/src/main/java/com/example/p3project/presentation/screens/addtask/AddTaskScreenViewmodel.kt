@@ -45,8 +45,10 @@ class AddTaskScreenViewmodel @Inject constructor(
                                                stateVal.taskInterval!!
                                         )
 
-            for (category in stateVal.appliedCategories) {
-                useCases.assignCategoryUseCase(task, category)
+            for (category in stateVal.allCategories) {
+                if (category.categoryId in stateVal.appliedCategories) {
+                    useCases.assignCategoryUseCase(task, category)
+                }
             }
 
             useCases.scheduleTaskUseCase(task)
@@ -96,13 +98,13 @@ class AddTaskScreenViewmodel @Inject constructor(
     }
 
     private fun toggleCategory(category: Category) {
-        if (category in state.value.appliedCategories) {
+        if (category.categoryId in state.value.appliedCategories) {
             state.value = state.value.copy(
-                appliedCategories = state.value.appliedCategories.minus(category)
+                appliedCategories = state.value.appliedCategories.minus(category.categoryId)
             )
         } else {
             state.value = state.value.copy(
-                appliedCategories = state.value.appliedCategories.plus(category)
+                appliedCategories = state.value.appliedCategories.plus(category.categoryId)
             )
         }
     }

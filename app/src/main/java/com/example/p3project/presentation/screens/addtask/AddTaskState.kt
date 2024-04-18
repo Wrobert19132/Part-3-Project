@@ -10,7 +10,7 @@ data class AddTaskState (
 
     var allCategories: List<Category> = listOf(),
 
-    var appliedCategories: Set<Category> = setOf(),
+    var appliedCategories: Set<Int> = setOf(),
     var taskName: String = "",
     var taskDescription: String = "",
     var taskInterval: Int? = 7,

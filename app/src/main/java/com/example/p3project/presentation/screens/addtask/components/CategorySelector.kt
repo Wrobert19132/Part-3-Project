@@ -15,7 +15,7 @@ import com.example.p3project.domain.model.Category
 
 @Composable
 fun CategorySelector(categories: List<Category>, onSelectCategory: ((category: Category) -> Unit),
-                     selectedCategories: Set<Category>) {
+                     selectedCategories: Set<Int>) {
     LazyRow(
         Modifier
             .fillMaxWidth(),
@@ -23,7 +23,7 @@ fun CategorySelector(categories: List<Category>, onSelectCategory: ((category: C
     ) {
         items(categories) { category ->
             FilterChip(
-                selected = category in selectedCategories,
+                selected = category.categoryId in selectedCategories,
                 onClick = { onSelectCategory(category) },
                 label = { Text(category.categoryName) },
             )
