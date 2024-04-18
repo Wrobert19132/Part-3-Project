@@ -70,8 +70,13 @@ data class Task (
                 dateTime.toLocalTime().until(targetTime, ChronoUnit.MINUTES).toInt()
     }
 
-    fun secondsUntilTask(dateTime: LocalDateTime): Int {
-        return minutesUntilTask(dateTime) * 60
+    fun minutesUntilFollowingTask(dateTime: LocalDateTime): Int {
+        if (daysUntilNextTaskDay(dateTime.toLocalDate()) == 0) {
+            val minutesUntilTime = dateTime.toLocalTime().until(targetTime, ChronoUnit.MINUTES).toInt()
+            return minutesUntilTime + periodLengthMinutes()
+        }
+        return (daysUntilNextTaskDay(dateTime.toLocalDate()) * 1440) +
+                dateTime.toLocalTime().until(targetTime, ChronoUnit.MINUTES).toInt()
     }
 
     companion object Limits {
