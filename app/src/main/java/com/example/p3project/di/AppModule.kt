@@ -15,6 +15,7 @@ import com.example.p3project.domain.usecases.notifications.ScheduleTaskUseCase
 import com.example.p3project.domain.usecases.notifications.SendNotificationUseCase
 import com.example.p3project.domain.usecases.UseCases
 import com.example.p3project.domain.usecases.categories.AllCategoriesUseCase
+import com.example.p3project.domain.usecases.categories.AssignCategoryUseCase
 import com.example.p3project.domain.usecases.categories.CreateCategoryUseCase
 import com.example.p3project.domain.usecases.categories.DeleteCategoryUseCase
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
@@ -64,7 +65,8 @@ class AppModule {
                 completeTasksUseCase = CompleteTaskUseCase(repository),
                 createCategoryUseCase = CreateCategoryUseCase(repository),
                 allCategoriesUseCase = AllCategoriesUseCase(repository),
-                deleteCategoryUseCase = DeleteCategoryUseCase(repository)
+                deleteCategoryUseCase = DeleteCategoryUseCase(repository),
+                assignCategoryUseCase = AssignCategoryUseCase(repository)
               )
     }
 

@@ -1,6 +1,7 @@
 package com.example.p3project.domain.usecases
 
 import com.example.p3project.domain.usecases.categories.AllCategoriesUseCase
+import com.example.p3project.domain.usecases.categories.AssignCategoryUseCase
 import com.example.p3project.domain.usecases.categories.CreateCategoryUseCase
 import com.example.p3project.domain.usecases.categories.DeleteCategoryUseCase
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
@@ -24,5 +25,6 @@ data class UseCases(
 
     val createCategoryUseCase: CreateCategoryUseCase,
     val allCategoriesUseCase: AllCategoriesUseCase,
-    val deleteCategoryUseCase: DeleteCategoryUseCase
+    val deleteCategoryUseCase: DeleteCategoryUseCase,
+    val assignCategoryUseCase: AssignCategoryUseCase
 )
