@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.usecases.UseCases
-import com.example.p3project.domain.util.OverviewMode
+import com.example.p3project.domain.util.TaskViewMode
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +19,7 @@ class OverviewViewmodel @Inject constructor(
 ): ViewModel() {
 
     public val state = MutableStateFlow(
-        OverviewState(listOf(), OverviewMode.TodayView)
+        OverviewState(listOf(), TaskViewMode.IncompleteView)
     )
 
     fun onEvent(event: OverviewEvent) {
@@ -47,7 +47,7 @@ class OverviewViewmodel @Inject constructor(
         getTasks()
     }
 
-    private suspend fun updateViewMode(mode: OverviewMode) {
+    private suspend fun updateViewMode(mode: TaskViewMode) {
         state.value = state.value.copy(viewMode = mode)
         getTasks()
     }
