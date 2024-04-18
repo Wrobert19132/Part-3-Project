@@ -48,6 +48,15 @@ data class TaskWithRelations(
         }
 
         return count
-
     }
+
+    fun completedToday(from: LocalDate): Boolean {
+        var lastPeriod = task.periodsPassed(from)
+
+        if (completions.isNotEmpty()) {
+            return (lastPeriod == completions.reversed()[0].period)
+        }
+        return false
+    }
+
 }
