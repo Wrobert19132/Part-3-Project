@@ -16,6 +16,7 @@ import com.example.p3project.presentation.screens.Screen
 import com.example.p3project.presentation.screens.addtask.AddTaskScreen
 import com.example.p3project.presentation.screens.calendar.CalendarScreen
 import com.example.p3project.presentation.screens.overview.OverviewScreen
+import com.example.p3project.presentation.screens.settings.SettingsScreen
 import com.example.p3project.presentation.screens.taskview.TaskScreen
 import com.example.p3project.presentation.theme.P3ProjectTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,6 +47,14 @@ class MainActivity : ComponentActivity() {
                         ) {
                             CalendarScreen(navController)
                         }
+
+                        composable(
+                            route = Screen.SettingsScreen.route
+                        ) {
+                            SettingsScreen(navController)
+                        }
+
+
 
                         composable(
                             route = Screen.AddtaskScreen.route + "?{taskId}",
