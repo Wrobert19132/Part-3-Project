@@ -33,10 +33,8 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -54,9 +52,6 @@ import com.example.p3project.presentation.screens.addtask.components.PermissionC
 import com.example.p3project.presentation.screens.shared_components.AppError
 import com.example.p3project.presentation.screens.shared_components.AppSnackbar
 import com.example.p3project.presentation.screens.shared_components.KeyboardAdjust
-import com.kotlinx.extend.isEmptyOrInt
-import com.kotlinx.extend.isInt
-import com.kotlinx.extend.isNumber
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -92,9 +87,9 @@ fun AddTaskScreen (
 
     val now: OffsetDateTime = OffsetDateTime.now()
 
-    val notificationTimePicker = rememberTimePickerState(now.hour, now.minute, false)
-    val notificationTimePickerVisible = remember { mutableStateOf(false) }
-    val pickedTime = LocalTime.of(notificationTimePicker.hour, notificationTimePicker.minute)
+    val targetTimePicker = rememberTimePickerState(now.hour, now.minute, false)
+    val targetTimePickerVisible = remember { mutableStateOf(false) }
+    val pickedTime = LocalTime.of(targetTimePicker.hour, targetTimePicker.minute)
 
     val datePicker = rememberDatePickerState(initialSelectedDateMillis = now.toEpochSecond() * 1000)
     val datePickerVisible = remember { mutableStateOf(false) }
@@ -103,12 +98,12 @@ fun AddTaskScreen (
     ).toLocalDate()
 
 
-    LaunchedEffect(notificationTimePicker) {
+    LaunchedEffect(targetTimePicker.hour, targetTimePicker.minute) {
         viewModel.onEvent(AddTaskEvent.SetTargetTime(pickedTime))
     }
 
-    LaunchedEffect(datePicker) {
-        viewModel.onEvent(AddTaskEvent.SetTargetTime(pickedTime))
+    LaunchedEffect(datePicker.selectedDateMillis) {
+        viewModel.onEvent(AddTaskEvent.SetStartDate(pickedDate))
     }
 
 
@@ -128,7 +123,7 @@ fun AddTaskScreen (
             )
         },
     ) { paddingValues ->
-        AppTimePicker(visible = notificationTimePickerVisible, state = notificationTimePicker)
+        AppTimePicker(visible = targetTimePickerVisible, state = targetTimePicker)
         AppDatePicker(visible = datePickerVisible, state = datePicker)
 
 
@@ -224,10 +219,10 @@ fun AddTaskScreen (
                         ClickableTextField(
                             value = String.format(
                                 "at: %02d:%02d,",
-                                notificationTimePicker.hour, notificationTimePicker.minute
+                                targetTimePicker.hour, targetTimePicker.minute
                             ),
                             Modifier.width(110.dp),
-                            onClick = { notificationTimePickerVisible.value = true }
+                            onClick = { targetTimePickerVisible.value = true }
                         )
                     }
 
