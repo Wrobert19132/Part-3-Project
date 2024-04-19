@@ -1,4 +1,4 @@
-package com.example.p3project.presentation.screens.shared_components
+package com.example.p3project.presentation.screens.sharedComponents
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.gestures.scrollBy

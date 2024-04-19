@@ -5,8 +5,6 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationManagerCompat
 import com.example.p3project.common.Constants
 import dagger.hilt.android.HiltAndroidApp
 
@@ -22,7 +20,8 @@ class P3App: Application() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(Constants.NOTIFICATION_CHANNEL_ID,
+            val channel = NotificationChannel(
+                Constants.NOTIFICATION_CHANNEL_ID,
                 "Notification", NotificationManager.IMPORTANCE_DEFAULT
                 )
             channel.description="Description"

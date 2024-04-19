@@ -14,7 +14,7 @@ import com.example.p3project.domain.model.Category
 
 @Composable
 fun CategoryFilterSelector(categories: List<Category>, onSelectCategory: ((category: Category) -> Unit),
-                     selectedCategories: Set<Int>) {
+                           selectedCategories: Set<Int>) {
     LazyRow(
         Modifier
             .fillMaxWidth()

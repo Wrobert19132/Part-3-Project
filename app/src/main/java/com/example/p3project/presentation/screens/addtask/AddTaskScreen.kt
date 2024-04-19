@@ -49,9 +49,9 @@ import com.example.p3project.presentation.screens.addtask.components.AppTimePick
 import com.example.p3project.presentation.screens.addtask.components.CategorySelector
 import com.example.p3project.presentation.screens.addtask.components.ClickableTextField
 import com.example.p3project.presentation.screens.addtask.components.PermissionChecker
-import com.example.p3project.presentation.screens.shared_components.AppError
-import com.example.p3project.presentation.screens.shared_components.AppSnackbar
-import com.example.p3project.presentation.screens.shared_components.KeyboardAdjust
+import com.example.p3project.presentation.screens.sharedComponents.AppError
+import com.example.p3project.presentation.screens.sharedComponents.AppSnackbar
+import com.example.p3project.presentation.screens.sharedComponents.KeyboardAdjust
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -141,7 +141,7 @@ fun AddTaskScreen (
                                 "tasks cannot be sent, significantly degrading application " +
                                 "functionality.",
 
-                    )
+                        )
                 )
             })
 
@@ -187,7 +187,7 @@ fun AddTaskScreen (
                         onValueChange = {viewModel.onEvent(AddTaskEvent.SetDescription(it))},
                     )
 
-                    CategorySelector(categories = state.allCategories, 
+                    CategorySelector(categories = state.allCategories,
                                      onSelectCategory = {
                                          category ->
                                             viewModel.onEvent(AddTaskEvent.ToggleCategory(category))

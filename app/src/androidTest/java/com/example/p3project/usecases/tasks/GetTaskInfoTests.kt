@@ -1,20 +1,12 @@
 package com.example.p3project.usecases.tasks
 
-import android.content.Context
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.p3project.DBTest
-import com.example.p3project.data.database.TaskDatabase
-import com.example.p3project.data.repository.TaskRepositoryImpl
 import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.tasks.GetTaskInfoUseCase
-import junit.framework.TestCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
-import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.LocalDate

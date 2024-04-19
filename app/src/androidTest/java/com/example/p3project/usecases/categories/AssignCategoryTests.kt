@@ -6,7 +6,6 @@ import com.example.p3project.DBTest
 import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.usecases.categories.AssignCategoryUseCase
-import com.example.p3project.domain.usecases.categories.CreateCategoryUseCase
 import junit.framework.TestCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

@@ -2,7 +2,6 @@ package com.example.p3project.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.p3project.domain.util.InvalidTaskException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime

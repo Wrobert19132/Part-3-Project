@@ -1,4 +1,4 @@
-package com.example.p3project.presentation.screens.shared_components
+package com.example.p3project.presentation.screens.sharedComponents
 
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text

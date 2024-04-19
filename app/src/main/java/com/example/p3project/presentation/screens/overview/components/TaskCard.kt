@@ -18,25 +18,20 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.TaskWithRelations
-import com.example.p3project.presentation.screens.shared_components.StreakCircle
-import com.example.p3project.presentation.screens.shared_components.TaskTime
+import com.example.p3project.presentation.screens.sharedComponents.TaskTime
 import kotlinx.coroutines.delay
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 @Composable
@@ -66,14 +61,12 @@ fun TaskCard (taskInfo: TaskWithRelations, onClick: () -> Unit, onComplete: () -
     var minutesUntil by remember {
         mutableIntStateOf(task.minutesUntilTask(LocalDateTime.now()))
     }
-    var isTaskDay by remember {mutableStateOf(task.isTaskDay(now.toLocalDate()))}
 
     LaunchedEffect(minutesUntil) {
         if (minutesUntil >= 0) {
             delay(1000 * 60)
 
             minutesUntil -= 1
-            isTaskDay = task.isTaskDay(now.toLocalDate())
         }
     }
 
@@ -134,14 +127,14 @@ fun TaskCard (taskInfo: TaskWithRelations, onClick: () -> Unit, onComplete: () -
             Spacer(modifier = Modifier.height(10.dp))
 
             FilledTonalButton(
-                enabled = isTaskDay && !taskInfo.completedToday(now.toLocalDate()),
+                enabled = task.isTaskDay(now.toLocalDate()) && !taskInfo.completedToday(now.toLocalDate()),
                 onClick = { onComplete() },
                 modifier = Modifier
                     .width(130.dp)
                     .align(Alignment.End),
 
                 ) {
-                if (isTaskDay) {
+                if (task.isTaskDay(now.toLocalDate())) {
                     if (taskInfo.completedToday(now.toLocalDate())) {
                         Text("Completed!")
                     } else {

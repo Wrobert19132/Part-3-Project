@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import com.example.p3project.presentation.screens.Screen
-import com.example.p3project.presentation.screens.shared_components.AppNavigation
+import com.example.p3project.presentation.screens.sharedComponents.AppNavigation
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState

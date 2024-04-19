@@ -1,18 +1,10 @@
 package com.example.p3project.usecases.categories
 
-import android.content.Context
 import androidx.compose.ui.graphics.Color
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import com.example.p3project.DBTest
-import com.example.p3project.data.database.TaskDatabase
-import com.example.p3project.data.repository.TaskRepositoryImpl
 import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.repository.TaskRepository
-import com.example.p3project.domain.usecases.categories.AllCategoriesUseCase
 import com.example.p3project.domain.usecases.categories.CreateCategoryUseCase
-import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
 import com.example.p3project.domain.util.InvalidCategoryException
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest

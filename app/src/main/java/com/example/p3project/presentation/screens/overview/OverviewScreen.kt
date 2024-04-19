@@ -3,8 +3,6 @@ package com.example.p3project.presentation.screens.overview
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,10 +24,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.p3project.presentation.screens.Screen
 import com.example.p3project.presentation.screens.overview.components.CategoryFilterSelector
-import com.example.p3project.presentation.screens.overview.components.TaskCard
+import com.example.p3project.presentation.screens.overview.components.OverviewList
 import com.example.p3project.presentation.screens.overview.components.ViewMode
-import com.example.p3project.presentation.screens.shared_components.AppNavigation
-import com.example.p3project.presentation.screens.shared_components.AppSnackbar
+import com.example.p3project.presentation.screens.sharedComponents.AppNavigation
+import com.example.p3project.presentation.screens.sharedComponents.AppSnackbar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -81,24 +79,14 @@ fun OverviewScreen (
             )
             CategoryFilterSelector(state.categories, {category ->  viewModel.onEvent(OverviewEvent.ToggleCategory(category))}, state.categoryFilters)
 
-            LazyColumn() {
-                items(state.tasksInfo) { taskAndCompletions ->
-                    val task = taskAndCompletions.task
-
-                    TaskCard(
-                        taskAndCompletions,
-                        onClick = {
-                            navController.navigate(
-                                Screen.ViewTaskScreen.route + "/${task.taskId}"
-                            )
-                        },
-                        onComplete = {
-                            viewModel.onEvent(OverviewEvent.CompleteTask(task))
-                        }
-                    )
-                }
-            }
-
+            OverviewList(taskInfos = state.tasksInfo, onTaskClick = {taskInfo ->
+                navController.navigate(
+                    Screen.ViewTaskScreen.route + "/${taskInfo.task.taskId}"
+                )
+            }, onTaskComplete = {
+                taskInfo -> viewModel.onEvent(OverviewEvent.CompleteTask(taskInfo.task))
+            },
+                viewMode = state.viewMode)
         }
     }
 }
