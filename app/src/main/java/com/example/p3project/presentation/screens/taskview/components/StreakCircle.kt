@@ -31,7 +31,7 @@ fun StreakCircle(taskInfo: TaskWithRelations, from: LocalDate) {
         1f - (task.minutesUntilTask(now).toFloat() / task.periodLengthMinutes().toFloat())
     }
 
-    Box(modifier = Modifier.size(120.dp),
+    Box(modifier = Modifier.size(125.dp),
         contentAlignment = Alignment.Center
     ) {
 
@@ -58,7 +58,7 @@ fun StreakCircle(taskInfo: TaskWithRelations, from: LocalDate) {
                     )
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = "day streak",
+                        text = "point streak",
                         overflow = TextOverflow.Visible,
                         textAlign = TextAlign.Center,
                     )

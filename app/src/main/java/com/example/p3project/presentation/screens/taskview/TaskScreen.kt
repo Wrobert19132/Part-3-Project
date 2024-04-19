@@ -10,11 +10,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -22,6 +24,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -29,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.p3project.domain.model.Task
+import com.example.p3project.presentation.screens.sharedComponents.AppConfirmDialog
 import com.example.p3project.presentation.screens.sharedComponents.TaskTime
 import com.example.p3project.presentation.screens.taskview.components.StreakCircle
 import java.time.LocalDate
@@ -47,15 +51,36 @@ fun TaskScreen (
 
     val scope = rememberCoroutineScope()
 
-    if (viewModel.taskInfo != null) {
-        val task: Task = viewModel.taskInfo!!.task
+    val state = viewModel.state.collectAsState().value
 
+
+    if (state.taskInfo != null) {
+        val task: Task = state.taskInfo!!.task
+
+        AppConfirmDialog(state.askDelete,
+            "Are you sure you want to delete this task?",
+            {
+                viewModel.onEvent(TaskScreenEvent.confirmDelete)
+                navController.popBackStack()
+            },
+            {viewModel.onEvent(TaskScreenEvent.toggleDeleteWarning(false))},
+            "Confirm Deletion",
+            "Delete")
 
         Scaffold(
             topBar = {
                 TopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(),
                     title = {},
+                    actions = {
+                        IconButton(
+                            onClick = {
+                                viewModel.onEvent(TaskScreenEvent.toggleDeleteWarning(true))
+                            }
+                        ) {
+                            Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete")
+                        }
+                    }
                 )
             },
             floatingActionButton = {
@@ -67,7 +92,8 @@ fun TaskScreen (
                     )
                 }
             }
-        ) { paddingValues ->
+        ) {
+            paddingValues ->
             Column(
                 Modifier
                     .padding(paddingValues)
@@ -96,7 +122,7 @@ fun TaskScreen (
                     Modifier
                         .fillMaxWidth()
                         .wrapContentSize()) {
-                    StreakCircle(taskInfo = viewModel.taskInfo!!, from = LocalDate.now())
+                    StreakCircle(taskInfo = state.taskInfo!!, from = LocalDate.now())
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))

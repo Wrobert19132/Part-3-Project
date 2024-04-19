@@ -36,7 +36,6 @@ fun OverviewScreen (
     viewModel: OverviewViewmodel = hiltViewModel()
 ) {
 
-    val scope = rememberCoroutineScope()
     val snackbarHostState = remember {SnackbarHostState() }
     
     val state = viewModel.state.collectAsState().value
@@ -44,6 +43,7 @@ fun OverviewScreen (
     LaunchedEffect(true) {
         viewModel.onEvent(OverviewEvent.ReloadInfo)
     }
+
     Scaffold (
         snackbarHost = {
             AppSnackbar(hostState = snackbarHostState)
@@ -77,17 +77,18 @@ fun OverviewScreen (
             ViewMode(state.viewMode,
                 pickView = {viewMode -> viewModel.onEvent(OverviewEvent.UpdateViewMode(viewMode))},
             )
-            CategoryFilterSelector(state.categories, {category ->  viewModel.onEvent(OverviewEvent.ToggleCategory(category))}, state.categoryFilters)
+            CategoryFilterSelector(categories = state.categories,
+                                   onSelectCategory = {category ->  viewModel.onEvent(OverviewEvent.ToggleCategory(category))},
+                                   selectedCategories = state.categoryFilters
+            )
 
-            OverviewList(taskInfos = state.tasksInfo, onTaskClick = {taskInfo ->
-                navController.navigate(
-                    Screen.ViewTaskScreen.route + "/${taskInfo.task.taskId}"
-                )
-            }, onTaskComplete = {
-                taskInfo -> viewModel.onEvent(OverviewEvent.CompleteTask(taskInfo.task))
-            },
+            OverviewList(taskInfos = state.tasksInfo,
+                onTaskClick = {taskInfo ->
+                    navController.navigate(Screen.ViewTaskScreen.route + "/${taskInfo.task.taskId}")
+                }, onTaskComplete = {
+                    taskInfo -> viewModel.onEvent(OverviewEvent.CompleteTask(taskInfo.task))
+                },
                 viewMode = state.viewMode)
         }
     }
 }
-
