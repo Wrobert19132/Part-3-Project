@@ -10,10 +10,12 @@ import com.example.p3project.domain.usecases.notifications.SendNotificationUseCa
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
 import com.example.p3project.domain.usecases.tasks.GetTaskInfoUseCase
 import com.example.p3project.domain.usecases.tasks.AllTaskInfoUseCase
+import com.example.p3project.domain.usecases.tasks.DeleteTaskUseCase
 
 
 data class UseCases(
     val addTaskUseCase: AddTaskUseCase,
+    val deleteTaskUseCase: DeleteTaskUseCase,
 
     val getTasksUseCase: AllTaskInfoUseCase,
     val getTaskByIdUseCase: GetTaskInfoUseCase,
