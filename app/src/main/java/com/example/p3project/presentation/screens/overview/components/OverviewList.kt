@@ -18,6 +18,7 @@ fun OverviewList(taskInfos: List<TaskWithRelations>,
                  viewMode: TaskViewMode,
                  onTaskClick: ((TaskWithRelations) -> Unit),
                  onTaskComplete: ((TaskWithRelations) -> Unit),
+                 onTaskUncomplete: ((TaskWithRelations) -> Unit),
                  ) {
     if (taskInfos.isEmpty()) {
         Spacer(modifier = Modifier.height(80.dp))
@@ -44,8 +45,12 @@ fun OverviewList(taskInfos: List<TaskWithRelations>,
                     },
                     onComplete = {
                         onTaskComplete(taskAndCompletions)
-                    }
-                )
+                    },
+                    onUncomplete = {
+                        onTaskUncomplete(taskAndCompletions)
+                    },
+
+                    )
             }
         }
     }

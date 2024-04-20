@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.Task
+import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.usecases.UseCases
 import com.example.p3project.domain.util.TaskViewMode
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,6 +47,10 @@ class OverviewViewmodel @Inject constructor(
              is OverviewEvent.ToggleCategory -> viewModelScope.launch(Dispatchers.IO) {
                  toggleCategoryFilter(event.category)
              }
+
+             is OverviewEvent.UncompleteTask -> viewModelScope.launch(Dispatchers.IO) {
+                 uncompleteTask(event.taskInfo)
+             }
          }
     }
     private suspend fun completeTask(task: Task) {
@@ -53,6 +58,15 @@ class OverviewViewmodel @Inject constructor(
         useCases.completeTasksUseCase(task,
                                       task.periodsPassed(LocalDate.now()),
                                       LocalTime.now()
+        )
+
+        getInfo()
+    }
+
+    private suspend fun uncompleteTask(taskInfo: TaskWithRelations) {
+
+        useCases.uncompleteTasksUseCase(taskInfo,
+            taskInfo.task.periodsPassed(LocalDate.now()),
         )
 
         getInfo()

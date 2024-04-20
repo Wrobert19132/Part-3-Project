@@ -87,6 +87,8 @@ fun OverviewScreen (
                     navController.navigate(Screen.ViewTaskScreen.route + "/${taskInfo.task.taskId}")
                 }, onTaskComplete = {
                     taskInfo -> viewModel.onEvent(OverviewEvent.CompleteTask(taskInfo.task))
+                }, onTaskUncomplete = {
+                        taskInfo -> viewModel.onEvent(OverviewEvent.UncompleteTask(taskInfo))
                 },
                 viewMode = state.viewMode)
         }

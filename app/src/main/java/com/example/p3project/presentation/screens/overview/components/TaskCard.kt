@@ -30,6 +30,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.TaskWithRelations
+import com.example.p3project.presentation.screens.sharedComponents.TaskCompletionButton
 import com.example.p3project.presentation.screens.sharedComponents.TaskTime
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
@@ -52,7 +53,8 @@ private fun CategoryView(categories: List<Category>) {
 }
 
 @Composable
-fun TaskCard (taskInfo: TaskWithRelations, onClick: () -> Unit, onComplete: () -> Unit) {
+fun TaskCard (taskInfo: TaskWithRelations, onClick: () -> Unit, onComplete: () -> Unit,
+              onUncomplete: () -> Unit) {
     val task = taskInfo.task
 
 
@@ -126,25 +128,7 @@ fun TaskCard (taskInfo: TaskWithRelations, onClick: () -> Unit, onComplete: () -
 
             Spacer(modifier = Modifier.height(10.dp))
 
-            FilledTonalButton(
-                enabled = task.isTaskDay(now.toLocalDate()) && !taskInfo.completedToday(now.toLocalDate()),
-                onClick = { onComplete() },
-                modifier = Modifier
-                    .width(130.dp)
-                    .align(Alignment.End),
-
-                ) {
-                if (task.isTaskDay(now.toLocalDate())) {
-                    if (taskInfo.completedToday(now.toLocalDate())) {
-                        Text("Completed!")
-                    } else {
-                        Text("Complete")
-
-                    }
-                } else {
-                    TaskTime(task = task, long = false)
-                }
-            }
+            TaskCompletionButton(taskInfo, Modifier.align(Alignment.End), onComplete, onUncomplete)
 
         }
     }

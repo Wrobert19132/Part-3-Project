@@ -20,6 +20,7 @@ import com.example.p3project.domain.usecases.categories.CreateCategoryUseCase
 import com.example.p3project.domain.usecases.categories.DeleteCategoryUseCase
 import com.example.p3project.domain.usecases.categories.UnassignCategoryUseCase
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
+import com.example.p3project.domain.usecases.completions.UncompleteTaskUseCase
 import com.example.p3project.domain.usecases.notifications.ScheduleFollowUpNotificationUseCase
 import com.example.p3project.domain.usecases.tasks.DeleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.ModifyTaskUseCase
@@ -87,6 +88,7 @@ class AppModule {
                 deleteTaskUseCase = DeleteTaskUseCase(repository),
                 unassignCategoryUseCase = UnassignCategoryUseCase(repository),
                 modifyTaskUseCase = ModifyTaskUseCase(repository),
+                uncompleteTasksUseCase = UncompleteTaskUseCase(repository),
             )
     }
 

@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,7 +44,33 @@ class TaskScreenViewmodel @Inject constructor(
                 setDeleteConfirmVisibility(event.shown)
 
             }
+
+            is TaskScreenEvent.CompleteTask -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    setTaskCompletion(event.complete)
+                }
+            }
         }
+    }
+
+    private suspend fun setTaskCompletion(complete: Boolean) {
+        val now = LocalDateTime.now()
+        val taskInfo = state.value.taskInfo!!
+        val period = taskInfo.task.periodsPassed(now.toLocalDate())
+
+        if (complete) {
+            useCases.completeTasksUseCase(
+                taskInfo.task,
+                period,
+                now.toLocalTime()
+            )
+        } else {
+            useCases.uncompleteTasksUseCase(
+                taskInfo,
+                period
+            )
+        }
+        reloadTask()
     }
 
     private suspend fun deleteTask() {

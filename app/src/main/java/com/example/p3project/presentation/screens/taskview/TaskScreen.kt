@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -34,6 +35,7 @@ import androidx.navigation.NavController
 import com.example.p3project.domain.model.Task
 import com.example.p3project.presentation.screens.Screen
 import com.example.p3project.presentation.screens.sharedComponents.AppConfirmDialog
+import com.example.p3project.presentation.screens.sharedComponents.TaskCompletionButton
 import com.example.p3project.presentation.screens.sharedComponents.TaskTime
 import com.example.p3project.presentation.screens.taskview.components.StreakCircle
 import java.time.LocalDate
@@ -125,8 +127,21 @@ fun TaskScreen (
                     StreakCircle(taskInfo = state.taskInfo!!, from = LocalDate.now())
                 }
 
+
                 Spacer(modifier = Modifier.height(20.dp))
 
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentSize()
+                ) {
+                    TaskCompletionButton(state.taskInfo!!,
+                        onComplete = { viewModel.onEvent(TaskScreenEvent.CompleteTask(true)) },
+                        onUncomplete = {viewModel.onEvent(TaskScreenEvent.CompleteTask(false))}
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
 
                 ElevatedCard(
                     modifier = Modifier
