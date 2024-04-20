@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".presentation.broadcastRecievers.TaskBroadcastReceiver"/>
+        <receiver android:name=".presentation.broadcastRecievers.TaskNotificationBroadcastReceiver"/>
 </application>
 
 </manifest>

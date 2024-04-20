@@ -42,10 +42,9 @@ fun shouldAskForSchedulerPermission(activity: Activity): Boolean {
 }
 
 @Composable
-fun PermissionChecker(onNotificationFail: (() -> Unit), onSchedulerFail: (() -> Unit)) {
+fun PermissionChecker(onNotificationFail: (() -> Unit), onSchedulerFail: (() -> Unit),
+                      show: Boolean = true) {
     val activity = LocalContext.current as Activity
-
-
 
     var showNotificationPrompt by remember { mutableStateOf(false)}
     var showAlarmPrompt by remember { mutableStateOf(false)}
@@ -54,82 +53,86 @@ fun PermissionChecker(onNotificationFail: (() -> Unit), onSchedulerFail: (() -> 
         showNotificationPrompt = shouldAskForNotificationPermission(activity)
         showAlarmPrompt = shouldAskForSchedulerPermission(activity)
     }
-    if (showNotificationPrompt) {
-        AlertDialog(
-            icon = { Icon(Icons.Default.Notifications, "A notification bell Icon") },
-            text = {
-                Text(
-                    text = "This application relies on digital interrupts to function. " +
-                            "To send these, it needs permission to send notifications."
-                )
-            },
-            onDismissRequest = {
-                showNotificationPrompt = false
-                onNotificationFail()
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    ActivityCompat.requestPermissions(activity,
-                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                        0)
-                    showNotificationPrompt = false
-                }
-                ) {
-                    Text(text = "Okay")
-
-                }
-
-
-            },
-            dismissButton = {
-                TextButton(onClick = {
+    if (show) {
+        if (showNotificationPrompt) {
+            AlertDialog(
+                icon = { Icon(Icons.Default.Notifications, "A notification bell Icon") },
+                text = {
+                    Text(
+                        text = "This application relies on digital interrupts to function. " +
+                                "To send these, it needs permission to send notifications."
+                    )
+                },
+                onDismissRequest = {
                     showNotificationPrompt = false
                     onNotificationFail()
-                }
-                ) {
-                    Text(text = "Dismiss")
-
-                }
-            }
-        )
-    } else if (showAlarmPrompt) {
-        AlertDialog(
-            icon = { Icon(Icons.Default.DateRange, "A calendar Icon") },
-            text = {
-                Text(
-                    text = "This application relies on digital interrupts to function. " +
-                            "To send these, it needs permission to schedule notifications."
-                )
-            },
-            onDismissRequest = {
-                showAlarmPrompt = false
-                onNotificationFail()
-            },
-            confirmButton = {
-                TextButton(onClick = {
-                    Intent().also { intent ->
-                        intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                        activity.startActivity(intent)
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        ActivityCompat.requestPermissions(
+                            activity,
+                            arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                            0
+                        )
+                        showNotificationPrompt = false
                     }
+                    ) {
+                        Text(text = "Okay")
+
+                    }
+
+
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        showNotificationPrompt = false
+                        onNotificationFail()
+                    }
+                    ) {
+                        Text(text = "Dismiss")
+
+                    }
+                }
+            )
+        } else if (showAlarmPrompt) {
+            AlertDialog(
+                icon = { Icon(Icons.Default.DateRange, "A calendar Icon") },
+                text = {
+                    Text(
+                        text = "This application relies on digital interrupts to function. " +
+                                "To send these, it needs permission to schedule notifications."
+                    )
+                },
+                onDismissRequest = {
                     showAlarmPrompt = false
-                }
-                ) {
-                    Text(text = "Okay")
+                    onNotificationFail()
+                },
+                confirmButton = {
+                    TextButton(onClick = {
+                        Intent().also { intent ->
+                            intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                            activity.startActivity(intent)
+                        }
+                        showAlarmPrompt = false
+                    }
+                    ) {
+                        Text(text = "Okay")
 
-                }
+                    }
 
 
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    showAlarmPrompt = false
-                    onSchedulerFail()
-                }
-                ) {
-                    Text(text = "Dismiss")
+                },
+                dismissButton = {
+                    TextButton(onClick = {
+                        showAlarmPrompt = false
+                        onSchedulerFail()
+                    }
+                    ) {
+                        Text(text = "Dismiss")
 
+                    }
                 }
-            }
-        )
+            )
+        }
     }
 }

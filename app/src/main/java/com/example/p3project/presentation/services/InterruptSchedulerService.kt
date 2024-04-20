@@ -1,4 +1,4 @@
-package com.example.p3project.data.repository
+package com.example.p3project.presentation.services
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -6,16 +6,16 @@ import android.content.Context
 import android.content.Intent
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.repository.InterruptScheduler
-import com.example.p3project.presentation.broadcastRecievers.TaskBroadcastReceiver
+import com.example.p3project.presentation.broadcastRecievers.TaskNotificationBroadcastReceiver
 import java.time.LocalDate
 import java.time.OffsetDateTime
 
-class InterruptSchedulerImpl(private val context: Context) : InterruptScheduler {
+class InterruptSchedulerService(private val context: Context) : InterruptScheduler {
     private var alarmManager = context.getSystemService(AlarmManager::class.java)
 
     @Throws(SecurityException::class)
-    override fun scheduleTaskInterrupt(task: Task, date: LocalDate) {
-        val intent = Intent(context, TaskBroadcastReceiver::class.java).apply {
+    override fun scheduleTaskNotificationInterrupt(task: Task, date: LocalDate) {
+        val intent = Intent(context, TaskNotificationBroadcastReceiver::class.java).apply {
             putExtra("TASK_ID", task.taskId)
         }
         val now = OffsetDateTime.now()
@@ -32,8 +32,13 @@ class InterruptSchedulerImpl(private val context: Context) : InterruptScheduler 
         )
     }
 
-    override fun cancelTaskInterrupt(task: Task) {
-        TODO("Not yet implemented")
+    override fun cancelTaskNotificationInterrupt(task: Task) {
+        alarmManager.cancel(PendingIntent.getBroadcast(
+            context,
+            task.taskId,
+            Intent(context, TaskNotificationBroadcastReceiver::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        ))
     }
 
 }

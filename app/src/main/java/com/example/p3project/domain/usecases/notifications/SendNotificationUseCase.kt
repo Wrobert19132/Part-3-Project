@@ -8,28 +8,16 @@ import androidx.core.app.NotificationCompat
 import com.example.p3project.common.Constants
 import com.example.p3project.domain.model.Task
 import com.example.p3project.presentation.MainActivity
+import com.example.p3project.presentation.services.NotificationService
+import java.time.LocalTime
 
-class SendNotificationUseCase () {
-    operator fun invoke(context: Context, task: Task) {
+class SendNotificationUseCase (val notificationService: NotificationService) {
+    operator fun invoke(task: Task) {
+        val now = LocalTime.now()
+        if (now > task.targetTime.minusMinutes(task.notificationOffset.toLong() / 2)) {
+            return
+        }
+        notificationService(task)
 
-        val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-
-        val activityIntent = Intent(context, MainActivity::class.java)
-        val activityPendingIntent = PendingIntent.getActivity(
-            context,
-            1,
-            activityIntent,
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = NotificationCompat.Builder(context, Constants.NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(androidx.core.R.drawable.ic_call_decline)
-            .setContentTitle("Test Notification")
-            .setContentText(task.name)
-            .setContentIntent(activityPendingIntent)
-            .build()
-
-        notificationManager.notify(task.taskId, notification)
     }
 }

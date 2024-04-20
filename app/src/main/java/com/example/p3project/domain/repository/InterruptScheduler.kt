@@ -4,6 +4,6 @@ import com.example.p3project.domain.model.Task;
 import java.time.LocalDate
 
 interface InterruptScheduler {
-    fun scheduleTaskInterrupt(task: Task, day: LocalDate)
-    fun cancelTaskInterrupt(task: Task)
+    fun scheduleTaskNotificationInterrupt(task: Task, date: LocalDate)
+    fun cancelTaskNotificationInterrupt(task: Task)
 }

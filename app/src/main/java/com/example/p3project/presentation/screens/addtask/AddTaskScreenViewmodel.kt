@@ -81,7 +81,12 @@ class AddTaskScreenViewmodel @Inject constructor(
                 task
             }
 
-            useCases.scheduleTaskUseCase(task)
+            try {
+                useCases.scheduleTaskUseCase(task)
+            } catch (e: SecurityException) {
+                onEvent(AddTaskEvent.SendError("You have not given the application scheduling " +
+                        "permissions. Notifications will not work."))
+            }
 
             state.value = state.value.copy(taskAdded = true)
         } catch (e: InvalidTaskException) {

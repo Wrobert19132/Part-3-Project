@@ -66,8 +66,8 @@ fun AddTaskScreen (
 
     val scope = rememberCoroutineScope()
 
-    LaunchedEffect(state.taskAdded) {
-        if (state.taskAdded) {
+    LaunchedEffect(state.taskAdded, state.error) {
+        if (state.taskAdded && state.error == null) {
             navController.popBackStack()
         }
     }
@@ -141,6 +141,11 @@ fun AddTaskScreen (
                       },
         )
 
+        AppError(errorMessage = state.error) {
+            viewModel.onEvent(AddTaskEvent.DismissError)
+        }
+
+
 
         PermissionChecker(onNotificationFail = {
             viewModel.onEvent(
@@ -150,19 +155,17 @@ fun AddTaskScreen (
                 )
             )
         }, onSchedulerFail = {
-                viewModel.onEvent(
-                    AddTaskEvent.SendError(
-                        "Without access to the task scheduler, notifications for your " +
-                                "tasks cannot be sent, significantly degrading application " +
-                                "functionality.",
+            viewModel.onEvent(
+                AddTaskEvent.SendError(
+                    "Without access to the task scheduler, notifications for your " +
+                            "tasks cannot be sent, significantly degrading application " +
+                            "functionality.",
 
-                        )
-                )
-            })
-
-        AppError(errorMessage = state.error) {
-            viewModel.onEvent(AddTaskEvent.DismissError)
-        }
+                    )
+            )
+        },
+            show = (state.error == null)
+        )
 
         KeyboardAdjust {
             Box(

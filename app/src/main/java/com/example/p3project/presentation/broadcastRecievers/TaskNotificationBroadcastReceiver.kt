@@ -9,29 +9,31 @@ import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.UseCases
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TaskBroadcastReceiver: BroadcastReceiver() {
+class TaskNotificationBroadcastReceiver: BroadcastReceiver() {
 
     @Inject lateinit var taskRepository: TaskRepository
     @Inject lateinit var taskScheduler: InterruptScheduler
 
     @Inject lateinit var useCases: UseCases
 
-    @OptIn(DelicateCoroutinesApi::class)
+
     override fun onReceive(context: Context?, intent: Intent?) {
         CoroutineScope(Dispatchers.IO).launch {
+
             val taskId: Int = intent?.getIntExtra("TASK_ID", -1)!!
             val taskInfo: TaskWithRelations? = taskRepository.getTaskInfo(taskId)
 
             if (taskInfo != null) {
                 val task = taskInfo.task
-                useCases.sendNotificationUseCase(context!!, task)
+
+                useCases.sendNotificationUseCase(task)
+                useCases.scheduleFollowUpNotificationUseCase(task)
 
                 useCases.scheduleTaskUseCase(task,
                                              task.nextTaskDay(

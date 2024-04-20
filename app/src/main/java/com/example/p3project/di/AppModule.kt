@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.p3project.domain.repository.InterruptScheduler
-import com.example.p3project.data.repository.InterruptSchedulerImpl
+import com.example.p3project.presentation.services.InterruptSchedulerService
 import com.example.p3project.data.database.TaskDatabase
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.data.repository.TaskRepositoryImpl
@@ -20,8 +20,10 @@ import com.example.p3project.domain.usecases.categories.CreateCategoryUseCase
 import com.example.p3project.domain.usecases.categories.DeleteCategoryUseCase
 import com.example.p3project.domain.usecases.categories.UnassignCategoryUseCase
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
+import com.example.p3project.domain.usecases.notifications.ScheduleFollowUpNotificationUseCase
 import com.example.p3project.domain.usecases.tasks.DeleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.ModifyTaskUseCase
+import com.example.p3project.presentation.services.NotificationService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,7 +49,13 @@ class AppModule {
     @Provides
     @Singleton
     fun provideInterruptScheduler(@ApplicationContext context: Context): InterruptScheduler {
-        return InterruptSchedulerImpl(context)
+        return InterruptSchedulerService(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideNotificationService(@ApplicationContext context: Context): NotificationService {
+        return NotificationService(context)
     }
 
     @Provides
@@ -58,13 +66,19 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideUseCases(repository: TaskRepository, scheduler: InterruptScheduler): UseCases {
+    fun provideUseCases(repository: TaskRepository, scheduler: InterruptScheduler,
+                        notificationService: NotificationService
+    ): UseCases {
         return UseCases(
                 addTaskUseCase = AddTaskUseCase(repository),
                 getTaskByIdUseCase = GetTaskInfoUseCase(repository),
                 getTasksUseCase = AllTaskInfoUseCase(repository),
+
                 scheduleTaskUseCase = ScheduleTaskUseCase(scheduler),
-                sendNotificationUseCase = SendNotificationUseCase(),
+                scheduleFollowUpNotificationUseCase = ScheduleFollowUpNotificationUseCase(scheduler),
+
+                sendNotificationUseCase = SendNotificationUseCase(notificationService),
+
                 completeTasksUseCase = CompleteTaskUseCase(repository),
                 createCategoryUseCase = CreateCategoryUseCase(repository),
                 allCategoriesUseCase = AllCategoriesUseCase(repository),
@@ -72,8 +86,8 @@ class AppModule {
                 assignCategoryUseCase = AssignCategoryUseCase(repository),
                 deleteTaskUseCase = DeleteTaskUseCase(repository),
                 unassignCategoryUseCase = UnassignCategoryUseCase(repository),
-                modifyTaskUseCase = ModifyTaskUseCase(repository)
-              )
+                modifyTaskUseCase = ModifyTaskUseCase(repository),
+            )
     }
 
 }
