@@ -9,9 +9,13 @@ sealed class AddTaskEvent {
 
 
     data class SendError(val message: String): AddTaskEvent()
+    data class ToggleDatePicker(val visible: Boolean): AddTaskEvent()
+    data class ToggleTimePicker(val visible: Boolean): AddTaskEvent()
+
+
     data object DismissError: AddTaskEvent()
 
-    data object LoadCategories: AddTaskEvent()
+    data object Reload: AddTaskEvent()
 
     data class ToggleCategory(val category: Category): AddTaskEvent()
     data class SetName(val name: String): AddTaskEvent()

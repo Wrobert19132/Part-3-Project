@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.p3project.domain.model.Task
+import com.example.p3project.presentation.screens.Screen
 import com.example.p3project.presentation.screens.sharedComponents.AppConfirmDialog
 import com.example.p3project.presentation.screens.sharedComponents.TaskTime
 import com.example.p3project.presentation.screens.taskview.components.StreakCircle
@@ -41,7 +42,6 @@ import java.time.LocalDate
 @Composable
 fun TaskScreen (
     navController: NavController,
-    taskID: Int?,
     viewModel: TaskScreenViewmodel = hiltViewModel(),
 
     ) {
@@ -85,7 +85,7 @@ fun TaskScreen (
             },
             floatingActionButton = {
                 FloatingActionButton(
-                    onClick = { /* do something */ }) {
+                    onClick = {navController.navigate(Screen.AddtaskScreen.route + "?${task.taskId}")}) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         contentDescription = "Edit Task"

@@ -59,15 +59,15 @@ class MainActivity : ComponentActivity() {
                         composable(
                             route = Screen.AddtaskScreen.route + "?{taskId}",
                             arguments = listOf(navArgument("taskId") {nullable=true})
-                        ) {backStackEntry ->
-                            AddTaskScreen(navController, backStackEntry.arguments?.getInt("taskId"))
+                        ) {
+                            AddTaskScreen(navController)
                         }
 
                         composable(
                             route = Screen.ViewTaskScreen.route + "/{taskId}",
                             arguments = listOf(navArgument("taskId") {type = NavType.IntType})
-                        ) {backStackEntry ->
-                            TaskScreen(navController, backStackEntry.arguments?.getInt("taskId"))
+                        ) {
+                            TaskScreen(navController)
                         }
                     }
                 }

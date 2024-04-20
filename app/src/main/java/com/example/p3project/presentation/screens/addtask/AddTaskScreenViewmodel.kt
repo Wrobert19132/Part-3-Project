@@ -1,5 +1,6 @@
 package com.example.p3project.presentation.screens.addtask
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.p3project.domain.model.Category
@@ -17,8 +18,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddTaskScreenViewmodel @Inject constructor(
-    private val useCases: UseCases
-): ViewModel() {
+    private val useCases: UseCases,
+    savedStateHandle: SavedStateHandle,
+    ): ViewModel() {
 
 
 
@@ -123,6 +125,14 @@ class AddTaskScreenViewmodel @Inject constructor(
         )
     }
 
+    private fun toggleDatePicker(visible: Boolean) {
+        state.value = state.value.copy(datePickerVisible = visible)
+    }
+
+    private fun toggleTimePicker(visible: Boolean) {
+        state.value = state.value.copy(timePickerVisible = visible)
+    }
+
     fun onEvent(event: AddTaskEvent) {
         when (event) {
             is AddTaskEvent.AddTask ->
@@ -130,7 +140,7 @@ class AddTaskScreenViewmodel @Inject constructor(
                 addTask()
             }
 
-            AddTaskEvent.LoadCategories -> viewModelScope.launch(Dispatchers.IO) {
+            AddTaskEvent.Reload -> viewModelScope.launch(Dispatchers.IO) {
                 loadTaskCategories()
             }
 
@@ -146,7 +156,8 @@ class AddTaskScreenViewmodel @Inject constructor(
 
 
             is AddTaskEvent.ToggleCategory -> toggleCategory(event.category)
-
+            is AddTaskEvent.ToggleDatePicker -> toggleDatePicker(event.visible)
+            is AddTaskEvent.ToggleTimePicker -> toggleTimePicker(event.visible)
         }
 
 

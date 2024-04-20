@@ -28,12 +28,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.VerticalDivider
-import androidx.compose.material3.rememberDatePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,18 +41,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.p3project.domain.model.Task
-import com.example.p3project.presentation.screens.addtask.components.AppDatePicker
-import com.example.p3project.presentation.screens.addtask.components.AppTimePicker
+import com.example.p3project.presentation.screens.addtask.components.DatePickerDialog
 import com.example.p3project.presentation.screens.addtask.components.CategorySelector
 import com.example.p3project.presentation.screens.addtask.components.ClickableTextField
 import com.example.p3project.presentation.screens.addtask.components.PermissionChecker
+import com.example.p3project.presentation.screens.addtask.components.TimePickerDialog
 import com.example.p3project.presentation.screens.sharedComponents.AppError
 import com.example.p3project.presentation.screens.sharedComponents.AppSnackbar
 import com.example.p3project.presentation.screens.sharedComponents.KeyboardAdjust
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -63,7 +56,6 @@ import java.time.format.FormatStyle
 @Composable
 fun AddTaskScreen (
     navController: NavController,
-    taskId: Int?,
     viewModel: AddTaskScreenViewmodel = hiltViewModel(),
 ) {
 
@@ -80,31 +72,9 @@ fun AddTaskScreen (
     }
 
     LaunchedEffect(true) {
-        viewModel.onEvent(AddTaskEvent.LoadCategories)
+        viewModel.onEvent(AddTaskEvent.Reload)
     }
 
-
-
-    val now: OffsetDateTime = OffsetDateTime.now()
-
-    val targetTimePicker = rememberTimePickerState(now.hour, now.minute, false)
-    val targetTimePickerVisible = remember { mutableStateOf(false) }
-    val pickedTime = LocalTime.of(targetTimePicker.hour, targetTimePicker.minute)
-
-    val datePicker = rememberDatePickerState(initialSelectedDateMillis = now.toEpochSecond() * 1000)
-    val datePickerVisible = remember { mutableStateOf(false) }
-    val pickedDate: LocalDate = LocalDateTime.ofEpochSecond(
-        datePicker.selectedDateMillis?.div(1000)!!, 0, now.offset
-    ).toLocalDate()
-
-
-    LaunchedEffect(targetTimePicker.hour, targetTimePicker.minute) {
-        viewModel.onEvent(AddTaskEvent.SetTargetTime(pickedTime))
-    }
-
-    LaunchedEffect(datePicker.selectedDateMillis) {
-        viewModel.onEvent(AddTaskEvent.SetStartDate(pickedDate))
-    }
 
 
     Scaffold (
@@ -123,8 +93,26 @@ fun AddTaskScreen (
             )
         },
     ) { paddingValues ->
-        AppTimePicker(visible = targetTimePickerVisible, state = targetTimePicker)
-        AppDatePicker(visible = datePickerVisible, state = datePicker)
+        TimePickerDialog(visible = state.timePickerVisible,
+                      onConfirm = {newTime ->
+                          viewModel.onEvent(AddTaskEvent.SetTargetTime(newTime))
+                          viewModel.onEvent(AddTaskEvent.ToggleTimePicker(false))
+                      },
+                      value = state.targetTime,
+                      onDismiss = {
+                        viewModel.onEvent(AddTaskEvent.ToggleTimePicker(false))
+                      }
+        )
+        DatePickerDialog(visible = state.datePickerVisible,
+            onConfirm = {newDate ->
+                            viewModel.onEvent(AddTaskEvent.SetStartDate(newDate))
+                            viewModel.onEvent(AddTaskEvent.ToggleDatePicker(false))
+                        },
+            value = state.startDate,
+            onDismiss = {
+                viewModel.onEvent(AddTaskEvent.ToggleDatePicker(false))
+                      },
+        )
 
 
         PermissionChecker(onNotificationFail = {
@@ -208,32 +196,34 @@ fun AddTaskScreen (
                             suffix = {
                                 Text(text = " days")
                             },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number,
+                                                              imeAction = ImeAction.Next
+                            ),
                             value = (state.taskInterval ?: "").toString(),
                             onValueChange = {viewModel.onEvent(AddTaskEvent.SetInterval(it))
                             }
                         )
 
                         Spacer(modifier = Modifier.width(15.dp))
-                        
+
                         ClickableTextField(
                             value = String.format(
                                 "at: %02d:%02d,",
-                                targetTimePicker.hour, targetTimePicker.minute
+                                state.targetTime.hour, state.targetTime.minute
                             ),
                             Modifier.width(110.dp),
-                            onClick = { targetTimePickerVisible.value = true }
+                            onClick = {viewModel.onEvent(AddTaskEvent.ToggleTimePicker(true))}
                         )
                     }
 
 
                     ClickableTextField(
-                        value = "Starting on " + pickedDate.format(
+                        value = "Starting on " + state.startDate.format(
                             DateTimeFormatter.ofLocalizedDate(
                                 FormatStyle.FULL
                             )
                         ),
-                        onClick = {datePickerVisible.value = true}
+                        onClick = {viewModel.onEvent(AddTaskEvent.ToggleDatePicker(true))}
                     )
 
                     OutlinedTextField(
