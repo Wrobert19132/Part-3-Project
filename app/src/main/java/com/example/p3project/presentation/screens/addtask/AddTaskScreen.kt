@@ -7,20 +7,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Create
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -32,23 +27,27 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.p3project.domain.model.Task
 import com.example.p3project.presentation.screens.addtask.components.DatePickerDialog
-import com.example.p3project.presentation.screens.addtask.components.CategorySelector
-import com.example.p3project.presentation.screens.addtask.components.ClickableTextField
+import com.example.p3project.presentation.screens.addtask.components.fields.CategorySelector
+import com.example.p3project.presentation.screens.addtask.components.fields.DateField
 import com.example.p3project.presentation.screens.addtask.components.PermissionChecker
+import com.example.p3project.presentation.screens.addtask.components.fields.RepeatPeriodField
+import com.example.p3project.presentation.screens.addtask.components.fields.TimeField
 import com.example.p3project.presentation.screens.addtask.components.TimePickerDialog
+import com.example.p3project.presentation.screens.addtask.components.fields.DescriptionField
+import com.example.p3project.presentation.screens.addtask.components.fields.NameField
+import com.example.p3project.presentation.screens.addtask.components.fields.NotificationField
 import com.example.p3project.presentation.screens.sharedComponents.AppError
 import com.example.p3project.presentation.screens.sharedComponents.AppSnackbar
 import com.example.p3project.presentation.screens.sharedComponents.KeyboardAdjust
+import kotlinx.coroutines.launch
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
@@ -64,6 +63,8 @@ fun AddTaskScreen (
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val state = viewModel.state.collectAsState().value
+
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(state.taskAdded) {
         if (state.taskAdded) {
@@ -88,10 +89,36 @@ fun AddTaskScreen (
                     titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 title = {
-                    Text("Add a Task")
+                    if (state.modifying) {
+                        Text("Modify a Task")
+                    } else {
+                        Text("Add a Task")
+                    }
                 },
             )
         },
+        bottomBar = {
+            BottomAppBar(
+            ) {
+                Row(Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Absolute.Right) {
+                    TextButton(onClick = { navController.popBackStack() }) {
+                        Text(text = "Cancel")
+                    }
+                    Button(onClick = {
+                        keyboardController?.hide()
+                        viewModel.onEvent(AddTaskEvent.AddTask)
+                    }
+                    ) {
+                        if (state.modifying) {
+                            Text(text = "Update")
+                        } else {
+                            Text(text = "Add")
+                        }
+                    }
+                }
+            }
+        }
     ) { paddingValues ->
         TimePickerDialog(visible = state.timePickerVisible,
                       onConfirm = {newTime ->
@@ -150,28 +177,12 @@ fun AddTaskScreen (
                         .padding(horizontal = 10.dp, vertical = 5.dp),
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    OutlinedTextField(
-                        modifier = Modifier.fillMaxWidth(),
-                        label = {
-                            Text(text = "Task Name")
-                        },
-                        leadingIcon = { Icon(Icons.Default.Create, "Set Task Name") },
+                    NameField(
                         value = state.taskName,
-                        isError = (state.taskName.length >= Task.maxNameLength),
-                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                         onValueChange = {viewModel.onEvent(AddTaskEvent.SetName(it))},
-                        singleLine = true,
                     )
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(150.dp),
-                        label = {
-                            Text(text = "Task Description")
-                        },
+                    DescriptionField(
                         value = state.taskDescription,
-                        isError = (state.taskDescription.length >= Task.maxDescriptionLength),
-                        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Next),
                         onValueChange = {viewModel.onEvent(AddTaskEvent.SetDescription(it))},
                     )
 
@@ -182,84 +193,61 @@ fun AddTaskScreen (
                                     },
                                     selectedCategories = state.appliedCategories
                     )
+
                     VerticalDivider()
 
                     Row(Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Absolute.Left,
                         ) {
-                        OutlinedTextField(
-                            modifier = Modifier
-                                .width(210.dp),
-                            prefix = {
-                                Text(text = "Repeat every ")
-                            },
-                            suffix = {
-                                Text(text = " days")
-                            },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number,
-                                                              imeAction = ImeAction.Next
-                            ),
+
+                        RepeatPeriodField(
                             value = (state.taskInterval ?: "").toString(),
-                            onValueChange = {viewModel.onEvent(AddTaskEvent.SetInterval(it))
+                            onValueChange = {viewModel.onEvent(AddTaskEvent.SetInterval(it))},
+                            enabled = !state.modifying,
+                            failAction = {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        "You can't modify the period of an existing task."
+                                    )
+                                }
                             }
                         )
 
                         Spacer(modifier = Modifier.width(15.dp))
 
-                        ClickableTextField(
+                        TimeField(
                             value = String.format(
-                                "at: %02d:%02d,",
+                                "%02d:%02d,",
                                 state.targetTime.hour, state.targetTime.minute
                             ),
-                            Modifier.width(110.dp),
                             onClick = {viewModel.onEvent(AddTaskEvent.ToggleTimePicker(true))}
                         )
                     }
 
 
-                    ClickableTextField(
-                        value = "Starting on " + state.startDate.format(
+                    DateField(
+                        value = state.startDate.format(
                             DateTimeFormatter.ofLocalizedDate(
                                 FormatStyle.FULL
                             )
                         ),
-                        onClick = {viewModel.onEvent(AddTaskEvent.ToggleDatePicker(true))}
+                        onClick = {viewModel.onEvent(AddTaskEvent.ToggleDatePicker(true))},
+                        enabled = !state.modifying,
+                        failAction = {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    "You can't modify the start date of an existing task."
+                                )
+                            }
+                        }
                     )
 
-                    OutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        prefix = {
-                            Text(text = "Send notification ")
-                        },
-                        suffix = {
-                            Text(text = " minutes before target")
-                        },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    NotificationField(
                         value = (state.notificationOffset ?: "").toString(),
                         onValueChange = {
                             viewModel.onEvent(AddTaskEvent.SetNotificationOffset(it))
                         }
                     )
-
-
-
-                    Row(
-                        verticalAlignment = Alignment.Bottom,
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Absolute.Right
-                    ) {
-                        TextButton(onClick = { navController.popBackStack() }) {
-                            Text(text = "Cancel")
-                        }
-                        Button(onClick = {
-                            keyboardController?.hide()
-                            viewModel.onEvent(AddTaskEvent.AddTask)
-                            }
-                        ) {
-                            Text(text = "Add")
-                        }
-                    }
                 }
             }
         }
