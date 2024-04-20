@@ -1,4 +1,4 @@
-package com.example.p3project.presentation.screens.addtask.components
+package com.example.p3project.presentation.screens.addtask.components.fields
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth

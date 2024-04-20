@@ -18,8 +18,10 @@ import com.example.p3project.domain.usecases.categories.AllCategoriesUseCase
 import com.example.p3project.domain.usecases.categories.AssignCategoryUseCase
 import com.example.p3project.domain.usecases.categories.CreateCategoryUseCase
 import com.example.p3project.domain.usecases.categories.DeleteCategoryUseCase
+import com.example.p3project.domain.usecases.categories.UnassignCategoryUseCase
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.DeleteTaskUseCase
+import com.example.p3project.domain.usecases.tasks.ModifyTaskUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -68,7 +70,9 @@ class AppModule {
                 allCategoriesUseCase = AllCategoriesUseCase(repository),
                 deleteCategoryUseCase = DeleteCategoryUseCase(repository),
                 assignCategoryUseCase = AssignCategoryUseCase(repository),
-                deleteTaskUseCase = DeleteTaskUseCase(repository)
+                deleteTaskUseCase = DeleteTaskUseCase(repository),
+                unassignCategoryUseCase = UnassignCategoryUseCase(repository),
+                modifyTaskUseCase = ModifyTaskUseCase(repository)
               )
     }
 

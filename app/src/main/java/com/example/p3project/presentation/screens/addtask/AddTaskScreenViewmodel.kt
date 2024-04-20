@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.Task
+import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.usecases.UseCases
 import com.example.p3project.domain.util.InvalidTaskException
 import com.kotlinx.extend.isInt
@@ -22,7 +23,8 @@ class AddTaskScreenViewmodel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     ): ViewModel() {
 
-
+    private val modifyTaskId: String? = savedStateHandle["taskId"]
+    private var modifyTask: TaskWithRelations? = null
 
     public val state = MutableStateFlow(
         AddTaskState()
@@ -40,17 +42,43 @@ class AddTaskScreenViewmodel @Inject constructor(
                 throw InvalidTaskException("You have not entered a valid task interval.")
             }
 
-            val task = useCases.addTaskUseCase(stateVal.taskName,
-                                               stateVal.taskDescription,
-                                               stateVal.targetTime, stateVal.startDate,
-                                               stateVal.notificationOffset!!,
-                                               stateVal.taskInterval!!
-                                        )
+            val originalTask = modifyTask
+            val task = if (originalTask == null) { // If a task is being created, not modified
+                 val task = useCases.addTaskUseCase(
+                    stateVal.taskName,
+                    stateVal.taskDescription,
+                    stateVal.targetTime, stateVal.startDate,
+                    stateVal.notificationOffset!!,
+                    stateVal.taskInterval!!
+                )
 
-            for (category in stateVal.allCategories) {
-                if (category.categoryId in stateVal.appliedCategories) {
-                    useCases.assignCategoryUseCase(task, category)
+                for (category in stateVal.allCategories) {
+                    if (category.categoryId in stateVal.appliedCategories) {
+                        useCases.assignCategoryUseCase(task, category)
+                    }
                 }
+
+                task
+            } else { // If a task is being modified
+
+                val task = useCases.modifyTaskUseCase(
+                    originalTask.task,
+                    stateVal.taskName,
+                    stateVal.taskDescription,
+                    stateVal.targetTime,
+                    stateVal.notificationOffset!!,
+                )
+
+                val originalCategories = originalTask.categories.map { it.categoryId }
+                for (category in stateVal.allCategories) {
+                    if (category.categoryId in stateVal.appliedCategories) {
+                        useCases.assignCategoryUseCase(task, category)
+                    } else if (category.categoryId in originalCategories) {
+                        useCases.unassignCategoryUseCase(task, category)
+                    }
+                }
+
+                task
             }
 
             useCases.scheduleTaskUseCase(task)
@@ -119,10 +147,26 @@ class AddTaskScreenViewmodel @Inject constructor(
         state.value = state.value.copy(error=error)
     }
 
-    private suspend fun loadTaskCategories() {
+    private suspend fun reload() {
         state.value = state.value.copy(allCategories = useCases.allCategoriesUseCase(),
-                                       appliedCategories = setOf()
+                                       appliedCategories = setOf(),
         )
+        if (modifyTaskId != null) {
+            val taskInfo = useCases.getTaskByIdUseCase(modifyTaskId.toInt())
+            if (taskInfo != null) {
+                state.value = state.value.copy(
+                    modifying = true,
+                    taskName = taskInfo.task.name,
+                    taskDescription = taskInfo.task.description,
+                    appliedCategories = taskInfo.categories.map { it.categoryId }.toSet(),
+                    taskInterval = taskInfo.task.dayInterval,
+                    startDate = taskInfo.task.startDate,
+                    targetTime = taskInfo.task.targetTime
+                )
+                modifyTask = taskInfo
+            }
+        }
+
     }
 
     private fun toggleDatePicker(visible: Boolean) {
@@ -141,7 +185,7 @@ class AddTaskScreenViewmodel @Inject constructor(
             }
 
             AddTaskEvent.Reload -> viewModelScope.launch(Dispatchers.IO) {
-                loadTaskCategories()
+                reload()
             }
 
             is AddTaskEvent.DismissError -> dismissError()
