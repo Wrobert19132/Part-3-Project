@@ -36,8 +36,8 @@ fun SmallStreakCircle(taskInfo: TaskWithRelations, from: LocalDate) {
             modifier = Modifier.fillMaxSize(),
             progress = { progress },
             strokeWidth = 4.dp,
-            trackColor = MaterialTheme.colorScheme.secondaryContainer,
-            color = MaterialTheme.colorScheme.onSecondaryContainer
+            trackColor = MaterialTheme.colorScheme.primaryContainer,
+            color = MaterialTheme.colorScheme.primary
         )
 
 //    Text(
