@@ -3,14 +3,14 @@ package com.example.p3project.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
-import com.example.p3project.domain.repository.InterruptScheduler
+import com.example.p3project.domain.service.InterruptScheduler
 import com.example.p3project.presentation.services.InterruptSchedulerService
 import com.example.p3project.data.database.TaskDatabase
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.data.repository.TaskRepositoryImpl
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
-import com.example.p3project.domain.usecases.tasks.GetTaskInfoUseCase
-import com.example.p3project.domain.usecases.tasks.AllTaskInfoUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskUseCase
+import com.example.p3project.domain.usecases.tasks.GetTasksUseCase
 import com.example.p3project.domain.usecases.notifications.ScheduleTaskUseCase
 import com.example.p3project.domain.usecases.notifications.SendNotificationUseCase
 import com.example.p3project.domain.usecases.UseCases
@@ -72,8 +72,8 @@ class AppModule {
     ): UseCases {
         return UseCases(
                 addTaskUseCase = AddTaskUseCase(repository),
-                getTaskByIdUseCase = GetTaskInfoUseCase(repository),
-                getTasksUseCase = AllTaskInfoUseCase(repository),
+                getTaskByIdUseCase = GetTaskUseCase(repository),
+                getTasksUseCase = GetTasksUseCase(repository),
 
                 scheduleTaskUseCase = ScheduleTaskUseCase(scheduler),
                 scheduleFollowUpNotificationUseCase = ScheduleFollowUpNotificationUseCase(scheduler),

@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.example.p3project.presentation.services.InterruptSchedulerService
 import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.repository.InterruptScheduler
+import com.example.p3project.domain.service.InterruptScheduler
 import com.example.p3project.domain.usecases.notifications.ScheduleTaskUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Before

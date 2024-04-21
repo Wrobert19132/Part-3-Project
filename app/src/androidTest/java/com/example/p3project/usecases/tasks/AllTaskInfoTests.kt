@@ -3,7 +3,7 @@ package com.example.p3project.usecases.tasks
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.p3project.DBTest
 import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.usecases.tasks.AllTaskInfoUseCase
+import com.example.p3project.domain.usecases.tasks.GetTasksUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -16,7 +16,7 @@ class AllTaskInfoTests: DBTest() {
 
     @Test()
     fun allTaskInfo_generalCorrect() = runTest {
-        val allTaskInfoUseCase = AllTaskInfoUseCase(repo)
+        val getTasksUseCase = GetTasksUseCase(repo)
 
 
         val task = Task("Test", "A test task",
@@ -25,14 +25,14 @@ class AllTaskInfoTests: DBTest() {
             0,7)
         repo.addTask(task)
 
-        val taskInfos = allTaskInfoUseCase()
+        val taskInfos = getTasksUseCase()
 
         assertEquals("correct number of tasks in result", 1, taskInfos.size)
     }
 
     @Test()
     fun allTaskInfo_empty() = runTest {
-        val allTaskInfoUseCase = AllTaskInfoUseCase(repo)
+        val getTasksUseCase = GetTasksUseCase(repo)
 
 
         val task = Task("Test", "A test task",
@@ -40,7 +40,7 @@ class AllTaskInfoTests: DBTest() {
             LocalDate.of(2024, 3, 12),
             0,7)
 
-        val taskInfos = allTaskInfoUseCase()
+        val taskInfos = getTasksUseCase()
 
         assertEquals("correct number of tasks in result", 0, taskInfos.size)
     }

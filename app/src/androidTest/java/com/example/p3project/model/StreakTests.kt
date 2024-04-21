@@ -10,7 +10,7 @@ import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
-import com.example.p3project.domain.usecases.tasks.GetTaskInfoUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskUseCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -36,7 +36,7 @@ class StreakTests {
 
     private suspend fun setup_DummyTask(now: LocalDate, streakLen: Int, periodLen: Int): TaskWithRelations {
         val completeTaskUseCase = CompleteTaskUseCase(repo)
-        val getTaskByIdUseCase = GetTaskInfoUseCase(repo)
+        val getTaskByIdUseCase = GetTaskUseCase(repo)
 
 
         val task = Task("Test Task", "",

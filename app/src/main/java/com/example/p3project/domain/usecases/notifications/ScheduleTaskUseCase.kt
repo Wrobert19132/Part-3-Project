@@ -1,6 +1,6 @@
 package com.example.p3project.domain.usecases.notifications
 
-import com.example.p3project.domain.repository.InterruptScheduler
+import com.example.p3project.domain.service.InterruptScheduler
 import com.example.p3project.domain.model.Task
 import java.time.LocalDate
 

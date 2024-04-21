@@ -11,8 +11,8 @@ import com.example.p3project.domain.usecases.notifications.ScheduleFollowUpNotif
 import com.example.p3project.domain.usecases.notifications.ScheduleTaskUseCase
 import com.example.p3project.domain.usecases.notifications.SendNotificationUseCase
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
-import com.example.p3project.domain.usecases.tasks.GetTaskInfoUseCase
-import com.example.p3project.domain.usecases.tasks.AllTaskInfoUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskUseCase
+import com.example.p3project.domain.usecases.tasks.GetTasksUseCase
 import com.example.p3project.domain.usecases.tasks.DeleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.ModifyTaskUseCase
 
@@ -22,8 +22,8 @@ data class UseCases(
     val deleteTaskUseCase: DeleteTaskUseCase,
     val modifyTaskUseCase: ModifyTaskUseCase,
 
-    val getTasksUseCase: AllTaskInfoUseCase,
-    val getTaskByIdUseCase: GetTaskInfoUseCase,
+    val getTasksUseCase: GetTasksUseCase,
+    val getTaskByIdUseCase: GetTaskUseCase,
 
     val scheduleTaskUseCase: ScheduleTaskUseCase,
     val sendNotificationUseCase: SendNotificationUseCase,

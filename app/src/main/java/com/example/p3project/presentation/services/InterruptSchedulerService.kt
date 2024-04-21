@@ -5,7 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.repository.InterruptScheduler
+import com.example.p3project.domain.service.InterruptScheduler
 import com.example.p3project.presentation.broadcastRecievers.TaskNotificationBroadcastReceiver
 import java.time.LocalDate
 import java.time.OffsetDateTime

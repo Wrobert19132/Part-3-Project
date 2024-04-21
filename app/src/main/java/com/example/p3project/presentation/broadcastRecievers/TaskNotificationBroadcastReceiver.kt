@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.example.p3project.domain.model.TaskWithRelations
-import com.example.p3project.domain.repository.InterruptScheduler
+import com.example.p3project.domain.service.InterruptScheduler
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.UseCases
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,7 +33,7 @@ class TaskNotificationBroadcastReceiver: BroadcastReceiver() {
                 val task = taskInfo.task
 
                 useCases.sendNotificationUseCase(task)
-                useCases.scheduleFollowUpNotificationUseCase(task)
+                //useCases.scheduleFollowUpNotificationUseCase(task)
 
                 useCases.scheduleTaskUseCase(task,
                                              task.nextTaskDay(

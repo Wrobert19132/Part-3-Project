@@ -9,7 +9,7 @@ import com.example.p3project.data.repository.TaskRepositoryImpl
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
-import com.example.p3project.domain.usecases.tasks.GetTaskInfoUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskUseCase
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -47,7 +47,7 @@ class CompleteTaskTests {
     @Test()
     fun completeTask_generalCorrect() = runTest {
         val completeTaskUseCase = CompleteTaskUseCase(repo)
-        val getTaskUseCase = GetTaskInfoUseCase(repo)
+        val getTaskUseCase = GetTaskUseCase(repo)
 
         completeTaskUseCase.invoke(task, 0, LocalTime.of(1, 30))
         assertEquals(getTaskUseCase(task.taskId)!!.completions.get(0).period, 0)
