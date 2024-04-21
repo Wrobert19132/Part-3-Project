@@ -32,14 +32,16 @@ fun TaskCompletionButton(taskInfo: TaskWithRelations,
         )
     }
 
+    val isTaskDay = task.isTaskDay(now.toLocalDate())
+
     FilledTonalButton(
         colors = colors,
         enabled = true,
-        onClick = { if (isEnabled) {onComplete()} else {onUncomplete()} },
+        onClick = { if (isEnabled) {onComplete()} else if (isTaskDay) {onUncomplete()} },
         modifier = modifier
             .width(130.dp)
         ) {
-        if (task.isTaskDay(now.toLocalDate())) {
+        if (isTaskDay) {
             if (taskInfo.completedToday(now.toLocalDate())) {
                 Text("Completed!")
             } else {

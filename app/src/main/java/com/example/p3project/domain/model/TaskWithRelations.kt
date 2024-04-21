@@ -22,33 +22,65 @@ data class TaskWithRelations(
 
 
     ) {
-    fun streakCount(from: LocalDate): Int {
+
+    fun streakFrom(from: LocalDate): Streak {
         var lastPeriod = task.periodsPassed(from)-1
 
-        var count: Int = 0
-
         val orderedCompletions = completions.reversed()
+        val streakCompletions: MutableList<Completion> = mutableListOf()
 
         for (completion: Completion in orderedCompletions) {
-            println("Completion Period: ${completion.period} lastPeriod: $lastPeriod")
-
-
             if (completion.period <= lastPeriod) {// If the completion period is in the future, compared to given "From", skip
                 if (lastPeriod == completion.period) {
-                    count += 1
+                    streakCompletions += completion
                 } else {
-                    return count
+                    return Streak(streakCompletions)
                 }
                 lastPeriod -= 1;
             } else if (completion.period == lastPeriod + 1) {
                 if (task.isTaskDay(from)) {
-                    count += 1
+                    streakCompletions += completion
                 }
             }
         }
 
-        return count
+        return Streak(streakCompletions)
     }
+
+    fun longestStreak(): Streak {
+        var best: List<Completion> = listOf()
+
+
+        val orderedCompletions = completions.reversed()
+        if (completions.isEmpty()) {
+            return Streak(listOf())
+        }
+
+
+        var lastPeriod = orderedCompletions[0].period
+        val current: MutableList<Completion> = mutableListOf()
+
+        for (completion: Completion in orderedCompletions) {
+
+            current += completion
+            if (lastPeriod != completion.period+1) {
+                if (current.size > best.size) {
+                    best = current
+                }
+                current.clear()
+            }
+
+            lastPeriod = completion.period;
+        }
+
+        if (current.size > best.size) {
+            best = current
+        }
+
+        return Streak(best)
+
+    }
+
 
     fun completedToday(from: LocalDate): Boolean {
         var lastPeriod = task.periodsPassed(from)
@@ -57,6 +89,10 @@ data class TaskWithRelations(
             return (lastPeriod == completions.reversed()[0].period)
         }
         return false
+    }
+
+    fun totalCompletions(): Int {
+        return completions.size
     }
 
 }

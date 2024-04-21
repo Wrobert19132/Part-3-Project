@@ -22,6 +22,7 @@ fun SmallStreakCircle(taskInfo: TaskWithRelations, from: LocalDate) {
     val now = LocalDateTime.now()
 
     val task = taskInfo.task
+    val streak = taskInfo.streakFrom(from)
 
     val progress = if (task.minutesUntilTask(now) <= 0) {
         1f
@@ -50,7 +51,7 @@ fun SmallStreakCircle(taskInfo: TaskWithRelations, from: LocalDate) {
             ) {
                     Text(
                         modifier = Modifier.fillMaxWidth(),
-                        text = taskInfo.streakCount(now.toLocalDate()).toString(),
+                        text = streak.size().toString(),
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.titleLarge,
                     )
