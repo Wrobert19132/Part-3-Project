@@ -9,16 +9,26 @@ class ScheduleTaskUseCase(private var  interruptScheduler: InterruptScheduler) {
     operator fun invoke(task: Task, from: LocalDate = LocalDate.now()) {
         val now = LocalDateTime.now()
 
-        var next = task.nextTaskDateTime(from).minusMinutes(task.notificationOffset.toLong())
+        var taskTime = task.nextTaskDateTime(from)
 
-        if (now < next) {
+        var nextTaskNotification = taskTime.minusMinutes(task.notificationOffset.toLong())
+
+        if (now < nextTaskNotification) {
             interruptScheduler.scheduleTaskNotificationInterrupt(task,
-                next
+                nextTaskNotification
             )
         } else {
-            var next = task.nextTaskDateTime(from.plusDays(1)).minusMinutes(task.notificationOffset.toLong())
-            interruptScheduler.scheduleTaskNotificationInterrupt(task, next)
 
+            if (now < taskTime) {
+                interruptScheduler.scheduleFollowUpNotificationInterrupt(
+                    task,
+                    taskTime
+                )
+            }
+
+            var next = task.nextTaskDateTime(from.plusDays(1)).minusMinutes(task.notificationOffset.toLong())
+
+            interruptScheduler.scheduleTaskNotificationInterrupt(task, next)
         }
 
     }

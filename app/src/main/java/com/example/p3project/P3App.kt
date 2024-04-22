@@ -18,15 +18,13 @@ class P3App: Application() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val baseChannel = NotificationChannel(
                 Constants.NOTIFICATION_CHANNEL_ID,
-                "Task Notiifcations", NotificationManager.IMPORTANCE_DEFAULT
+                "Task Notifications", NotificationManager.IMPORTANCE_DEFAULT
                 )
-            baseChannel.description="Description"
 
             val followupChannel = NotificationChannel(
                 Constants.FOLLOWUP_CHANNEL_ID,
-                "Notification", NotificationManager.IMPORTANCE_DEFAULT
+                "Warning Notifications", NotificationManager.IMPORTANCE_DEFAULT
             )
-            followupChannel.description="Task Followup Notifications"
 
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

@@ -10,6 +10,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 class CompleteTaskBroadcastReceiver: BroadcastReceiver() {
@@ -25,18 +26,17 @@ class CompleteTaskBroadcastReceiver: BroadcastReceiver() {
         @OptIn(DelicateCoroutinesApi::class)
         override fun onReceive(context: Context?, intent: Intent?) {
                 CoroutineScope(Dispatchers.IO).launch {
+                        println("Complete Broadcast Recieved")
                         val taskId: Int = intent?.getIntExtra("TASK_ID", -1)!!
                         val taskInfo: TaskWithRelations? = taskRepository.getTaskInfo(taskId)
 
                         if (taskInfo != null) {
                                 val task = taskInfo.task
-                                useCases.sendNotificationUseCase(taskInfo)
-
-                                useCases.scheduleTaskUseCase(task,
-                                        task.nextTaskDay(
-                                                LocalDate.now().plusDays(1)
-                                        )
+                                useCases.completeTasksUseCase(task,
+                                        task.periodsPassed(LocalDate.now()),
+                                        LocalDateTime.now()
                                 )
+
                         }
                 }
         }

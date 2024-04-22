@@ -19,11 +19,6 @@ class SendNotificationUseCase (val notificationService: NotificationService) {
         }
 
 
-        val completionTime = task.nextTaskDateTime(now.toLocalDate()).minusMinutes(task.notificationOffset.toLong() / 2)
-
-        if (now > completionTime) {
-            return
-        }
 
         notificationService.taskNotification(task)
 
