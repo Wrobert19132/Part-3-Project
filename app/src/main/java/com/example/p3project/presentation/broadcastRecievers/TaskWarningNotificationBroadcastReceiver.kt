@@ -15,11 +15,9 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class TaskNotificationBroadcastReceiver: BroadcastReceiver() {
+class TaskWarningNotificationBroadcastReceiver: BroadcastReceiver() {
 
     @Inject lateinit var taskRepository: TaskRepository
-    @Inject lateinit var taskScheduler: InterruptScheduler
-
     @Inject lateinit var useCases: UseCases
 
 
@@ -30,17 +28,7 @@ class TaskNotificationBroadcastReceiver: BroadcastReceiver() {
             val taskInfo: TaskWithRelations? = taskRepository.getTaskInfo(taskId)
 
             if (taskInfo != null) {
-                val task = taskInfo.task
-
-                useCases.sendNotificationUseCase(taskInfo)
-
-                useCases.scheduleFollowUpNotificationUseCase(task)
-
-                useCases.scheduleTaskUseCase(task,
-                                             task.nextTaskDay(
-                                                 LocalDate.now().plusDays(1)
-                                             )
-                )
+                useCases.sendFollowUpNotificationUseCase(taskInfo)
             }
         }
     }

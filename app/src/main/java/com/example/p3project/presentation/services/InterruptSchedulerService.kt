@@ -7,14 +7,17 @@ import android.content.Intent
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.service.InterruptScheduler
 import com.example.p3project.presentation.broadcastRecievers.TaskNotificationBroadcastReceiver
+import com.example.p3project.presentation.broadcastRecievers.TaskWarningNotificationBroadcastReceiver
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
 class InterruptSchedulerService(private val context: Context) : InterruptScheduler {
     private var alarmManager = context.getSystemService(AlarmManager::class.java)
 
     @Throws(SecurityException::class)
-    override fun scheduleTaskNotificationInterrupt(task: Task, date: LocalDate) {
+    override fun scheduleTaskNotificationInterrupt(task: Task, date: LocalDateTime) {
+        println("SCHEDULED ${task.name} FOR {$date}")
         val intent = Intent(context, TaskNotificationBroadcastReceiver::class.java).apply {
             putExtra("TASK_ID", task.taskId)
         }
@@ -23,7 +26,7 @@ class InterruptSchedulerService(private val context: Context) : InterruptSchedul
         alarmManager.setExactAndAllowWhileIdle(
             AlarmManager.RTC_WAKEUP,
 
-            task.nextNotificationDateTime(date).toEpochSecond(now.offset)*1000,
+            date.toEpochSecond(now.offset)*1000,
             PendingIntent.getBroadcast(context,
                 task.taskId,
                 intent,
@@ -31,6 +34,30 @@ class InterruptSchedulerService(private val context: Context) : InterruptSchedul
             )
         )
     }
+
+    @Throws(SecurityException::class)
+    override fun scheduleFollowUpNotificationInterrupt(task: Task, date: LocalDateTime) {
+        val intent = Intent(context, TaskWarningNotificationBroadcastReceiver::class.java).apply {
+            putExtra("TASK_ID", task.taskId)
+        }
+
+        println("SCHEDULED FOLLOWUP ${task.name} FOR {$date}")
+
+        val now = OffsetDateTime.now()
+
+        alarmManager.setExactAndAllowWhileIdle(
+            AlarmManager.RTC_WAKEUP,
+
+            date.toEpochSecond(now.offset)*1000,
+            PendingIntent.getBroadcast(context,
+                task.taskId,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+        )
+    }
+
+
 
     override fun cancelTaskNotificationInterrupt(task: Task) {
         alarmManager.cancel(PendingIntent.getBroadcast(

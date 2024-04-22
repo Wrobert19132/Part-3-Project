@@ -47,17 +47,21 @@ class CompleteTaskTests {
     @Test()
     fun completeTask_generalCorrect() = runTest {
         val completeTaskUseCase = CompleteTaskUseCase(repo)
-        val getTaskUseCase = GetTaskUseCase(repo)
 
-        completeTaskUseCase.invoke(task, 0, LocalTime.of(1, 30))
-        assertEquals(getTaskUseCase(task.taskId)!!.completions.get(0).period, 0)
+        completeTaskUseCase.invoke(task, 0, task.startDate.atTime(1, 30))
+
+        assertEquals(repo.getTaskInfo(task.taskId)!!.completions.get(0).period, 0)
     }
 
     @Test()
-    fun completeTask_alreadyCorrect() = runTest {
+    fun completeTask_alreadyComplete() = runTest {
         val completeTaskUseCase = CompleteTaskUseCase(repo)
 
-        completeTaskUseCase.invoke(task, 0, LocalTime.of(1, 30))
+        completeTaskUseCase.invoke(task, 0, task.startDate.atTime(1, 30))
+
+        completeTaskUseCase.invoke(task, 0, task.startDate.atTime(1, 50))
+
+        assertEquals(repo.getTaskInfo(task.taskId)!!.completions.get(0).period, 0)
     }
 
 

@@ -26,6 +26,7 @@ class BootBroadcastReceiver : BroadcastReceiver() {
                 val taskInfos: List<TaskWithRelations> = useCases.getTasksUseCase(TaskViewMode.AllView)
                 for (taskInfo in taskInfos) {
                     val task = taskInfo.task
+
                     useCases.scheduleTaskUseCase(task,
                         task.nextTaskDay(
                             LocalDate.now()

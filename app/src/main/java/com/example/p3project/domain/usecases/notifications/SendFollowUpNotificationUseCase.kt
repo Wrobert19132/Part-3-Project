@@ -1,10 +1,13 @@
 package com.example.p3project.domain.usecases.notifications
 
+import com.example.p3project.common.Constants
+import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.presentation.services.NotificationService
 import java.time.LocalDateTime
+import java.time.LocalTime
 
-class SendNotificationUseCase (val notificationService: NotificationService) {
+class SendFollowUpNotificationUseCase (private val notificationService: NotificationService) {
     operator fun invoke(taskInfo: TaskWithRelations) {
         val task = taskInfo.task
 
@@ -18,14 +21,10 @@ class SendNotificationUseCase (val notificationService: NotificationService) {
             return
         }
 
-
-        val completionTime = task.nextTaskDateTime(now.toLocalDate()).minusMinutes(task.notificationOffset.toLong() / 2)
-
-        if (now > completionTime) {
+        if (task.notificationOffset == 0) {
             return
         }
-
-        notificationService.taskNotification(task)
-
+        println("Sending followup notification...")
+        notificationService.followUpNotification(task)
     }
 }

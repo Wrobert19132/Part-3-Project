@@ -30,7 +30,7 @@ class CompleteTaskBroadcastReceiver: BroadcastReceiver() {
 
                         if (taskInfo != null) {
                                 val task = taskInfo.task
-                                useCases.sendNotificationUseCase(task)
+                                useCases.sendNotificationUseCase(taskInfo)
 
                                 useCases.scheduleTaskUseCase(task,
                                         task.nextTaskDay(

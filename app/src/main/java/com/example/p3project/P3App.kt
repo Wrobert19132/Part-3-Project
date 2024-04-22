@@ -4,7 +4,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import android.util.Log
 import com.example.p3project.common.Constants
 import dagger.hilt.android.HiltAndroidApp
 
@@ -16,19 +15,24 @@ class P3App: Application() {
     }
 
     private fun createNotificationChannel() {
-        Log.d("Test", "created channel")
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
+            val baseChannel = NotificationChannel(
                 Constants.NOTIFICATION_CHANNEL_ID,
-                "Notification", NotificationManager.IMPORTANCE_DEFAULT
+                "Task Notiifcations", NotificationManager.IMPORTANCE_DEFAULT
                 )
-            channel.description="Description"
+            baseChannel.description="Description"
+
+            val followupChannel = NotificationChannel(
+                Constants.FOLLOWUP_CHANNEL_ID,
+                "Notification", NotificationManager.IMPORTANCE_DEFAULT
+            )
+            followupChannel.description="Task Followup Notifications"
 
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
+
+            notificationManager.createNotificationChannel(baseChannel)
+            notificationManager.createNotificationChannel(followupChannel)
         }
     }
 }

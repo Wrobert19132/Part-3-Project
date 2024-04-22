@@ -22,6 +22,7 @@ import com.example.p3project.domain.usecases.categories.UnassignCategoryUseCase
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
 import com.example.p3project.domain.usecases.completions.UncompleteTaskUseCase
 import com.example.p3project.domain.usecases.notifications.ScheduleFollowUpNotificationUseCase
+import com.example.p3project.domain.usecases.notifications.SendFollowUpNotificationUseCase
 import com.example.p3project.domain.usecases.tasks.DeleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.ModifyTaskUseCase
 import com.example.p3project.domain.usecases.tasks.SetTaskEnabledUseCase
@@ -86,12 +87,14 @@ class AppModule {
                 allCategoriesUseCase = AllCategoriesUseCase(repository),
                 deleteCategoryUseCase = DeleteCategoryUseCase(repository),
                 assignCategoryUseCase = AssignCategoryUseCase(repository),
-                deleteTaskUseCase = DeleteTaskUseCase(repository),
+                deleteTaskUseCase = DeleteTaskUseCase(repository, scheduler),
                 unassignCategoryUseCase = UnassignCategoryUseCase(repository),
                 modifyTaskUseCase = ModifyTaskUseCase(repository),
                 uncompleteTasksUseCase = UncompleteTaskUseCase(repository),
 
-                setTaskEnabledUseCase = SetTaskEnabledUseCase(repository)
+                setTaskEnabledUseCase = SetTaskEnabledUseCase(repository),
+
+                sendFollowUpNotificationUseCase = SendFollowUpNotificationUseCase(notificationService)
             )
     }
 

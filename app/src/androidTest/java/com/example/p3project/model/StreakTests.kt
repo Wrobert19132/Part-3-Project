@@ -17,6 +17,7 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 
 @RunWith(AndroidJUnit4::class)
@@ -48,7 +49,7 @@ class StreakTests {
         repo.addTask(task)
 
         for (i: Int in 0..< streakLen) {
-            completeTaskUseCase(task, i, LocalTime.of(0, 30))
+            completeTaskUseCase(task, i, now.atTime(0, 30))
         }
 
         return getTaskByIdUseCase(task.taskId)!!

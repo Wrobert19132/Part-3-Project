@@ -166,7 +166,8 @@ class AddTaskScreenViewmodel @Inject constructor(
                     appliedCategories = taskInfo.categories.map { it.categoryId }.toSet(),
                     taskInterval = taskInfo.task.dayInterval,
                     startDate = taskInfo.task.startDate,
-                    targetTime = taskInfo.task.targetTime
+                    targetTime = taskInfo.task.targetTime,
+                    notificationOffset = taskInfo.task.notificationOffset
                 )
                 modifyTask = taskInfo
             }

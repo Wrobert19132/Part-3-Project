@@ -35,6 +35,11 @@
         </receiver>
 
         <receiver
+            android:name=".presentation.broadcastRecievers.TaskWarningNotificationBroadcastReceiver"
+            android:exported="false">
+        </receiver>
+
+        <receiver
             android:name=".presentation.broadcastRecievers.BootBroadcastReceiver"
             android:exported="false">
             <intent-filter>

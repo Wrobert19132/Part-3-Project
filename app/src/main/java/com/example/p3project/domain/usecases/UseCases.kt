@@ -9,6 +9,7 @@ import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
 import com.example.p3project.domain.usecases.completions.UncompleteTaskUseCase
 import com.example.p3project.domain.usecases.notifications.ScheduleFollowUpNotificationUseCase
 import com.example.p3project.domain.usecases.notifications.ScheduleTaskUseCase
+import com.example.p3project.domain.usecases.notifications.SendFollowUpNotificationUseCase
 import com.example.p3project.domain.usecases.notifications.SendNotificationUseCase
 import com.example.p3project.domain.usecases.tasks.AddTaskUseCase
 import com.example.p3project.domain.usecases.tasks.GetTaskUseCase
@@ -27,9 +28,12 @@ data class UseCases(
     val getTasksUseCase: GetTasksUseCase,
     val getTaskByIdUseCase: GetTaskUseCase,
 
-    val scheduleTaskUseCase: ScheduleTaskUseCase,
-    val sendNotificationUseCase: SendNotificationUseCase,
     val scheduleFollowUpNotificationUseCase: ScheduleFollowUpNotificationUseCase,
+    val scheduleTaskUseCase: ScheduleTaskUseCase,
+
+    val sendFollowUpNotificationUseCase: SendFollowUpNotificationUseCase,
+    val sendNotificationUseCase: SendNotificationUseCase,
+
 
     val completeTasksUseCase: CompleteTaskUseCase,
     val uncompleteTasksUseCase: UncompleteTaskUseCase,
