@@ -33,8 +33,8 @@ class TaskTimeTests {
     fun nextTaskDay_generalCorrect() {
         val now: LocalDate = LocalDate.of(2024, 3, 14)
         assertEquals("Asserts ",
-                     LocalDate.of(2024, 3, 19),
-                     task.nextTaskDay(now)
+            LocalDate.of(2024, 3, 19),
+            task.nextTaskDay(now)
         )
     }
 

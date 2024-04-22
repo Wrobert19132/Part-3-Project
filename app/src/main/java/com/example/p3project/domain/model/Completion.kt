@@ -13,7 +13,7 @@ data class Completion (
 ) {
 
     fun completionTime(task: Task): LocalDateTime {
-        return task.nextTaskDateTime(period)
+        return task.timeForPeriod(period)
             .minusSeconds(completionSecondsBefore.toLong())
     }
 
@@ -24,7 +24,7 @@ data class Completion (
 
         return if (completionDateTime < task.nextNotificationDateTime(period)) {
             CompletionTimeCategory.EarlyComplete
-        } else if (completionDateTime < task.nextTaskDateTime(period)) {
+        } else if (completionDateTime < task.timeForPeriod(period)) {
             CompletionTimeCategory.OnTimeComplete
         } else {
             CompletionTimeCategory.LateComplete

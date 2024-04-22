@@ -27,9 +27,7 @@ import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.util.CompletionTimeCategory
 
 @Composable
-fun StreakCompletionPie(streak: Streak, task: Task) {
-
-
+fun StreakCompletionPie(completionData: PieChartData, shown: Boolean) {
     ElevatedCard() {
         Text(
             modifier = Modifier.fillMaxWidth().padding(10.dp),
@@ -37,7 +35,7 @@ fun StreakCompletionPie(streak: Streak, task: Task) {
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.titleMedium
         )
-        if (streak.size() == 0) {
+        if (!shown) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -52,29 +50,6 @@ fun StreakCompletionPie(streak: Streak, task: Task) {
                 )
             }
         } else {
-
-            val categoryCompletions = streak.completions.groupBy {
-                it.getCategory(
-                    task,
-                )
-            }
-            val categoryUsages = mapOf(
-                CompletionTimeCategory.LateComplete to
-                    (categoryCompletions[CompletionTimeCategory.LateComplete] ?: listOf()).size,
-                CompletionTimeCategory.OnTimeComplete to
-                        (categoryCompletions[CompletionTimeCategory.OnTimeComplete] ?: listOf()).size,
-                CompletionTimeCategory.EarlyComplete to
-                        (categoryCompletions[CompletionTimeCategory.EarlyComplete] ?: listOf()).size,
-            )
-
-            val data = PieChartData(
-                    categoryUsages.mapValues { (category, value) ->
-                        PieChartData.Slice(category.name, value.toFloat(), category.color)
-                    }.values.toList(),
-            PlotType.Pie
-            )
-
-
             val pieChartConfig = PieChartConfig(
                 labelVisible = true,
                 strokeWidth = 120f,
@@ -94,14 +69,13 @@ fun StreakCompletionPie(streak: Streak, task: Task) {
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(400.dp),
-                    data,
+                    completionData,
                     pieChartConfig
-                ) { slice ->
+                )
 
-                }
                 Legends(
                     legendsConfig = DataUtils.getLegendsConfigFromPieChartData(
-                        pieChartData = data,
+                        pieChartData = completionData,
                         3
                     )
                 )

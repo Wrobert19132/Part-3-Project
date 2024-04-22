@@ -56,14 +56,8 @@ data class Task (
     fun nextTaskDateTime(date: LocalDate): LocalDateTime {
         return LocalDateTime.of(nextTaskDay(date), targetTime)
     }
-    fun nextTaskDateTime(periods: Int): LocalDateTime {
+    fun timeForPeriod(periods: Int): LocalDateTime {
         return startDate.plusDays(periods.toLong()).atTime(targetTime)
-    }
-
-    fun nextNotificationDateTime(date: LocalDate): LocalDateTime {
-        return LocalDateTime.of(nextTaskDay(date),
-            targetTime.plusMinutes(-notificationOffset.toLong())
-        )
     }
 
     fun nextNotificationDateTime(periods: Int): LocalDateTime {
@@ -77,17 +71,6 @@ data class Task (
     }
 
     fun minutesUntilTask(dateTime: LocalDateTime): Int {
-        return (daysUntilNextTaskDay(dateTime.toLocalDate()) * 1440) +
-                dateTime.toLocalTime().until(targetTime, ChronoUnit.MINUTES).toInt()
-    }
-
-
-
-    fun minutesUntilFollowingTask(dateTime: LocalDateTime): Int {
-        if (daysUntilNextTaskDay(dateTime.toLocalDate()) == 0) {
-            val minutesUntilTime = dateTime.toLocalTime().until(targetTime, ChronoUnit.MINUTES).toInt()
-            return minutesUntilTime + periodLengthMinutes()
-        }
         return (daysUntilNextTaskDay(dateTime.toLocalDate()) * 1440) +
                 dateTime.toLocalTime().until(targetTime, ChronoUnit.MINUTES).toInt()
     }

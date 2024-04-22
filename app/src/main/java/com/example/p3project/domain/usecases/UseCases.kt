@@ -5,6 +5,7 @@ import com.example.p3project.domain.usecases.categories.AssignCategoryUseCase
 import com.example.p3project.domain.usecases.categories.CreateCategoryUseCase
 import com.example.p3project.domain.usecases.categories.DeleteCategoryUseCase
 import com.example.p3project.domain.usecases.categories.UnassignCategoryUseCase
+import com.example.p3project.domain.usecases.charts.BuildCompletionChartUseCase
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
 import com.example.p3project.domain.usecases.completions.UncompleteTaskUseCase
 import com.example.p3project.domain.usecases.notifications.ScheduleFollowUpNotificationUseCase
@@ -42,6 +43,8 @@ data class UseCases(
     val allCategoriesUseCase: AllCategoriesUseCase,
     val deleteCategoryUseCase: DeleteCategoryUseCase,
     val assignCategoryUseCase: AssignCategoryUseCase,
-    val unassignCategoryUseCase: UnassignCategoryUseCase
+    val unassignCategoryUseCase: UnassignCategoryUseCase,
+
+    val buildCompletionChartUseCase: BuildCompletionChartUseCase
 
 )

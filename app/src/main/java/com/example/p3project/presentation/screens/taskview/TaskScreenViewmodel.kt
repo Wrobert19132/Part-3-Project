@@ -83,7 +83,19 @@ class TaskScreenViewmodel @Inject constructor(
     }
 
     private suspend fun reloadTask() {
-        state.value = state.value.copy(taskInfo = useCases.getTaskByIdUseCase(id))
+        val taskInfo = useCases.getTaskByIdUseCase(id)
+        if (taskInfo != null) {
+            val bestStreak = taskInfo.longestStreak()
+            val currentStreak = taskInfo.streakFrom(LocalDate.now())
+
+            state.value = state.value.copy(
+                taskInfo = taskInfo,
+                bestStreak = taskInfo.longestStreak(),
+                currentStreak = taskInfo.streakFrom(LocalDate.now()),
+                bestCompletionData = useCases.buildCompletionChartUseCase(taskInfo.task, bestStreak.completions),
+                currentCompletionData = useCases.buildCompletionChartUseCase(taskInfo.task, currentStreak.completions)
+            )
+        }
     }
 
 }

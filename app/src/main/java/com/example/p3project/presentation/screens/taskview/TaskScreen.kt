@@ -272,7 +272,9 @@ fun TaskScreen (
                 }
 
                 item {
-                    StreakCompletionPie(streak = taskInfo.streakFrom(LocalDate.now()), task = task)
+                    StreakCompletionPie(state.currentCompletionData!!,
+                                        state.currentStreak!!.size() != 0
+                    )
                 }
 
                 item {
