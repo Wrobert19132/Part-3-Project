@@ -14,6 +14,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AssistChip
@@ -103,6 +105,23 @@ fun TaskScreen (
                             }
                         ) {
                             Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete")
+                        }
+
+                        IconButton(
+                            onClick = {
+                                viewModel.onEvent(TaskScreenEvent.toggleDeleteWarning(true))
+                            }
+                        ) {
+                            if (task.enabled) {
+                                Icon(
+                                    imageVector = Icons.Filled.Check, contentDescription = "Task Enabled"
+                                )
+                            } else {
+                                Icon(
+                                    imageVector = Icons.Filled.Close, contentDescription = "Task Disabled"
+                                )
+                            }
+
                         }
                     }
                 )

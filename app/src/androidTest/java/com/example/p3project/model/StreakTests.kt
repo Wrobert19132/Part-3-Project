@@ -60,7 +60,7 @@ class StreakTests {
         val now = LocalDate.now()
         val taskInfo = setup_DummyTask(now, 5, 7)
 
-        assertEquals(5, taskInfo.streakCount(now))
+        assertEquals(5, taskInfo.streakFrom(now).size())
     }
 
 
@@ -71,7 +71,7 @@ class StreakTests {
         val taskInfo = setup_DummyTask(now, 5, periodLen)
 
         assertEquals(5,
-            taskInfo.streakCount(now.minusDays(periodLen.floorDiv(2).toLong())))
+            taskInfo.streakFrom(now.minusDays(periodLen.floorDiv(2).toLong())).size())
     }
 
     @Test
@@ -81,7 +81,7 @@ class StreakTests {
 
         val taskInfo = setup_DummyTask(now, 5, periodLen = periodLen)
 
-        assertEquals(5, taskInfo.streakCount(now.minusDays(periodLen.toLong())))
+        assertEquals(5, taskInfo.streakFrom(now.minusDays(periodLen.toLong())).size())
     }
 
     @Test
@@ -91,7 +91,7 @@ class StreakTests {
 
         val taskInfo = setup_DummyTask(now, 5, periodLen = periodLen)
 
-        assertEquals(4, taskInfo.streakCount(now.minusDays(periodLen.toLong()+1)))
+        assertEquals(4, taskInfo.streakFrom(now.minusDays(periodLen.toLong()+1)).size())
     }
 
     @Test
@@ -99,6 +99,6 @@ class StreakTests {
         val now = LocalDate.now()
         val taskInfo = setup_DummyTask(now, 5, 7)
 
-        assertEquals(0, taskInfo.streakCount(now.plusDays(1)))
+        assertEquals(0, taskInfo.streakFrom(now.plusDays(1)).size())
     }
 }

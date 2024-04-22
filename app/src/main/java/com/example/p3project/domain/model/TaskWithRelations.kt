@@ -34,7 +34,7 @@ data class TaskWithRelations(
                 if (lastPeriod == completion.period) {
                     streakCompletions += completion
                 } else {
-                    return Streak(streakCompletions)
+                    return Streak(task, streakCompletions)
                 }
                 lastPeriod -= 1;
             } else if (completion.period == lastPeriod + 1) {
@@ -44,7 +44,7 @@ data class TaskWithRelations(
             }
         }
 
-        return Streak(streakCompletions)
+        return Streak(task, streakCompletions)
     }
 
     fun longestStreak(): Streak {
@@ -53,7 +53,7 @@ data class TaskWithRelations(
 
         val orderedCompletions = completions.reversed()
         if (completions.isEmpty()) {
-            return Streak(listOf())
+            return Streak(task, listOf())
         }
 
 
@@ -77,7 +77,7 @@ data class TaskWithRelations(
             best = current
         }
 
-        return Streak(best)
+        return Streak(task, best)
 
     }
 

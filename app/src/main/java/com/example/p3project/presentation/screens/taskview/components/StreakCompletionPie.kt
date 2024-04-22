@@ -55,8 +55,7 @@ fun StreakCompletionPie(streak: Streak, task: Task) {
 
             val categoryCompletions = streak.completions.groupBy {
                 it.getCategory(
-                    task.targetTime,
-                    task.targetTime.minusMinutes(task.notificationOffset.toLong())
+                    task,
                 )
             }
             val categoryUsages = mapOf(

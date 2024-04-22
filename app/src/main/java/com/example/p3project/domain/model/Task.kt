@@ -1,7 +1,9 @@
 package com.example.p3project.domain.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.time.DateTimeException
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
@@ -19,7 +21,9 @@ data class Task (
     var notificationOffset: Int,
 
     var dayInterval: Int,
-) {
+    @ColumnInfo(name = "enabled", defaultValue = "1") var enabled: Boolean = true
+)
+{
     @PrimaryKey(autoGenerate = true)
     var taskId: Int = 0
 
@@ -53,9 +57,18 @@ data class Task (
     fun nextTaskDateTime(date: LocalDate): LocalDateTime {
         return LocalDateTime.of(nextTaskDay(date), targetTime)
     }
+    fun nextTaskDateTime(periods: Int): LocalDateTime {
+        return startDate.plusDays(periods.toLong()).atTime(targetTime)
+    }
 
     fun nextNotificationDateTime(date: LocalDate): LocalDateTime {
         return LocalDateTime.of(nextTaskDay(date),
+            targetTime.plusMinutes(-notificationOffset.toLong())
+        )
+    }
+
+    fun nextNotificationDateTime(periods: Int): LocalDateTime {
+        return startDate.plusDays(periods.toLong()).atTime(
             targetTime.plusMinutes(-notificationOffset.toLong())
         )
     }
@@ -68,6 +81,8 @@ data class Task (
         return (daysUntilNextTaskDay(dateTime.toLocalDate()) * 1440) +
                 dateTime.toLocalTime().until(targetTime, ChronoUnit.MINUTES).toInt()
     }
+
+
 
     fun minutesUntilFollowingTask(dateTime: LocalDateTime): Int {
         if (daysUntilNextTaskDay(dateTime.toLocalDate()) == 0) {

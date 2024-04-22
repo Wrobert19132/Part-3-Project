@@ -13,11 +13,12 @@ import java.time.LocalTime
 
 class SendNotificationUseCase (val notificationService: NotificationService) {
     operator fun invoke(task: Task) {
-        val now = LocalTime.now()
-        if (now > task.targetTime.minusMinutes(task.notificationOffset.toLong() / 2)) {
-            return
+        if (task.enabled) {
+            val now = LocalTime.now()
+            if (now > task.targetTime.minusMinutes(task.notificationOffset.toLong() / 2)) {
+                return
+            }
+            notificationService(task)
         }
-        notificationService(task)
-
     }
 }

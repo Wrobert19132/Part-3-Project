@@ -10,7 +10,8 @@ import com.example.p3project.domain.model.Completion
 
 
 @Database(
-    entities = [Task::class, Completion::class, Category::class, TaskCategoryCrossRef::class],
+    entities = [Task::class, Completion::class, Category::class, TaskCategoryCrossRef::class,
+               ],
     version = 3
 )
 @TypeConverters(Converters::class)

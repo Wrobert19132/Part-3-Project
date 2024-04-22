@@ -15,12 +15,14 @@ import com.example.p3project.domain.usecases.tasks.GetTaskUseCase
 import com.example.p3project.domain.usecases.tasks.GetTasksUseCase
 import com.example.p3project.domain.usecases.tasks.DeleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.ModifyTaskUseCase
+import com.example.p3project.domain.usecases.tasks.SetTaskEnabledUseCase
 
 
 data class UseCases(
     val addTaskUseCase: AddTaskUseCase,
     val deleteTaskUseCase: DeleteTaskUseCase,
     val modifyTaskUseCase: ModifyTaskUseCase,
+    val setTaskEnabledUseCase: SetTaskEnabledUseCase,
 
     val getTasksUseCase: GetTasksUseCase,
     val getTaskByIdUseCase: GetTaskUseCase,

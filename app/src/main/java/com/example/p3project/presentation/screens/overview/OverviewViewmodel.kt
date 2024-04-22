@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
 import javax.inject.Inject
 
@@ -56,8 +57,8 @@ class OverviewViewmodel @Inject constructor(
     private suspend fun completeTask(task: Task) {
 
         useCases.completeTasksUseCase(task,
-                                      task.periodsPassed(LocalDate.now()),
-                                      LocalTime.now()
+                                      task.periodsPassed(task.nextTaskDay(LocalDate.now())),
+                                      LocalDateTime.now()
         )
 
         getInfo()

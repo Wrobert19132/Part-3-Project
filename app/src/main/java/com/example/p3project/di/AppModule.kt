@@ -24,6 +24,7 @@ import com.example.p3project.domain.usecases.completions.UncompleteTaskUseCase
 import com.example.p3project.domain.usecases.notifications.ScheduleFollowUpNotificationUseCase
 import com.example.p3project.domain.usecases.tasks.DeleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.ModifyTaskUseCase
+import com.example.p3project.domain.usecases.tasks.SetTaskEnabledUseCase
 import com.example.p3project.presentation.services.NotificationService
 import dagger.Module
 import dagger.Provides
@@ -89,6 +90,8 @@ class AppModule {
                 unassignCategoryUseCase = UnassignCategoryUseCase(repository),
                 modifyTaskUseCase = ModifyTaskUseCase(repository),
                 uncompleteTasksUseCase = UncompleteTaskUseCase(repository),
+
+                setTaskEnabledUseCase = SetTaskEnabledUseCase(repository)
             )
     }
 
