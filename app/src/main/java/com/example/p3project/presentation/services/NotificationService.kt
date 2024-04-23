@@ -27,7 +27,7 @@ class NotificationService (private val context: Context) {
 
 
         val notification = NotificationCompat.Builder(context, Constants.NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(androidx.core.R.drawable.ic_call_decline)
+            .setSmallIcon(R.drawable.ic_android_black_24dp)
             .setContentTitle(task.name)
             .setContentText("It's time to complete your task \"${task.name}\"!")
             .setContentIntent(activityPendingIntent)
@@ -57,7 +57,7 @@ class NotificationService (private val context: Context) {
         )
 
         val notification = NotificationCompat.Builder(context, Constants.NOTIFICATION_CHANNEL_ID)
-            .setSmallIcon(androidx.core.R.drawable.ic_call_decline)
+            .setSmallIcon(R.drawable.ic_android_black_24dp)
             .setContentTitle(task.name)
             .setContentText("Your task \"${task.name}\" is due, and you still haven't completed it!")
             .setContentIntent(activityPendingIntent)

@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
                             OverviewScreen(navController)
                         }
                         composable(
-                            route = Screen.CalendarScreen.route
+                            route = Screen.StatScreen.route
                         ) {
                             StatsScreen(navController)
                         }

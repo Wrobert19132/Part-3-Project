@@ -8,6 +8,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
 import com.example.p3project.domain.model.Category
+import com.example.p3project.domain.model.CategoryCount
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.Completion
 import com.example.p3project.domain.model.TaskWithRelations
@@ -27,13 +28,19 @@ interface TasksDao {
     @Transaction
     @Query("SELECT * FROM task " +
             "INNER JOIN TaskCategoryCrossRef ON task.taskId=TaskCategoryCrossRef.taskId " +
-            "WHERE categoryId in (:categories)")
+            "WHERE categoryId in (:categories) ORDER BY targetTime")
     suspend fun getFilteredTaskInfo(categories: List<Int>): List<TaskWithRelations>
 
     @Transaction
-    @Query("SELECT * FROM task")
+    @Query("SELECT * FROM task ORDER BY targetTime")
     suspend fun getAllTaskInfo(): List<TaskWithRelations>
 
+    @Query("SELECT category.categoryId, categoryName, categoryColor, COUNT(*) as count FROM " +
+            "TaskCategoryCrossRef " +
+            "INNER JOIN category ON category.categoryId=taskcategorycrossref.categoryId " +
+            "GROUP BY category.categoryId"
+    )
+    suspend fun categoryUsage(): List<CategoryCount>
 
     @Delete
     suspend fun deleteTask(task: Task)

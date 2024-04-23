@@ -6,7 +6,7 @@ import com.example.p3project.domain.model.Completion
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.util.CompletionTimeCategory
 
-class BuildCompletionChartUseCase {
+class BuildCompletionDataUseCase {
     operator fun invoke(task: Task, completions: List<Completion>): PieChartData {
         val categoryCompletions = completions.groupBy {
             it.getCategory(

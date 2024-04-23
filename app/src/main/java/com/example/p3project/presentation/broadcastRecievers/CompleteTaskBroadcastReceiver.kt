@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.inject.Inject
 
 class CompleteTaskBroadcastReceiver: BroadcastReceiver() {
@@ -34,7 +35,7 @@ class CompleteTaskBroadcastReceiver: BroadcastReceiver() {
                                 val task = taskInfo.task
                                 useCases.completeTasksUseCase(task,
                                         task.periodsPassed(LocalDate.now()),
-                                        LocalDateTime.now()
+                                        LocalTime.now()
                                 )
 
                         }

@@ -4,5 +4,6 @@ import co.yml.charts.ui.piechart.models.PieChartData
 import com.example.p3project.domain.model.Completion
 
 data class StatsScreenState (
-    val totalCompletionData: PieChartData? = null
+    val dataLoaded: Boolean = false,
+    val categoryUsage: PieChartData? = null,
 )

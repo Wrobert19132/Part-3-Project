@@ -5,16 +5,14 @@ import java.time.LocalTime
 import java.time.OffsetDateTime
 
 class Streak(val task: Task, val completions: List<Completion>) {
-    fun averageCompletionTime(): LocalDateTime? {
+    fun averageCompletionTime(): LocalTime? {
         if ((completions.size) == 0) {
             return null
         }
-        return LocalDateTime.ofEpochSecond(
+        return LocalTime.ofSecondOfDay(
             (completions.sumOf {
-                it.completionTime(task).toEpochSecond(OffsetDateTime.now().offset).toBigInteger()
-            } / completions.size.toBigInteger()).toLong(),
-            0,
-            OffsetDateTime.now().offset
+                it.completionTime.toSecondOfDay()
+            } / completions.size).toLong()
         )
     }
 

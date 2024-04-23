@@ -4,27 +4,21 @@ import androidx.room.Entity
 import com.example.p3project.domain.util.CompletionTimeCategory
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Entity(primaryKeys = ["taskId", "period"])
 data class Completion (
     val taskId: Int,
     val period: Int,
-    val completionSecondsBefore: Int,
+    val completionTime: LocalTime,
 ) {
 
-    fun completionTime(task: Task): LocalDateTime {
-        return task.timeForPeriod(period)
-            .minusSeconds(completionSecondsBefore.toLong())
-    }
-
     fun getCategory(task: Task): CompletionTimeCategory {
-        val taskTime = task.nextTaskDateTime(LocalDate.now())
+        val taskTime = task.targetTime
 
-        val completionDateTime = taskTime.minusSeconds(completionSecondsBefore.toLong())
-
-        return if (completionDateTime < task.nextNotificationDateTime(period)) {
+        return if (completionTime < taskTime.minusMinutes(task.notificationOffset.toLong())) {
             CompletionTimeCategory.EarlyComplete
-        } else if (completionDateTime < task.timeForPeriod(period)) {
+        } else if (completionTime < taskTime) {
             CompletionTimeCategory.OnTimeComplete
         } else {
             CompletionTimeCategory.LateComplete

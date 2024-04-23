@@ -26,7 +26,7 @@ data class TaskWithRelations(
     fun streakFrom(from: LocalDate): Streak {
         var lastPeriod = task.periodsPassed(from)-1
 
-        val orderedCompletions = completions.reversed()
+        val orderedCompletions = completions.sortedBy{-it.period}
         val streakCompletions: MutableList<Completion> = mutableListOf()
 
         for (completion: Completion in orderedCompletions) {
@@ -51,23 +51,24 @@ data class TaskWithRelations(
         var best: List<Completion> = listOf()
 
 
-        val orderedCompletions = completions.reversed()
+        val orderedCompletions = completions.sortedBy{-it.period}
         if (completions.isEmpty()) {
             return Streak(task, listOf())
         }
 
 
-        var lastPeriod = orderedCompletions[0].period
+        var lastPeriod = orderedCompletions[0].period+1
         val current: MutableList<Completion> = mutableListOf()
 
         for (completion: Completion in orderedCompletions) {
-
+            println("$completion")
             current += completion
             if (lastPeriod != completion.period+1) {
                 if (current.size > best.size) {
                     best = current
                 }
                 current.clear()
+                current += completion
             }
 
             lastPeriod = completion.period;
@@ -86,7 +87,7 @@ data class TaskWithRelations(
         var lastPeriod = task.periodsPassed(from)
 
         if (completions.isNotEmpty()) {
-            return (lastPeriod == completions.reversed()[0].period)
+            return (lastPeriod == completions.sortedBy{-it.period}[0].period)
         }
         return false
     }

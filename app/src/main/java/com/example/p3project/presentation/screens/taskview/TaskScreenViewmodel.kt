@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -63,7 +64,7 @@ class TaskScreenViewmodel @Inject constructor(
             useCases.completeTasksUseCase(
                 taskInfo.task,
                 period,
-                LocalDateTime.now()
+                LocalTime.now()
             )
         } else {
             useCases.uncompleteTasksUseCase(

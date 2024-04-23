@@ -1,6 +1,7 @@
 package com.example.p3project.domain.repository;
 
 import com.example.p3project.domain.model.Category
+import com.example.p3project.domain.model.CategoryCount
 import com.example.p3project.domain.model.Task;
 import com.example.p3project.domain.model.Completion
 import com.example.p3project.domain.model.TaskWithRelations
@@ -27,5 +28,7 @@ interface TaskRepository {
 
     suspend fun assignCategory(taskId: Int, categoryId: Int)
     suspend fun unassignCategory(taskId: Int, categoryId: Int)
+
+    suspend fun categoryUsage(): List<CategoryCount>
 
 }

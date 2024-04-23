@@ -58,7 +58,7 @@ class OverviewViewmodel @Inject constructor(
 
         useCases.completeTasksUseCase(task,
                                       task.periodsPassed(task.nextTaskDay(LocalDate.now())),
-                                      LocalDateTime.now()
+                                      LocalTime.now()
         )
 
         getInfo()
