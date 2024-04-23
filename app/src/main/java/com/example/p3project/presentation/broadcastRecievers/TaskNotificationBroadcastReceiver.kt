@@ -32,13 +32,13 @@ class TaskNotificationBroadcastReceiver: BroadcastReceiver() {
             if (taskInfo != null) {
                 val task = taskInfo.task
 
-                useCases.sendNotificationUseCase(taskInfo)
+                println("Received Task Notification")
 
-                useCases.scheduleFollowUpNotificationUseCase(task)
+                useCases.sendNotificationUseCase(taskInfo)
 
                 useCases.scheduleTaskUseCase(task,
                                              task.nextTaskDay(
-                                                 LocalDate.now().plusDays(1)
+                                                 LocalDate.now()
                                              )
                 )
             }

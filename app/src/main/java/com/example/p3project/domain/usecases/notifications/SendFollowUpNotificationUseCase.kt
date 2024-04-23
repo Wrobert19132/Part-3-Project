@@ -24,7 +24,8 @@ class SendFollowUpNotificationUseCase (private val notificationService: Notifica
         if (task.notificationOffset == 0) {
             return
         }
-        println("Sending followup notification...")
+
         notificationService.followUpNotification(task)
+
     }
 }

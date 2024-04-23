@@ -28,7 +28,7 @@ class InterruptSchedulerService(private val context: Context) : InterruptSchedul
 
             date.toEpochSecond(now.offset)*1000,
             PendingIntent.getBroadcast(context,
-                task.taskId,
+                1000 + task.taskId,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             )

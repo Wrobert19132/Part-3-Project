@@ -26,10 +26,20 @@ class TaskWarningNotificationBroadcastReceiver: BroadcastReceiver() {
 
             val taskId: Int = intent?.getIntExtra("TASK_ID", -1)!!
             val taskInfo: TaskWithRelations? = taskRepository.getTaskInfo(taskId)
+            println("Received Warning Notification")
 
             if (taskInfo != null) {
                 useCases.sendFollowUpNotificationUseCase(taskInfo)
+
+                val task = taskInfo.task
+                useCases.scheduleTaskUseCase(task,
+                    task.nextTaskDay(
+                        LocalDate.now()
+                    )
+                )
+
             }
+
         }
     }
 }

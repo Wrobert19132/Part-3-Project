@@ -47,16 +47,7 @@ class NotificationService (private val context: Context) {
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        val completePendingIntent = PendingIntent.getBroadcast(
-            context,
-            2,
-            Intent(context, CompleteTaskBroadcastReceiver::class.java).apply {
-                putExtra("TASK_ID", task.taskId)
-            },
-            PendingIntent.FLAG_IMMUTABLE
-        )
-
-        val notification = NotificationCompat.Builder(context, Constants.NOTIFICATION_CHANNEL_ID)
+        val notification = NotificationCompat.Builder(context, Constants.FOLLOWUP_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_android_black_24dp)
             .setContentTitle(task.name)
             .setContentText("Your task \"${task.name}\" is due, and you still haven't completed it!")
@@ -64,7 +55,7 @@ class NotificationService (private val context: Context) {
             .build()
 
 
-        notificationManager.notify(task.taskId, notification)
+        notificationManager.notify(task.taskId + 1000, notification)
     }
 
     fun dismissNotification(task: Task) {

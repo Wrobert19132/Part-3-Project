@@ -11,25 +11,33 @@ class ScheduleTaskUseCase(private var  interruptScheduler: InterruptScheduler) {
 
         var taskTime = task.nextTaskDateTime(from)
 
-        var nextTaskNotification = taskTime.minusMinutes(task.notificationOffset.toLong())
-
-        if (now < nextTaskNotification) {
-            interruptScheduler.scheduleTaskNotificationInterrupt(task,
-                nextTaskNotification
+        if (now < taskTime) {
+            interruptScheduler.scheduleFollowUpNotificationInterrupt(
+                task,
+                taskTime
             )
         } else {
-
-            if (now < taskTime) {
-                interruptScheduler.scheduleFollowUpNotificationInterrupt(
-                    task,
-                    taskTime
-                )
-            }
-
-            var next = task.nextTaskDateTime(from.plusDays(1)).minusMinutes(task.notificationOffset.toLong())
-
-            interruptScheduler.scheduleTaskNotificationInterrupt(task, next)
+            interruptScheduler.scheduleFollowUpNotificationInterrupt(
+                task,
+                task.nextTaskDateTime(from.plusDays(1))
+            )
         }
+
+
+        var notificationTime = taskTime.minusMinutes(task.notificationOffset.toLong())
+
+        if (now < notificationTime) {
+            interruptScheduler.scheduleTaskNotificationInterrupt(task,
+                notificationTime
+            )
+        } else {
+            interruptScheduler.scheduleTaskNotificationInterrupt(task,
+                task.nextTaskDateTime(
+                    from.plusDays(1)
+                ).minusMinutes(task.notificationOffset.toLong())
+            )
+        }
+
 
     }
 }
