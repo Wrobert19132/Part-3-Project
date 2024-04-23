@@ -34,6 +34,8 @@ class TaskRepositoryImpl (
 
     override suspend fun deleteTask(task: Task) {
         tasksDao.deleteTask(task)
+        tasksDao.deleteTaskCategories(task.taskId)
+        tasksDao.deleteTaskCompletions(task.taskId)
     }
 
 

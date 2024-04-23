@@ -45,6 +45,11 @@ interface TasksDao {
     @Delete
     suspend fun deleteTask(task: Task)
 
+    @Query("DELETE FROM TaskCategoryCrossRef WHERE taskId=:taskId")
+    suspend fun deleteTaskCategories(taskId: Int)
+
+    @Query("DELETE FROM completion WHERE taskId=:taskId")
+    suspend fun deleteTaskCompletions(taskId: Int)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCompletion(completion: Completion)
