@@ -14,6 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.p3project.presentation.screens.Screen
 import com.example.p3project.presentation.screens.addtask.AddTaskScreen
+import com.example.p3project.presentation.screens.calendar.CalendarScreen
 import com.example.p3project.presentation.screens.stats.StatsScreen
 import com.example.p3project.presentation.screens.overview.OverviewScreen
 import com.example.p3project.presentation.screens.settings.SettingsScreen
@@ -68,6 +69,12 @@ class MainActivity : ComponentActivity() {
                             arguments = listOf(navArgument("taskId") {type = NavType.IntType})
                         ) {
                             TaskScreen(navController)
+                        }
+
+                        composable(
+                            route = Screen.CalendarScreen.route
+                        ) {
+                            CalendarScreen(navController)
                         }
                     }
                 }

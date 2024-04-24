@@ -19,7 +19,7 @@ fun TaskCompletionButton(taskInfo: TaskWithRelations,
     val task = taskInfo.task
     val now = LocalDateTime.now()
 
-    val isEnabled = task.isTaskDay(now.toLocalDate()) && !taskInfo.completedToday(now.toLocalDate())
+    val isEnabled = task.isTaskDay(now.toLocalDate()) && !taskInfo.completedOnDay(now.toLocalDate())
 
     var colors = ButtonDefaults.filledTonalButtonColors()
 
@@ -39,7 +39,7 @@ fun TaskCompletionButton(taskInfo: TaskWithRelations,
             .width(130.dp)
         ) {
         if (isTaskDay) {
-            if (taskInfo.completedToday(now.toLocalDate())) {
+            if (taskInfo.completedOnDay(now.toLocalDate())) {
                 Text("Completed!")
             } else {
                 Text("Complete")

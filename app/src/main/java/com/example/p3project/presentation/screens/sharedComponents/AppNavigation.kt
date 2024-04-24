@@ -40,9 +40,9 @@ fun AppNavigation(navController: NavController, current_selected: Screen){
         )
 
         NavigationBarItem(
-            icon = { Icon(Icons.Filled.Settings, "") },
-            selected = (current_selected == Screen.SettingsScreen),
-            onClick = { handleNavigation(navController, Screen.SettingsScreen) },
+            icon = { Icon(Icons.Filled.DateRange, "") },
+            selected = (current_selected == Screen.CalendarScreen),
+            onClick = { handleNavigation(navController, Screen.CalendarScreen) },
         )
     }
 }

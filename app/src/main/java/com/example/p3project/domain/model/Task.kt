@@ -29,6 +29,9 @@ data class Task (
 
 
     fun isTaskDay(date: LocalDate): Boolean {
+        if (date < startDate) {
+            return false
+        }
         val diff: Int = (date.toEpochDay() - startDate.toEpochDay()).toInt()
         return diff % dayInterval == 0
     }

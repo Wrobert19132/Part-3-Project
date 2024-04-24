@@ -14,7 +14,7 @@ class SendNotificationUseCase (val notificationService: NotificationService) {
 
         val now = LocalDateTime.now()
 
-        if (taskInfo.completedToday(now.toLocalDate())) {
+        if (taskInfo.completedOnDay(now.toLocalDate())) {
             return
         }
 
