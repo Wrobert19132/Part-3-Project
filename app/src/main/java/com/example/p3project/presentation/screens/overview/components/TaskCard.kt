@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.p3project.domain.model.Category
@@ -101,6 +102,7 @@ fun TaskCard (taskInfo: TaskWithRelations, onClick: () -> Unit, onComplete: () -
 
                         Text(
                             text = task.name,
+                            textDecoration = if (!task.enabled) {TextDecoration.LineThrough} else {TextDecoration.None},
                             modifier = Modifier.fillMaxWidth(),
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.titleMedium,

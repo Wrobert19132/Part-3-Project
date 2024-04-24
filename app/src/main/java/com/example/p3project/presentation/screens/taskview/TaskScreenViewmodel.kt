@@ -36,13 +36,13 @@ class TaskScreenViewmodel @Inject constructor(
                 }
             }
 
-            is TaskScreenEvent.confirmDelete -> {
+            is TaskScreenEvent.ConfirmDelete -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     deleteTask()
                 }
 
             }
-            is TaskScreenEvent.toggleDeleteWarning -> {
+            is TaskScreenEvent.ToggleDeleteWarning -> {
                 setDeleteConfirmVisibility(event.shown)
 
             }
@@ -50,6 +50,12 @@ class TaskScreenViewmodel @Inject constructor(
             is TaskScreenEvent.CompleteTask -> {
                 viewModelScope.launch(Dispatchers.IO) {
                     setTaskCompletion(event.complete)
+                }
+            }
+
+            is TaskScreenEvent.EnableTask -> {
+                viewModelScope.launch(Dispatchers.IO) {
+                    setTaskEnabled(event.enabled)
                 }
             }
         }
@@ -72,6 +78,11 @@ class TaskScreenViewmodel @Inject constructor(
                 period
             )
         }
+        reloadTask()
+    }
+
+    private suspend fun setTaskEnabled(enabled: Boolean) {
+        useCases.setTaskEnabledUseCase(state.value.taskInfo!!.task, enabled = enabled)
         reloadTask()
     }
 

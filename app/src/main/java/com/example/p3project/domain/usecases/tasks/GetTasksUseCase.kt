@@ -9,9 +9,11 @@ import java.time.LocalDate
 class GetTasksUseCase (private val taskRepository: TaskRepository)
 {
     suspend operator fun invoke(viewMode: TaskViewMode = TaskViewMode.AllView,
-                                filters: List<Category> = listOf()
+                                filters: List<Category> = listOf(),
+                                onlyEnabled: Boolean = true
     ) : List<TaskWithRelations> {
-        val tasks = taskRepository.allTaskInfo(filters)
+        val tasks = taskRepository.allTaskInfo(filters).filter {it.task.enabled || !onlyEnabled }
+
         val now = LocalDate.now()
 
         return when (viewMode) {

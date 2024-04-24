@@ -23,7 +23,7 @@ class BootBroadcastReceiver : BroadcastReceiver() {
         if(intent?.action == Intent.ACTION_BOOT_COMPLETED) {
             CoroutineScope(Dispatchers.IO).launch {
 
-                val taskInfos: List<TaskWithRelations> = useCases.getTasksUseCase(TaskViewMode.AllView)
+                val taskInfos: List<TaskWithRelations> = useCases.getTasksUseCase(TaskViewMode.AllView, onlyEnabled = false)
                 for (taskInfo in taskInfos) {
                     val task = taskInfo.task
 

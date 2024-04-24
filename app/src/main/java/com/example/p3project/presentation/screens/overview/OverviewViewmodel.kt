@@ -100,7 +100,13 @@ class OverviewViewmodel @Inject constructor(
         }.map { it.categoryId }
 
         state.value = state.value.copy(
-            tasksInfo = useCases.getTasksUseCase(state.value.viewMode, state.value.categories.filter { it.categoryId in state.value.categoryFilters }),
+            tasksInfo = useCases.getTasksUseCase(
+                state.value.viewMode,
+                state.value.categories.filter {
+                    it.categoryId in state.value.categoryFilters
+                },
+                onlyEnabled = (state.value.viewMode !is TaskViewMode.AllView)
+            ),
             categories = freshCategories,
             categoryFilters = state.value.categoryFilters.filter { it !in removedCategoryIds }.toSet()
         )

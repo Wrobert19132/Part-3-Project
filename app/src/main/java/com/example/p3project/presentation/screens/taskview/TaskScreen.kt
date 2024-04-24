@@ -11,17 +11,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material3.AssistChip
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,16 +27,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -80,10 +75,10 @@ fun TaskScreen (
         AppConfirmDialog(state.askDelete,
             "Are you sure you want to delete this task?",
             {
-                viewModel.onEvent(TaskScreenEvent.confirmDelete)
+                viewModel.onEvent(TaskScreenEvent.ConfirmDelete)
                 navController.popBackStack()
             },
-            {viewModel.onEvent(TaskScreenEvent.toggleDeleteWarning(false))},
+            {viewModel.onEvent(TaskScreenEvent.ToggleDeleteWarning(false))},
             "Confirm Deletion",
             "Delete")
 
@@ -101,7 +96,7 @@ fun TaskScreen (
                     actions = {
                         IconButton(
                             onClick = {
-                                viewModel.onEvent(TaskScreenEvent.toggleDeleteWarning(true))
+                                viewModel.onEvent(TaskScreenEvent.ToggleDeleteWarning(true))
                             }
                         ) {
                             Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete")
@@ -109,7 +104,7 @@ fun TaskScreen (
 
                         IconButton(
                             onClick = {
-                                viewModel.onEvent(TaskScreenEvent.toggleDeleteWarning(true))
+                                viewModel.onEvent(TaskScreenEvent.EnableTask(!task.enabled))
                             }
                         ) {
                             if (task.enabled) {
@@ -150,6 +145,11 @@ fun TaskScreen (
                         Modifier
                             .fillMaxWidth()
                             .padding(vertical = 10.dp),
+
+                        textDecoration = if (!task.enabled) {
+                            TextDecoration.LineThrough} else {
+                            TextDecoration.None},
+
                         textAlign = TextAlign.Center,
                         style = MaterialTheme.typography.headlineLarge
                     )
