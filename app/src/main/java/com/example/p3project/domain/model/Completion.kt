@@ -10,13 +10,12 @@ import java.time.LocalTime
 data class Completion (
     val taskId: Int,
     val period: Int,
-    val completionTime: LocalTime,
+    val completionTime: LocalDateTime,
 ) {
 
-    fun getCategory(task: Task): CompletionTimeCategory {
-        val taskTime = task.targetTime
+    fun getCategory(taskTime: LocalDateTime, notificationOffset: Int): CompletionTimeCategory {
 
-        return if (completionTime < taskTime.minusMinutes(task.notificationOffset.toLong())) {
+        return if (completionTime < taskTime.minusMinutes(notificationOffset.toLong())) {
             CompletionTimeCategory.EarlyComplete
         } else if (completionTime < taskTime) {
             CompletionTimeCategory.OnTimeComplete

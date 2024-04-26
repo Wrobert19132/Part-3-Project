@@ -29,6 +29,8 @@ private fun getText(task: Task, now: LocalDateTime, long: Boolean): String {
             } else {
                 "Today,  $hours ${if (long) "hours" else "hrs"}, $hourMinutes ${if (long) "minutes" else "mins"} ago"
             }
+        } else if (hours == 0 && hourMinutes == 0) {
+            "Today, now"
         } else {
             if (minutesUntil <= 60) {
                 "Today, in $hourMinutes ${if (long) "minutes" else "mins"}"

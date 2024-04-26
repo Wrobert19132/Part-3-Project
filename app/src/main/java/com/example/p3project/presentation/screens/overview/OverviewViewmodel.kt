@@ -22,7 +22,7 @@ class OverviewViewmodel @Inject constructor(
 ): ViewModel() {
 
     public val state = MutableStateFlow(
-        OverviewState(listOf(), TaskViewMode.IncompleteView)
+        OverviewState(listOf(), TaskViewMode.IncompleteView, listOf(), setOf())
     )
 
     fun onEvent(event: OverviewEvent) {
@@ -58,7 +58,7 @@ class OverviewViewmodel @Inject constructor(
 
         useCases.completeTasksUseCase(task,
                                       task.periodsPassed(task.nextTaskDay(LocalDate.now())),
-                                      LocalTime.now()
+                                      LocalDateTime.now()
         )
 
         getInfo()

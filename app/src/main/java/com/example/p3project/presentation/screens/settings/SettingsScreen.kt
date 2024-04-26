@@ -62,12 +62,6 @@ fun SettingsScreen(navController: NavController,
                 },
             )
         },
-
-        bottomBar = {
-            AppNavigation(navController = navController,
-                          current_selected = Screen.SettingsScreen
-            )
-        }
     ) {paddingValues ->
         Column(
             Modifier

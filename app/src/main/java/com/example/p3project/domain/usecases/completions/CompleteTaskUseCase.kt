@@ -10,7 +10,7 @@ import java.time.OffsetDateTime
 class CompleteTaskUseCase (private val taskRepository: TaskRepository) {
     suspend operator fun invoke(task: Task,
                                 period: Int,
-                                completionTime: LocalTime
+                                completionTime: LocalDateTime
     ) {
 
         val completion = Completion(task.taskId, period, completionTime)

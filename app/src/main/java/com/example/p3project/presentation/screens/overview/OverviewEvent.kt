@@ -12,3 +12,4 @@ sealed class OverviewEvent  {
     data class ToggleCategory(val category: Category): OverviewEvent()
     data class UpdateViewMode(val viewMode: TaskViewMode): OverviewEvent()
 }
+

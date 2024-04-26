@@ -9,11 +9,14 @@ class Streak(val task: Task, val completions: List<Completion>) {
         if ((completions.size) == 0) {
             return null
         }
-        return LocalTime.ofSecondOfDay(
+
+        val offset = OffsetDateTime.now().offset
+
+        return task.timeForPeriod(0).minusSeconds(
             (completions.sumOf {
-                it.completionTime.toSecondOfDay()
-            } / completions.size).toLong()
-        )
+                task.timeForPeriod(it.period).toEpochSecond(offset) - it.completionTime.toEpochSecond(offset)
+            } / completions.size)
+        ).toLocalTime()
     }
 
     fun size(): Int {

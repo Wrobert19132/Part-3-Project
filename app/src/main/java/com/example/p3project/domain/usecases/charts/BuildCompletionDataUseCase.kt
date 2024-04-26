@@ -10,7 +10,7 @@ class BuildCompletionDataUseCase {
     operator fun invoke(task: Task, completions: List<Completion>): PieChartData {
         val categoryCompletions = completions.groupBy {
             it.getCategory(
-                task,
+                task.timeForPeriod(it.period), task.notificationOffset
             )
         }
 

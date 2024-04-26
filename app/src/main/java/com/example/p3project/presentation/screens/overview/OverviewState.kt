@@ -5,9 +5,9 @@ import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.util.TaskViewMode
 
 data class OverviewState (
-    var tasksInfo: List<TaskWithRelations>,
-    var viewMode: TaskViewMode,
+    val tasksInfo: List<TaskWithRelations>,
+    val viewMode: TaskViewMode,
 
-    var categories: List<Category> = listOf(),
-    var categoryFilters: Set<Int> = setOf(),
+    val categories: List<Category>,
+    val categoryFilters: Set<Int>,
 )

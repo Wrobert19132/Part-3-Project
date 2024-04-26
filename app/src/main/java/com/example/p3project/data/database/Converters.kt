@@ -2,7 +2,9 @@ package com.example.p3project.data.database
 
 import androidx.room.TypeConverter
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.OffsetDateTime
 
 class Converters {
     @TypeConverter
@@ -24,5 +26,19 @@ class Converters {
     fun timeFromDaySec(date: LocalTime?): Int? {
         return date?.toSecondOfDay()
     }
+
+    @TypeConverter
+    fun dateTimeToEpoch(date: LocalDateTime?): Long? {
+        return date?.toEpochSecond(OffsetDateTime.now().offset)
+    }
+
+    @TypeConverter
+    fun dateTimeFromEpoch(epoch: Long?): LocalDateTime? {
+        return epoch?.let{
+            LocalDateTime.ofEpochSecond(it, 0,
+            OffsetDateTime.now().offset)
+        }
+    }
+
 }
 

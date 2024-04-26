@@ -70,7 +70,7 @@ class TaskScreenViewmodel @Inject constructor(
             useCases.completeTasksUseCase(
                 taskInfo.task,
                 period,
-                LocalTime.now()
+                LocalDateTime.now()
             )
         } else {
             useCases.uncompleteTasksUseCase(
