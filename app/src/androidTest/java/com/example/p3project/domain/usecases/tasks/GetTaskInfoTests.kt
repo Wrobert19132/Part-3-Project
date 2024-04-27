@@ -1,22 +1,24 @@
-package com.example.p3project.usecases.tasks
+package com.example.p3project.domain.usecases.tasks
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.p3project.DBTest
 import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.usecases.tasks.GetTasksUseCase
+import com.example.p3project.domain.usecases.tasks.GetTaskUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.LocalDate
 import java.time.LocalTime
 
 @RunWith(AndroidJUnit4::class)
-class AllTaskInfoTests: DBTest() {
+class GetTaskInfoTests: DBTest() {
+
 
     @Test()
-    fun allTaskInfo_generalCorrect() = runTest {
-        val getTasksUseCase = GetTasksUseCase(repo)
+    fun getTaskInfo_generalCorrect() = runTest {
+        val getTaskUseCase = GetTaskUseCase(repo)
 
 
         val task = Task("Test", "A test task",
@@ -25,14 +27,14 @@ class AllTaskInfoTests: DBTest() {
             0,7)
         repo.addTask(task)
 
-        val taskInfos = getTasksUseCase()
+        val taskInfo = getTaskUseCase(task.taskId)
 
-        assertEquals("correct number of tasks in result", 1, taskInfos.size)
+        assertEquals("Task ID is properly set", task.taskId, taskInfo!!.task.taskId)
     }
 
     @Test()
-    fun allTaskInfo_empty() = runTest {
-        val getTasksUseCase = GetTasksUseCase(repo)
+    fun getTaskInfo_invalidTask() = runTest {
+        val getTaskUseCase = GetTaskUseCase(repo)
 
 
         val task = Task("Test", "A test task",
@@ -40,9 +42,9 @@ class AllTaskInfoTests: DBTest() {
             LocalDate.of(2024, 3, 12),
             0,7)
 
-        val taskInfos = getTasksUseCase()
+        val taskInfo = getTaskUseCase(task.taskId)
 
-        assertEquals("correct number of tasks in result", 0, taskInfos.size)
+        assertNull("Task Info doesn't exist", taskInfo)
     }
 
 

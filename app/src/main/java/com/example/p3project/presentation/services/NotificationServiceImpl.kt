@@ -8,12 +8,13 @@ import androidx.core.app.NotificationCompat
 import com.example.p3project.R
 import com.example.p3project.common.Constants
 import com.example.p3project.domain.model.Task
+import com.example.p3project.domain.service.NotificationService
 import com.example.p3project.presentation.MainActivity
 
-class NotificationService (private val context: Context) {
+class NotificationServiceImpl (private val context: Context) : NotificationService {
     private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    fun taskNotification(task: Task) {
+    override fun taskNotification(task: Task) {
 
 
         val activityIntent = Intent(context, MainActivity::class.java)
@@ -37,7 +38,7 @@ class NotificationService (private val context: Context) {
         notificationManager.notify(task.taskId, notification)
     }
 
-    fun followUpNotification(task: Task) {
+    override fun followUpNotification(task: Task) {
         val activityIntent = Intent(context, MainActivity::class.java)
         val activityPendingIntent = PendingIntent.getActivity(
             context,
@@ -55,10 +56,6 @@ class NotificationService (private val context: Context) {
 
 
         notificationManager.notify(task.taskId + 1000, notification)
-    }
-
-    fun dismissNotification(task: Task) {
-        notificationManager.cancel(task.taskId)
     }
 
 }

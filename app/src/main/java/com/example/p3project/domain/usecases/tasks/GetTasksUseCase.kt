@@ -5,16 +5,16 @@ import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.util.TaskViewMode
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 class GetTasksUseCase (private val taskRepository: TaskRepository)
 {
     suspend operator fun invoke(viewMode: TaskViewMode = TaskViewMode.AllView,
                                 filters: List<Category> = listOf(),
-                                onlyEnabled: Boolean = true
+                                onlyEnabled: Boolean = true,
+                                now: LocalDateTime = LocalDateTime.now()
     ) : List<TaskWithRelations> {
         val tasks = taskRepository.allTaskInfo(filters).filter {it.task.enabled || !onlyEnabled }
-
-        val now = LocalDate.now()
 
         return when (viewMode) {
             is TaskViewMode.TodayView ->
@@ -23,7 +23,7 @@ class GetTasksUseCase (private val taskRepository: TaskRepository)
                 tasks
             is TaskViewMode.IncompleteView ->
                 tasks.filter {
-                    taskInfo -> (taskInfo.task.isTaskDay(now) && !taskInfo.completedOnDay(now))
+                    taskInfo -> (taskInfo.task.isTaskDay(now) && !taskInfo.completedOnDay(taskInfo.task.nextTaskDay(now.toLocalDate())))
                 }
         }
     }

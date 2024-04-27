@@ -1,10 +1,10 @@
 package com.example.p3project.domain.usecases.notifications
 
 import com.example.p3project.domain.model.TaskWithRelations
-import com.example.p3project.presentation.services.NotificationService
+import com.example.p3project.presentation.services.NotificationServiceImpl
 import java.time.LocalDateTime
 
-class SendNotificationUseCase (val notificationService: NotificationService) {
+class SendNotificationUseCase (val notificationService: NotificationServiceImpl) {
     operator fun invoke(taskInfo: TaskWithRelations) {
         val task = taskInfo.task
 

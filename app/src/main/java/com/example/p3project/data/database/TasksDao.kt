@@ -53,8 +53,8 @@ interface TasksDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCompletion(completion: Completion)
-    @Delete()
-    suspend fun deleteCompletion(completion: Completion)
+    @Query("DELETE FROM completion WHERE period=:period AND taskId=:taskId")
+    suspend fun deleteCompletion(period: Int, taskId: Int)
 
 
 

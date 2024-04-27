@@ -1,4 +1,4 @@
-package com.example.p3project.usecases.categories
+package com.example.p3project.domain.usecases.categories
 
 import androidx.compose.ui.graphics.Color
 import com.example.p3project.DBTest

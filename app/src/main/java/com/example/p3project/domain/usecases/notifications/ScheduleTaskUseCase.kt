@@ -6,10 +6,10 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class ScheduleTaskUseCase(private var  interruptScheduler: InterruptScheduler) {
-    operator fun invoke(task: Task, from: LocalDate = LocalDate.now()) {
-        val now = LocalDateTime.now()
+    operator fun invoke(task: Task, now: LocalDateTime = LocalDateTime.now()) {
+        val day = now.toLocalDate()
 
-        var taskTime = task.nextTaskDateTime(from)
+        var taskTime = task.nextTaskDateTime(day)
 
         if (now < taskTime) {
             interruptScheduler.scheduleFollowUpNotificationInterrupt(
@@ -19,7 +19,7 @@ class ScheduleTaskUseCase(private var  interruptScheduler: InterruptScheduler) {
         } else {
             interruptScheduler.scheduleFollowUpNotificationInterrupt(
                 task,
-                task.nextTaskDateTime(from.plusDays(1))
+                task.nextTaskDateTime(day.plusDays(1))
             )
         }
 
@@ -33,7 +33,7 @@ class ScheduleTaskUseCase(private var  interruptScheduler: InterruptScheduler) {
         } else {
             interruptScheduler.scheduleTaskNotificationInterrupt(task,
                 task.nextTaskDateTime(
-                    from.plusDays(1)
+                    day.plusDays(1)
                 ).minusMinutes(task.notificationOffset.toLong())
             )
         }

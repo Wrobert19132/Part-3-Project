@@ -48,8 +48,8 @@ class TaskRepositoryImpl (
         tasksDao.addCompletion(completion)
     }
 
-    override suspend fun deleteCompletion(completion: Completion) {
-        tasksDao.deleteCompletion(completion)
+    override suspend fun deleteCompletion(period: Int, taskId: Int) {
+        tasksDao.deleteCompletion(period, taskId)
     }
 
     override suspend fun createCategory(category: Category) {

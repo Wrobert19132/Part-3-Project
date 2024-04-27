@@ -1,5 +1,6 @@
-package com.example.p3project.usecases.categories
+package com.example.p3project.domain.usecases.categories
 
+import android.database.sqlite.SQLiteConstraintException
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import com.example.p3project.DBTest
@@ -7,13 +8,15 @@ import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.usecases.categories.AssignCategoryUseCase
 import junit.framework.TestCase
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertNull
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import java.time.LocalDate
 import java.time.LocalTime
 
-class AssignCategoryTests: DBTest()  {
+class DeleteCategoryTests: DBTest()  {
     private lateinit var task: Task
     private lateinit var category: Category
 
@@ -35,15 +38,12 @@ class AssignCategoryTests: DBTest()  {
 
     }
     @Test()
-    fun createCategory_generalCreate() = runTest {
-        val assignCategoryUseCase = AssignCategoryUseCase(repo)
+    fun deleteCategory_generalDelete() = runTest {
+        val deleteCategoryUseCase = DeleteCategoryUseCase(repo)
 
-        assignCategoryUseCase(task, category)
+        deleteCategoryUseCase(category)
 
-        val taskInfo = repo.getTaskInfo(task.taskId)
-
-        TestCase.assertEquals(category.categoryName, taskInfo!!.categories[0].categoryName)
+        assertEquals(listOf<Category>(), repo.getTaskInfo(task.taskId)!!.categories)
     }
-    
 
 }

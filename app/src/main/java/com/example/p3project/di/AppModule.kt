@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import androidx.room.Room
 import com.example.p3project.domain.service.InterruptScheduler
-import com.example.p3project.presentation.services.InterruptSchedulerService
+import com.example.p3project.presentation.services.InterruptSchedulerImpl
 import com.example.p3project.data.database.TaskDatabase
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.data.repository.TaskRepositoryImpl
@@ -27,7 +27,7 @@ import com.example.p3project.domain.usecases.notifications.SendFollowUpNotificat
 import com.example.p3project.domain.usecases.tasks.DeleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.ModifyTaskUseCase
 import com.example.p3project.domain.usecases.tasks.SetTaskEnabledUseCase
-import com.example.p3project.presentation.services.NotificationService
+import com.example.p3project.presentation.services.NotificationServiceImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -53,13 +53,13 @@ class AppModule {
     @Provides
     @Singleton
     fun provideInterruptScheduler(@ApplicationContext context: Context): InterruptScheduler {
-        return InterruptSchedulerService(context)
+        return InterruptSchedulerImpl(context)
     }
 
     @Provides
     @Singleton
-    fun provideNotificationService(@ApplicationContext context: Context): NotificationService {
-        return NotificationService(context)
+    fun provideNotificationService(@ApplicationContext context: Context): NotificationServiceImpl {
+        return NotificationServiceImpl(context)
     }
 
     @Provides
@@ -71,7 +71,7 @@ class AppModule {
     @Provides
     @Singleton
     fun provideUseCases(repository: TaskRepository, scheduler: InterruptScheduler,
-                        notificationService: NotificationService
+                        notificationService: NotificationServiceImpl
     ): UseCases {
         return UseCases(
                 addTaskUseCase = AddTaskUseCase(repository),

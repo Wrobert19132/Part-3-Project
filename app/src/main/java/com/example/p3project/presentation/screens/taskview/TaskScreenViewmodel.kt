@@ -74,7 +74,7 @@ class TaskScreenViewmodel @Inject constructor(
             )
         } else {
             useCases.uncompleteTasksUseCase(
-                taskInfo,
+                taskInfo.task,
                 period
             )
         }

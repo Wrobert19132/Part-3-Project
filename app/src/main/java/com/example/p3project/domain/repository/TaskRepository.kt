@@ -20,7 +20,7 @@ interface TaskRepository {
 
 
     suspend fun addCompletion(completion: Completion)
-    suspend fun deleteCompletion(completion: Completion)
+    suspend fun deleteCompletion(period: Int, taskId: Int)
 
     suspend fun createCategory(category: Category)
     suspend fun deleteCategory(category: Category)

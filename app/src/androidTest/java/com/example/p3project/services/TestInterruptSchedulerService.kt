@@ -11,7 +11,7 @@ class TestInterruptSchedulerService: InterruptScheduler {
     public val scheduledFollowupTasks: HashMap<Int,Task> = hashMapOf()
     public val scheduledFollowupTimes: HashMap<Int,LocalDateTime> = hashMapOf()
 
-
+    public val canceledTasks: MutableList<Task> = mutableListOf()
 
     override fun scheduleTaskNotificationInterrupt(task: Task, date: LocalDateTime) {
         scheduledNotificationTasks[task.taskId] = task
@@ -24,6 +24,7 @@ class TestInterruptSchedulerService: InterruptScheduler {
     }
 
     override fun cancelTaskNotificationInterrupt(task: Task) {
+        canceledTasks.add(task)
         scheduledFollowupTasks.remove(task.taskId)
     }
 }

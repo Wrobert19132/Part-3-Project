@@ -66,7 +66,7 @@ class OverviewViewmodel @Inject constructor(
 
     private suspend fun uncompleteTask(taskInfo: TaskWithRelations) {
 
-        useCases.uncompleteTasksUseCase(taskInfo,
+        useCases.uncompleteTasksUseCase(taskInfo.task,
             taskInfo.task.periodsPassed(LocalDate.now()),
         )
 

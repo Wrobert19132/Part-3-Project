@@ -36,6 +36,13 @@ data class Task (
         return diff % dayInterval == 0
     }
 
+    fun isTaskDay(date: LocalDateTime): Boolean {
+
+        val next: LocalDateTime = nextTaskDateTime(date.toLocalDate())
+        return (next.toLocalDate() == date.toLocalDate() || next.minusMinutes(600) < date )
+    }
+
+
     fun daysUntilNextTaskDay(date: LocalDate): Int {
         return (nextTaskDay(date).toEpochDay() - date.toEpochDay()).toInt()
     }
@@ -59,7 +66,7 @@ data class Task (
     fun nextTaskDateTime(date: LocalDate): LocalDateTime {
         return LocalDateTime.of(nextTaskDay(date), targetTime)
     }
-    fun timeForPeriod(periods: Int): LocalDateTime {
+    fun dateTimeForPeriod(periods: Int): LocalDateTime {
         return startDate.plusDays(periods.toLong()).atTime(targetTime)
     }
 

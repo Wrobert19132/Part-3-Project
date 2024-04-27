@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -90,7 +89,7 @@ fun CalendarDay(date: LocalDate, onClick: (() -> Unit),
                             FontWeight.Normal
                         },
                         color = if (completionForDay.isNotNull()) {
-                            val completionCategory = completionForDay!!.getCategory(task.timeForPeriod(completionForDay.period), task.notificationOffset)
+                            val completionCategory = completionForDay!!.getCategory(task.dateTimeForPeriod(completionForDay.period), task.notificationOffset)
 
                             completionCategory.color
                         } else {

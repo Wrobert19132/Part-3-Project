@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,9 +34,7 @@ class TaskWarningNotificationBroadcastReceiver: BroadcastReceiver() {
 
                 val task = taskInfo.task
                 useCases.scheduleTaskUseCase(task,
-                    task.nextTaskDay(
-                        LocalDate.now()
-                    )
+                    LocalDateTime.now()
                 )
 
             }

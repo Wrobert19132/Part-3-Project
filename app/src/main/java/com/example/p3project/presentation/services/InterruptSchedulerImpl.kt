@@ -8,11 +8,10 @@ import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.service.InterruptScheduler
 import com.example.p3project.presentation.broadcastRecievers.TaskNotificationBroadcastReceiver
 import com.example.p3project.presentation.broadcastRecievers.TaskWarningNotificationBroadcastReceiver
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 
-class InterruptSchedulerService(private val context: Context) : InterruptScheduler {
+class InterruptSchedulerImpl(private val context: Context) : InterruptScheduler {
     private var alarmManager = context.getSystemService(AlarmManager::class.java)
 
     @Throws(SecurityException::class)

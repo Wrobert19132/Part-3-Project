@@ -1,4 +1,4 @@
-package com.example.p3project.model
+package com.example.p3project.domain.model
 
 import android.content.Context
 import androidx.room.Room

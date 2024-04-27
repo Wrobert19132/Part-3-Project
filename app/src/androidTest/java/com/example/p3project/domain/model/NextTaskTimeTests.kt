@@ -1,6 +1,5 @@
-package com.example.p3project
+package com.example.p3project.domain.model
 
-import com.example.p3project.domain.model.Task
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -12,7 +11,7 @@ import java.time.LocalTime
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class TaskTimeTests {
+class NextTaskTimeTests {
     companion object {
         val start_day: LocalDate = LocalDate.of(2024, 3, 12)
         val start_hour: LocalTime = LocalTime.of(9, 30)
@@ -78,7 +77,4 @@ class TaskTimeTests {
             task.nextTaskDay(now)
         )
     }
-
-
-
 }

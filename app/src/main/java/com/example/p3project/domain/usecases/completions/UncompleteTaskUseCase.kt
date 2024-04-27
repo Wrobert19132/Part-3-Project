@@ -7,11 +7,7 @@ import com.example.p3project.domain.repository.TaskRepository
 import java.time.chrono.ChronoPeriod
 
 class UncompleteTaskUseCase (private val taskRepository: TaskRepository) {
-    suspend operator fun invoke(task: TaskWithRelations, period: Int) {
-        for (completion in task.completions) {
-            if (completion.period == period) {
-                taskRepository.deleteCompletion(completion)
-            }
-        }
+    suspend operator fun invoke(task: Task, period: Int) {
+        taskRepository.deleteCompletion(period, task.taskId)
     }
 }
