@@ -39,7 +39,9 @@ data class Task (
     fun isTaskDay(date: LocalDateTime): Boolean {
 
         val next: LocalDateTime = nextTaskDateTime(date.toLocalDate())
-        return (next.toLocalDate() == date.toLocalDate() || next.minusMinutes(600) < date )
+        return (next.toLocalDate() == date.toLocalDate()
+                || next.minusMinutes(600) < date
+                || nextTaskDateTime(date.minusMinutes(300).toLocalDate()).plusMinutes(300) < date )
     }
 
 
@@ -54,6 +56,9 @@ data class Task (
     }
 
     fun nextTaskDay(date: LocalDate): LocalDate {
+        if (date < startDate) {
+            return startDate
+        }
         return if (isTaskDay(date)) {
             date;
         } else {

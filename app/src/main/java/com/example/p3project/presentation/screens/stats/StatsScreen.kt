@@ -45,7 +45,7 @@ fun StatsScreen(navController: NavController,
                     containerColor = MaterialTheme.colorScheme.primaryContainer
                 ),
                 title = {
-                    Text("Task Stats")
+                    Text("Task Insights")
                 },
             )
         },

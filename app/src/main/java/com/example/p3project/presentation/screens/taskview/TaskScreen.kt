@@ -43,6 +43,7 @@ import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.presentation.screens.Screen
 import com.example.p3project.presentation.screens.sharedComponents.AppConfirmDialog
+import com.example.p3project.presentation.screens.sharedComponents.CategoryView
 import com.example.p3project.presentation.screens.sharedComponents.TaskCompletionButton
 import com.example.p3project.presentation.screens.sharedComponents.TaskTime
 import com.example.p3project.presentation.screens.taskview.components.StreakCircle
@@ -135,6 +136,7 @@ fun TaskScreen (
             LazyColumn(
                 Modifier
                     .padding(paddingValues)
+                    .padding(10.dp)
                     .fillMaxSize(),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
@@ -187,6 +189,8 @@ fun TaskScreen (
                     }
                 }
 
+                item { CategoryView(categories = taskInfo.categories)}
+
                 item {
                     ElevatedCard(
                         modifier = Modifier
@@ -225,6 +229,12 @@ fun TaskScreen (
                                             )
                                         )
                                     )
+                                }
+                            )
+
+                            ListItem(leadingContent = { Text("Tasks are due every:") },
+                                headlineContent = {
+                                    Text("${taskInfo.task.dayInterval} days")
                                 }
                             )
 

@@ -85,10 +85,10 @@ data class TaskWithRelations(
     fun completionForDay(from: LocalDate): Completion? {
         val lastPeriod = task.periodsPassed(from)
 
-        if (completions.isNotEmpty()) {
-            val latest = completions.sortedBy{-it.period}[0]
-            if (lastPeriod == latest.period) {
-                return latest
+        for (completion in completions) {
+            var period = completion.period
+            if (lastPeriod == period) {
+                return completion
             }
         }
         return null

@@ -16,7 +16,6 @@ import java.time.LocalTime
 class ScheduleNotificationTests {
     private lateinit var task: Task
     private lateinit var interruptScheduler: TestInterruptSchedulerService
-    private lateinit var alarmManager: AlarmManager
     @Before
     fun setupTask() = runTest {
         val context: Context = ApplicationProvider.getApplicationContext()
@@ -34,7 +33,7 @@ class ScheduleNotificationTests {
     }
 
     @Test
-    fun scheduleTask() = runTest {
+    fun scheduleBasicTask() = runTest {
         val scheduleTaskUseCase = ScheduleTaskUseCase(interruptScheduler)
 
         val now = LocalDateTime.of(2024, 3, 12, 1, 25)

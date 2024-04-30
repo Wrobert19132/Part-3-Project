@@ -22,8 +22,10 @@ class GetTasksUseCase (private val taskRepository: TaskRepository)
             is TaskViewMode.AllView ->
                 tasks
             is TaskViewMode.IncompleteView ->
-                tasks.filter {
-                    taskInfo -> (taskInfo.task.isTaskDay(now) && !taskInfo.completedOnDay(taskInfo.task.nextTaskDay(now.toLocalDate())))
+                tasks.filter {taskInfo ->
+                    taskInfo.task.isTaskDay(now) && !taskInfo.completedOnDay(
+                        taskInfo.task.nextTaskDay(now.toLocalDate())
+                    )
                 }
         }
     }

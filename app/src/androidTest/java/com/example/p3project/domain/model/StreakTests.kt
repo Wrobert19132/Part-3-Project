@@ -6,8 +6,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.p3project.data.database.TaskDatabase
 import com.example.p3project.data.repository.TaskRepositoryImpl
-import com.example.p3project.domain.model.Task
-import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 import com.example.p3project.domain.usecases.completions.CompleteTaskUseCase
 import com.example.p3project.domain.usecases.tasks.GetTaskUseCase
@@ -17,7 +15,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 
 @RunWith(AndroidJUnit4::class)
@@ -66,7 +63,7 @@ class StreakTests {
 
 
     @Test
-    fun streakCount_duringWeek() = runTest {
+    fun streakCount_duringPeriod() = runTest {
         val now = LocalDate.now()
         val periodLen = 7
         val taskInfo = setup_DummyTask(now, 5, periodLen)

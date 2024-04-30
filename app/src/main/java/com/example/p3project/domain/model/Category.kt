@@ -19,9 +19,7 @@ data class Category (
 
     companion object Limits {
         var maxNameLength: Int = 8;
-
     }
-
 }
 
 

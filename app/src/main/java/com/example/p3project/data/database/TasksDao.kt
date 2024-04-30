@@ -11,29 +11,14 @@ import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.CategoryCount
 import com.example.p3project.domain.model.Task
 import com.example.p3project.domain.model.Completion
+import com.example.p3project.domain.model.TaskCategoryCrossRef
 import com.example.p3project.domain.model.TaskWithRelations
 
 @Dao
 interface TasksDao {
-    @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun addTask(task: Task): Long
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateTask(task: Task)
-
-    @Transaction
-    @Query("SELECT * FROM task WHERE taskId=:id")
-    fun getTaskInfo(id: Int): TaskWithRelations?
-
-    @Transaction
-    @Query("SELECT * FROM task " +
-            "INNER JOIN TaskCategoryCrossRef ON task.taskId=TaskCategoryCrossRef.taskId " +
-            "WHERE categoryId in (:categories) ORDER BY targetTime")
-    suspend fun getFilteredTaskInfo(categories: List<Int>): List<TaskWithRelations>
-
-    @Transaction
-    @Query("SELECT * FROM task ORDER BY targetTime")
-    suspend fun getAllTaskInfo(): List<TaskWithRelations>
 
     @Query("SELECT category.categoryId, categoryName, categoryColor, COUNT(*) as count FROM " +
             "TaskCategoryCrossRef " +
@@ -41,6 +26,26 @@ interface TasksDao {
             "GROUP BY category.categoryId"
     )
     suspend fun categoryUsage(): List<CategoryCount>
+
+
+
+
+    @Transaction
+    @Query("SELECT * FROM task WHERE taskId=:id")
+    fun getTaskInfo(id: Int): TaskWithRelations?
+
+    @Insert(onConflict = OnConflictStrategy.ABORT)
+    suspend fun addTask(task: Task): Long
+    @Transaction
+    @Query("SELECT * FROM task " +
+            "INNER JOIN TaskCategoryCrossRef ON task.taskId=TaskCategoryCrossRef.taskId " +
+            "WHERE categoryId in (:categories) GROUP BY task.taskId ORDER BY targetTime")
+    suspend fun getFilteredTaskInfo(categories: List<Int>): List<TaskWithRelations>
+
+    @Transaction
+    @Query("SELECT * FROM task ORDER BY targetTime")
+    suspend fun getAllTaskInfo(): List<TaskWithRelations>
+
 
     @Delete
     suspend fun deleteTask(task: Task)
@@ -75,11 +80,11 @@ interface TasksDao {
     suspend fun getAllCategories(): List<Category>
 
 
-    @Query("INSERT INTO TaskCategoryCrossRef VALUES (:taskId, :categoryId)")
-    suspend fun assignCategory(taskId: Int, categoryId: Int)
-
     @Query("DELETE FROM TaskCategoryCrossRef WHERE taskId=:taskId AND categoryId=:categoryId")
     suspend fun unassignCategory(taskId: Int, categoryId: Int)
+
+    @Insert(TaskCategoryCrossRef::class, onConflict = OnConflictStrategy.REPLACE)
+    suspend fun assignCategory(assignment: TaskCategoryCrossRef)
 
 
 

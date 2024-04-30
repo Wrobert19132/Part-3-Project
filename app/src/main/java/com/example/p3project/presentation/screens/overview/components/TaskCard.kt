@@ -31,27 +31,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.TaskWithRelations
+import com.example.p3project.presentation.screens.sharedComponents.CategoryView
 import com.example.p3project.presentation.screens.sharedComponents.TaskCompletionButton
 import com.example.p3project.presentation.screens.sharedComponents.TaskTime
 import kotlinx.coroutines.delay
 import java.time.LocalDateTime
-
-@Composable
-private fun CategoryView(categories: List<Category>) {
-    LazyRow(
-        Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(10.dp)
-    ) {
-        items(categories) { category ->
-            FilterChip(
-                selected = false,
-                onClick = {  },
-                label = { Text(category.categoryName) },
-            )
-        }
-    }
-}
 
 @Composable
 fun TaskCard (taskInfo: TaskWithRelations, onClick: () -> Unit, onComplete: () -> Unit,

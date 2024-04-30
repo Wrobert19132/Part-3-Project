@@ -5,6 +5,7 @@ import com.example.p3project.data.database.TasksDao
 import com.example.p3project.domain.model.Category
 import com.example.p3project.domain.model.CategoryCount
 import com.example.p3project.domain.model.Completion
+import com.example.p3project.domain.model.TaskCategoryCrossRef
 import com.example.p3project.domain.model.TaskWithRelations
 import com.example.p3project.domain.repository.TaskRepository
 
@@ -67,7 +68,7 @@ class TaskRepositoryImpl (
     }
 
     override suspend fun assignCategory(taskId: Int, categoryId: Int) {
-        tasksDao.assignCategory(taskId, categoryId)
+        tasksDao.assignCategory(TaskCategoryCrossRef(taskId, categoryId))
     }
 
     override suspend fun unassignCategory(taskId: Int, categoryId: Int) {

@@ -14,7 +14,6 @@ data class Completion (
 ) {
 
     fun getCategory(taskTime: LocalDateTime, notificationOffset: Int): CompletionTimeCategory {
-
         return if (completionTime < taskTime.minusMinutes(notificationOffset.toLong())) {
             CompletionTimeCategory.EarlyComplete
         } else if (completionTime < taskTime) {

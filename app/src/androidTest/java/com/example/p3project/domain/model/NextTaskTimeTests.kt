@@ -69,7 +69,7 @@ class NextTaskTimeTests {
     }
 
     @Test
-    fun inPastCorrect() {
+    fun nextTaskDay_beforeStart() {
         val now: LocalDate = start_day.minusDays(50)
 
         assertEquals("Asserts ",

@@ -20,7 +20,7 @@ private fun getText(task: Task, now: LocalDateTime, long: Boolean): String {
     val minutesUntil: Int = task.minutesUntilTask(now)
 
     val hours = abs(minutesUntil).floorDiv(60)
-    val hourMinutes = abs(minutesUntil) % 60
+    val hourMinutes = abs(minutesUntil) % 60 + (if (minutesUntil < 0) 1 else 0)
 
     return if (task.isTaskDay(now.toLocalDate())) {
         if (minutesUntil < 0) {

@@ -89,8 +89,12 @@ fun CalendarDay(date: LocalDate, onClick: (() -> Unit),
                             FontWeight.Normal
                         },
                         color = if (completionForDay.isNotNull()) {
-                            val completionCategory = completionForDay!!.getCategory(task.dateTimeForPeriod(completionForDay.period), task.notificationOffset)
-
+                            println("Completion: $completionForDay")
+                            println("Target: ${task.dateTimeForPeriod(completionForDay!!.period)}")
+                            val completionCategory = completionForDay!!.getCategory(
+                                task.dateTimeForPeriod(completionForDay.period),
+                                task.notificationOffset
+                            )
                             completionCategory.color
                         } else {
                             Color.Gray
