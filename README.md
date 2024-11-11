@@ -1,4 +1,4 @@
-# Title
+# The Part 3 Project 
 
 This project makes up the development and testing portion of my year long undergraduate University dissertation project. 
 
